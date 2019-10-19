@@ -1,0 +1,128 @@
+\documentclass[a4paper]{report}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{titlesec}
+\usepackage{lipsum}
+\usepackage[]{frontespizio}
+\usepackage{booktabs}
+
+\begin{document}
+
+%%The two following lines remove the line "Chapter n" at the beginning of each chapter, before the title
+%\titleformat{\chapter}[display]
+%  {\normalfont\bfseries}{}{0pt}{\Large}
+\titleformat{\chapter}[hang] 
+{\normalfont\huge\bfseries}{\thechapter}{1em}{} 
+
+\author{Nicola Rosetti \and Simone Sartoni \and Vittorio Torri}
+\title{Safe Streets}
+\date{}
+\maketitle
+
+\tableofcontents
+
+\chapter{Introduction}
+\lipsum[1]
+\section{Purpose}
+\lipsum[1]
+\section{Scope}
+\lipsum[1]
+\section{Definitions, acronyms and abbreviations}
+\lipsum[1]
+\section{Revision history}
+\lipsum[1]
+\section{Reference documents}
+\lipsum[1]
+\section{Document structure}
+\lipsum[1]
+
+\chapter{Overall Description}
+\lipsum[1]
+\section{Product perspective}
+\lipsum[1]
+\section{Product functions}
+\lipsum[1]
+\section{User characteristics}
+\lipsum[1]
+\section{Assumptions, dependencies and constraints}
+\lipsum[1]
+
+
+\chapter{Specific Requirements}
+\lipsum[1]
+\section{External interface requirements}
+\subsection{User Interfaces}
+\lipsum[1]
+\subsection{Hardware Interfaces}
+\lipsum[1]
+\subsection{Software Interfaces}
+\lipsum[1]
+\subsection{Communication Interfaces}
+\lipsum[1]
+\section{Functional requirements}
+\lipsum[1]
+\section{Performance requirements}
+\lipsum[1]
+\section{Design constraints}
+\subsection{Standards compliance}
+\lipsum[1]
+\subsection{Hardware limitations}
+\lipsum[1]
+\subsection{Any other constraints}
+\lipsum[1]
+\section{Software system attributes}
+\subsection{Reliability}
+\lipsum[1]
+\subsection{Availability}
+\lipsum[1]
+\subsection{Security}
+\lipsum[1]
+\subsection{Maintainability}
+\lipsum[1]
+\subsection{Portability}
+\lipsum[1]
+
+\chapter{Formal Analysis using Alloy}
+\lipsum[3]
+
+\chapter{Effort spent}
+
+\begin{center}
+Nicola Rosetti \\
+\begin{tabular}{lll}
+\toprule
+Date & Hour & Section \\
+\midrule
+17-10-2019 & 1.5 h* & Goals \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{center}
+Simone Sartoni \\
+\begin{tabular}{lll}
+\toprule
+Date & Hour & Section \\
+\midrule
+17-10-2019 & 1.5 h* & Goals \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{center}
+Vittorio Torri \\
+\begin{tabular}{lll}
+\toprule
+Date & Hour & Section \\
+\midrule
+17-10-2019 & 1.5 h* & Goals \\
+\bottomrule
+\end{tabular}
+\end{center}
+\textit{* Group work}
+
+\chapter{References}
+\lipsum[3]
+
+\end{document}
