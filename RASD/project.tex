@@ -4,8 +4,8 @@
 \usepackage[english]{babel}
 \usepackage{titlesec}
 \usepackage{lipsum}
-\usepackage[]{frontespizio}
 \usepackage{booktabs}
+\usepackage{hyperref}
 
 \begin{document}
 
@@ -23,9 +23,8 @@
 \tableofcontents
 
 \chapter{Introduction}
-\lipsum[1]
 \section{Purpose}
-\lipsum[1]
+
 \section{Scope}
 \lipsum[1]
 \section{Definitions, acronyms and abbreviations}
@@ -38,16 +37,29 @@
 \lipsum[1]
 
 \chapter{Overall Description}
-\lipsum[1]
 \section{Product perspective}
 \lipsum[1]
 \section{Product functions}
 \lipsum[1]
 \section{User characteristics}
-\lipsum[1]
+The users of the service are the following:
+\begin{itemize}
+\item \textit{Visitor}: a non-logged user which can only consult statistics about areas with the highest frequency of violations, highest rate of accidents related to the violations, traffic tickets issued and safety improvements. 
+\item \textit{User}: an identified user which, in addition to the \textit{visitor}, can report a parking violation, sending the details to the municipality authorities.
+\item \textit{Municipality agent}: an agent of the local police which is notified about the violation reports for his municipality and can decide whether to immediately send a traffic ticket to the person responsible for a certain violation or to send an agent on the place to verify it and possibly discard it.
+\item \textit{Municipality supervisor}: he has a full access to the application data, including all statistics and the suggestions to improve safety in the most dangerous areas.
+\end{itemize}
 \section{Assumptions, dependencies and constraints}
+\subsection{Dependencies and constraints}
+\label{SS-Dep&Const} 
+The presence of some services provided by the municipalities is necessary to make all SafeStreet functions operative. In particular the following services are requested:
+\begin{itemize}
+\item \textit{Identity Card Check}: allows to retrieve data of a person given its identity card number.  It's request for a strong user authentication.
+\item \textit{Accidents Information}: return information about the accidents occurred in the municipality streets, with position and causes.
+\item \textit{Traffic Ticket Issue}: allows to send traffic tickets to a certain person by a certain agent
+\end{itemize}
+\subsection{Domain Assumptions}
 \lipsum[1]
-
 
 \chapter{Specific Requirements}
 \lipsum[1]
@@ -55,34 +67,47 @@
 \subsection{User Interfaces}
 \lipsum[1]
 \subsection{Hardware Interfaces}
-\lipsum[1]
+No hardware interfaces are provided, being SafeStreet just a software system.
 \subsection{Software Interfaces}
-\lipsum[1]
+The system does not provide any software interface, because there are no other application which actually need to retrieve data from it. \\
+The system has to call the municipalities services to retrieve some information (see \ref{SS-Dep&Const} ).
 \subsection{Communication Interfaces}
-\lipsum[1]
+The communication between users and SafeStreet servers exploit internal APIs through the \textit{HTTPS} protocol. The same is assumed for the communication with the municipalities systems. \\
+For the \textit{users} the communication is unidirectional, in the sense that they cannot receive requests/notification by the server, all communications start from them. \\
+The \textit{municipality agents} can be notified from the server when there are new report to be analyzed. \\
+The \textit{municipality supervisors} can be notified about suggestions for interventions on the most unsafe areas.
 \section{Functional requirements}
 \lipsum[1]
 \section{Performance requirements}
-\lipsum[1]
+Performance requirements are not particularly critical for the system, but it is anyway desirable that all requests sent to the server are answered within 1 second, to assure a good user experience. \\
+The server infrastructure will be designed to be scalable so that it will be possible to adapt it to the increment of users when the app diffusion will increase.
 \section{Design constraints}
-\subsection{Standards compliance}
-\lipsum[1]
-\subsection{Hardware limitations}
-\lipsum[1]
+%\subsection{Standards compliance}
+\subsection{Regulatory policies}
+The application will only record the data strictly correlated to the reported violations and the data provided by the users during the registration. This data will be used only for the purposes of the system and will be treated confidentially, according to the \textit{GPDR} rules.\\
+In particular the statistical analyses performed will never show publicly any information which can be related to a specific person.
+\subsection{Hardware and software limitations}
+The following requirements are necessary to install the mobile application:
+\begin{itemize}
+\item \textit{Operating system}: Android 5+ or iOS 9+
+\item \textit{Hardware}: to allow the access as logged user the smartphone need to have a camera and a GPS sensor
+\end{itemize}
+The camera is needed to take photos of the violations and the GPS is necessary to automatically record their position. The users have to give the relative permissions to the application. A base necessary requirement to use any functionality is the presence of an internet connection.\\
+This requirements allow the majority of people to use the application \mbox{(see \hyperref[ref:os-stats]{\textit{[OS-STAT]}}).}\\
+The authorities have the possibility to use a web interface, accessible through every modern browser.\\
+Everyone can consult the publicly available statistics also through the \textit{SafeStreet website}, with any modern browser.
 \subsection{Any other constraints}
-\lipsum[1]
+//PROBABLY NOTHING
 \section{Software system attributes}
-\subsection{Reliability}
-\lipsum[1]
-\subsection{Availability}
-\lipsum[1]
+\subsection{Reliability-Availability}
+The availability is not a critical requirement, but the system has to guarantee a 99\% of uptime (max 3.65 days/year of downtime) to ensure that the users can normally use it.
 \subsection{Security}
-\lipsum[1]
+Security is a critical requirement for this system, considering the confidential information that are transmitted through it. It is assured by the use of the \textit{HTTPS} protocol for all communications and by the follow of the best security practices for the servers management, protecting them with IDS, maintaining the data ciphered and assuring the access only to the authorized users.
 \subsection{Maintainability}
-\lipsum[1]
+The system will be realized following the best software engineering practices to ensure its maintainability and expandability in the future.
 \subsection{Portability}
-\lipsum[1]
-
+The system is actually designed to be compatible with most of Android and iOS devices (smartphones and tablets) and from the authorities side it can be accessed from any web browser, so it is very portable.
+It will be important to maintain it compatible with the future releases of this two operating systems and with any other new operating system or device that will acquire an important market share.
 \chapter{Formal Analysis using Alloy}
 \lipsum[3]
 
@@ -90,39 +115,43 @@
 
 \begin{center}
 Nicola Rosetti \\
-\begin{tabular}{lll}
+%\begin{tabular}{lll}
+\begin{tabular}{p{2cm}p{1.5cm}p{7cm}}
 \toprule
-Date & Hour & Section \\
-\midrule
+\textit{Date} & \textit{Hour} & \textit{Section} \\ \midrule
 17-10-2019 & 1.5 h* & Goals \\
 \bottomrule
 \end{tabular}
 \end{center}
-
+\vspace*{1 cm}
 \begin{center}
 Simone Sartoni \\
-\begin{tabular}{lll}
+\begin{tabular}{p{2cm}p{1.5cm}p{7cm}}
 \toprule
-Date & Hour & Section \\
-\midrule
+\textit{Date} & \textit{Hour} & \textit{Section} \\ \midrule
 17-10-2019 & 1.5 h* & Goals \\
 \bottomrule
 \end{tabular}
 \end{center}
-
+\vspace*{1 cm}
 \begin{center}
 Vittorio Torri \\
-\begin{tabular}{lll}
+\begin{tabular}{p{2cm}p{1.5cm}p{7cm}}
 \toprule
-Date & Hour & Section \\
-\midrule
-17-10-2019 & 1.5 h* & Goals \\
+\textit{Date} & \textit{Hour} & \textit{Section} \\ \midrule
+17-10-2019 & 1.5 h* & Goals \\ \midrule
+20-10-2019 & 1 h & Users, Hardware and software limitations, goal refinement \\ \midrule
+21-10-2019 & 1 h & Software, Hardware and Communication Interfaces, Performance requirements, Design constraints, Software system attributes \\ \midrule
+22-10-2019 & 1 h & Goal and requirements revision \\ \midrule
+23-10-2019 & 1 h & Goal and requirements revision \\
 \bottomrule
 \end{tabular}
 \end{center}
 \textit{* Group work}
 
 \chapter{References}
-\lipsum[3]
+\begin{itemize}
+\item \label{ref:os-stats} [OS-STAT] \href{https://gs.statcounter.com}{\textit{https://gs.statcounter.com}} - statistics on operating systems market share and versions diffusion
+\end{itemize}
 
 \end{document}
