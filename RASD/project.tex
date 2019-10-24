@@ -55,8 +55,8 @@ The system offers the possibility to Visitors to register and actually become us
 \subsection{User}
 
 \subsubsection{Reporting a violation}
-This is the most important function offered by SafeStreets. This function allows Users,when logged in, to report a potential violation that has occured in the streets. 
-They can achieve that by inserting some mandatory data. When reporting a user must insert the type of violation that has been detected ( missing park disk, car illegally parked in the bike lane, car illegally parked in some reserved parking spot, not paid parking disk).
+This is the most important function offered by SafeStreets. This function allows Users, when logged in, to report a potential violation that has occured in the streets. 
+They can achieve that by inserting some mandatory data. When reporting a violation, a user must insert the type of violation that has been detected ( missing park disk, car illegally parked in the bike lane, car illegally parked in some reserved parking spot, not paid parking disk).
 Subsequently, the user must provide at least one picture of the violation. Through the pictures, the user should provide clear evidence of the violation and the vehicle involved (in particular the license plate) before sending the report for a verification to the server. Optionally, the user can help recognition providing the license plate of the vehicle as plain text. Before sending the report, the application attaches to it the current position of the User (using GPS position), date and time of the report.
 
 \subsection{Municipality agent}
@@ -72,14 +72,16 @@ Additionally, when logged in, the agent is notified of new incoming reports.
 
 \subsection{Municipality supervisor}
 
-\subsubsection{Suggesting possible solutions}
+\subsubsection{Suggesting possible solutions} 
 
 \subsubsection{Getting sensible information}
+This function allows logged in municipality supervisors to retrieve information about the vehicles with the highest number of violations in a selected area. The system must return information belonging to the supervisor's area of competence, communicated during the registration process.
 
-\subsection{Everyone}
+\subsection{Everyone} 
 
 \subsubsection{Consulting statistics}
-
+This function allows visitors, users, municipality agents or supervisors to retrieve information about the streets and areas with the highest frequency of violations. The information provided must be mined by the system from the reported violations.
+//todo Simo
 
 
 
