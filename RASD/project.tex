@@ -26,9 +26,12 @@
 \section{Purpose}
 
 \section{Scope}
-\lipsum[1]
+	SafeStreet is an application meant to provide a mechanism to more efficiently detect violations and to try to make streets safer. This is meant both for normal people and for municipality agents. 
+	The application domain concerns different types of world phenomena, shared phenomena and machine phenomena.
 \section{Definitions, acronyms and abbreviations}
-\lipsum[1]
+\begin{itemize}
+\item \textit{GPS}: Global Positioning System
+\end{itemize}
 \section{Revision history}
 \lipsum[1]
 \section{Reference documents}
@@ -40,7 +43,46 @@
 \section{Product perspective}
 \lipsum[1]
 \section{Product functions}
-\lipsum[1]
+
+In this part are underlined the main functions offered by SafeStreets, divided by the users that can actually have access to them.
+
+\subsection{Visitor}
+
+\subsubsection{Registering to the application}
+
+The system offers the possibility to Visitors to register and actually become users of the application. When registering the visitor needs to provide his name, surname, birthdate, fiscal code and identity card number. They are mandatory so if some of them is not provided then the registration process fails.
+ 
+\subsection{User}
+
+\subsubsection{Reporting a violation}
+This is the most important function offered by SafeStreets. This function allows Users,when logged in, to report a potential violation that has occured in the streets. 
+They can achieve that by inserting some mandatory data. When reporting a user must insert the type of violation that has been detected ( missing park disk, car illegally parked in the bike lane, car illegally parked in some reserved parking spot, not paid parking disk).
+Subsequently, the user must provide at least one picture of the violation. Through the pictures, the user should provide clear evidence of the violation and the vehicle involved (in particular the license plate) before sending the report for a verification to the server. Optionally, the user can help recognition providing the license plate of the vehicle as plain text. Before sending the report, the application attaches to it the current position of the User (using GPS position), date and time of the report.
+
+\subsection{Municipality agent}
+\subsubsection{Authority agent registering}
+\subsubsection{Violation checking}
+
+
+This function is provided if and only if the municipality involved has installed the service needed to exploit SafeStreet data. After logging in as a municipality agent, the system notifies the agent about all the current not resolved reported violations. The agent can visualize individually each report, checking if the report corresponds to an actual violation. He can  either directly emit a traffic ticket or send an agent directly on the street to check and eventually emit the ticket.
+Additionally, when logged in, the agent is notified of new incoming reports.
+
+//TODO nico 
+
+
+\subsection{Municipality supervisor}
+
+\subsubsection{Suggesting possible solutions}
+
+\subsubsection{Getting sensible information}
+
+\subsection{Everyone}
+
+\subsubsection{Consulting statistics}
+
+
+
+
 \section{User characteristics}
 The users of the service are the following:
 \begin{itemize}
