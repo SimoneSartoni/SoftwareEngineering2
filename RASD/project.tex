@@ -57,12 +57,13 @@ The system offers the possibility to Visitors to register and actually become us
 \subsubsection{Reporting a violation}
 This is the most important function offered by SafeStreets. This function allows Users, when logged in, to report a potential violation that has occured in the streets. 
 They can achieve that by inserting some mandatory data. When reporting a violation, a user must insert the type of violation that has been detected ( missing park disk, car illegally parked in the bike lane, car illegally parked in some reserved parking spot, not paid parking disk).
-Subsequently, the user must provide at least one picture of the violation. Through the pictures, the user should provide clear evidence of the violation and the vehicle involved (in particular the license plate) before sending the report for a verification to the server. Optionally, the user can help recognition providing the license plate of the vehicle as plain text. Before sending the report, the application attaches to it the current position of the User (using GPS position), date and time of the report.
+Subsequently, the user must provide at least one picture of the violation. Through the pictures, the user should provide clear evidence of the violation and the vehicle involved (in particular the license plate) before sending the report for a verification to the server. Optionally, the user can help recognition providing the license plate of the vehicle as plain text. Before sending the report, the application attaches to it the current position of the User (using GPS position), date and time of the report (taken through the network).
 
 \subsection{Municipality agent}
 \subsubsection{Authority agent registering}
-\subsubsection{Violation checking}
+Differently from the function previously explained and meant for normal Users, this function is only meant for Municipality agents. Each agent (tipically a maximum of 3 per municipality) can register to SafeStreet to exploit his services as agent. He needs to provide his name, surname birthdate and rank. After providing a password, the registration is sent for a verification to the municipality service and completed if the data inserted is correct. An ID code is then given to the agent to be uniquely identified.
 
+\subsubsection{Violation checking}
 
 This function is provided if and only if the municipality involved has installed the service needed to exploit SafeStreet data. After logging in as a municipality agent, the system notifies the agent about all the current not resolved reported violations. The agent can visualize individually each report, checking if the report corresponds to an actual violation. He can  either directly emit a traffic ticket or send an agent directly on the street to check and eventually emit the ticket.
 Additionally, when logged in, the agent is notified of new incoming reports.
