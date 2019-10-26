@@ -23,11 +23,30 @@
 \tableofcontents
 
 \chapter{Introduction}
-\section{Purpose}
-
 \section{Scope}
-	SafeStreet is an application meant to provide a mechanism to more efficiently detect violations and to try to make streets safer. This is meant both for normal people and for municipality agents. 
-	The application domain concerns different types of world phenomena, shared phenomena and machine phenomena.
+SafeStreet is an application meant to provide a mechanism to more efficiently detect parking violations and to try to make streets safer. This is meant both for normal people and for municipality agents. 
+The application domain concerns different types of world phenomena, shared phenomena and machine phenomena. \\
+We can identify the following world phenomena:
+\begin{itemize}
+\item {[W1]} A car is illegally parked 
+\item {[W2]} An accident occurs
+\item {[W3]} An intervention is performed to make the roads safer
+\end{itemize} 
+the following shared phenomena controlled by the world and observed by the machine:
+\begin{itemize}
+\item {[S1]} A violation report is sent by a user
+\item {[S2]} An accident report is provided by the municipality system
+\end{itemize}
+and the following shared phenomena controlled by the machine and observed by the world:
+\begin{itemize}
+\item {[S3]} A traffic ticket is emitted by an agent, exploiting the municipality system, after a report analysis
+\item {[S4]} An agent is sent to verify the correctness of a violation report
+\item {[S5]} A suggestion for a safety improvement on streets is made available
+\end{itemize}
+
+\section{Purpose}
+The following are the goals of the system:
+
 \section{Definitions, acronyms and abbreviations}
 \begin{itemize}
 \item \textit{GPS}: Global Positioning System
@@ -61,7 +80,7 @@ Subsequently, the user must provide at least one picture of the violation. Throu
 
 \subsection{Municipality agent}
 \subsubsection{Authority agent registering}
-Differently from the function previously explained and meant for normal Users, this function is only meant for Municipality agents. Each agent (tipically a maximum of 3 per municipality) can register to SafeStreet to exploit his services as agent. He needs to provide his name, surname birthdate and rank. After providing a password, the registration is sent for a verification to the municipality service and completed if the data inserted is correct. An ID code is then given to the agent to be uniquely identified.
+Differently from the function previously explained and meant for normal Users, this function is only meant for Municipality agents. Each agent (tipically a maximum of 3 per municipality) can register to SafeStreet to exploit his services as agent. He needs to provide his name, surname, birthdate and rank. After providing a password, the registration is sent for a verification to the municipality service and completed if the data inserted is correct. An ID code is then given to the agent to be uniquely identified.
 
 \subsubsection{Violation checking}
 
@@ -74,6 +93,7 @@ Additionally, when logged in, the agent is notified of new incoming reports.
 \subsection{Municipality supervisor}
 
 \subsubsection{Suggesting possible solutions} 
+This function consists of a task periodically executed by the system (e.g. once a month) which tries to analyze reported violations, issued tickets, accidents information and data about the streets network coming from the municipality to suggest possible interventions to increase the safety (e.g. add barriers, create new park spots, increase the allowed parking time, send more agents in a certain area in certain hours...). When the system finds new suggestions it sends them to the municipality supervisors.
 
 \subsubsection{Getting sensible information}
 This function allows logged in municipality supervisors to retrieve information about the vehicles with the highest number of violations in a selected area. The system must return information belonging to the supervisor's area of competence, communicated during the registration process.
@@ -102,6 +122,7 @@ The presence of some services provided by the municipalities is necessary to mak
 \item \textit{Identity Card Check}: allows to retrieve data of a person given its identity card number.  It's request for a strong user authentication.
 \item \textit{Accidents Information}: return information about the accidents occurred in the municipality streets, with position and causes.
 \item \textit{Traffic Ticket Issue}: allows to send traffic tickets to a certain person by a certain agent
+\item \textit{Agents Identity Check}: allows to check the identity of a registering agents given his personal data, including his badge number. 
 \end{itemize}
 \subsection{Domain Assumptions}
 \lipsum[1]
@@ -135,9 +156,9 @@ In particular the statistical analyses performed will never show publicly any in
 The following requirements are necessary to install the mobile application:
 \begin{itemize}
 \item \textit{Operating system}: Android 5+ or iOS 9+
-\item \textit{Hardware}: to allow the access as logged user the smartphone need to have a camera and a GPS sensor
+\item \textit{Hardware}: to allow the access as logged user the smartphone needs to have a camera and a GPS sensor
 \end{itemize}
-The camera is needed to take photos of the violations and the GPS is necessary to automatically record their position. The users have to give the relative permissions to the application. A base necessary requirement to use any functionality is the presence of an internet connection.\\
+The camera is needed to take photos of the violations and the GPS is necessary to automatically record the position. The users have to give the relative permissions to the application. A base necessary requirement to use any functionality is the presence of an internet connection.\\
 This requirements allow the majority of people to use the application \mbox{(see \hyperref[ref:os-stats]{\textit{[OS-STAT]}}).}\\
 The authorities have the possibility to use a web interface, accessible through every modern browser.\\
 Everyone can consult the publicly available statistics also through the \textit{SafeStreet website}, with any modern browser.
@@ -147,7 +168,8 @@ Everyone can consult the publicly available statistics also through the \textit{
 \subsection{Reliability-Availability}
 The availability is not a critical requirement, but the system has to guarantee a 99\% of uptime (max 3.65 days/year of downtime) to ensure that the users can normally use it.
 \subsection{Security}
-Security is a critical requirement for this system, considering the confidential information that are transmitted through it. It is assured by the use of the \textit{HTTPS} protocol for all communications and by the follow of the best security practices for the servers management, protecting them with IDS, maintaining the data ciphered and assuring the access only to the authorized users.
+Security is a critical requirement for this system, considering the confidential information that are transmitted through it. It is assured by the use of the \textit{HTTPS} protocol for all communications and by the follow of the best security practices for the servers management, protecting them with IDS, maintaining the data ciphered and assuring the access only to the authorized users. \\
+Every activity performed by municipality agents and supervisors will be logged to ensure its traceability.
 \subsection{Maintainability}
 The system will be realized following the best software engineering practices to ensure its maintainability and expandability in the future.
 \subsection{Portability}
@@ -188,7 +210,8 @@ Vittorio Torri \\
 20-10-2019 & 1 h & Users, Hardware and software limitations, goal refinement \\ \midrule
 21-10-2019 & 1 h & Software, Hardware and Communication Interfaces, Performance requirements, Design constraints, Software system attributes \\ \midrule
 22-10-2019 & 1 h & Goal and requirements revision \\ \midrule
-23-10-2019 & 1 h & Goal and requirements revision \\
+23-10-2019 & 1 h & Goal and requirements revision \\ \midrule
+26-10-2019 & 2 h & Scenarios, requirements, functions, scope \\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -196,7 +219,11 @@ Vittorio Torri \\
 
 \chapter{References}
 \begin{itemize}
+
 \item \label{ref:os-stats} [OS-STAT] \href{https://gs.statcounter.com}{\textit{https://gs.statcounter.com}} - statistics on operating systems market share and versions diffusion
+
+\item \label{ref:slander} [SLANDER] see art. 368, 370 and 69 c.p.p. (Italian law)
+
 \end{itemize}
 
 \end{document}
