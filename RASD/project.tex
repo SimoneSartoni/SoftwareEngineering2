@@ -6,6 +6,10 @@
 \usepackage{lipsum}
 \usepackage{booktabs}
 \usepackage{hyperref}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{rotating}
+\graphicspath{{./img/}}
 
 \begin{document}
 
@@ -75,7 +79,22 @@ In this chapter the application behaviour is described: at first by providing  U
 
 \chapter{Overall Description}
 \section{Product perspective}
-\lipsum[1]
+In figure \ref{fig:class-diagram} is reported an \textit{UML Class Diagram} which represents the domain of the application with main concepts and data involved, including their relationships.\\
+Not all classes will necessary become effective classes in the implementation (e.g. the \textit{Visitor} class).\\
+\begin{figure}[hp]
+\includegraphics[width=\textwidth]{ClassDiagram}
+\caption{UML Class Diagram}
+\label{fig:class-diagram}
+\end{figure}
+Some data appear to be duplicated in the \textit{TrafficTicket} class but it needs to be considered the fact that the application will receive also data about traffic tickets which have not been issued as a consequence of a SafeStreet report, but instead have been independently issued by the local police in their traditional control activities. They are necessary to correctly build statistics and they need to include data which are already present in the corresponding report, when it exists.\\
+For what concerns the \textit{Accidents} here it has been supposed a representation for all types of accidents, coming from the municipality data, then the system will be able to discriminate the ones related to parking violations.\\
+In figure \ref{fig:state-diagram1} is reported an \textit{UML State Diagram} to clearly represent the state evolution of a \textit{ViolationReport}, which is the main object which change its state in the time, while the other ones do not present significant evolutions from this point of view.
+\begin{figure}[hp]
+\centering
+\includegraphics[angle=90, scale=0.6]{StateReport}
+\caption{UML State Diagram for ViolationReport}
+\label{fig:state-diagram1}
+\end{figure}
 \section{Product functions}
 
 In this part are underlined the main functions offered by SafeStreets, divided by the users that can actually have access to them.
