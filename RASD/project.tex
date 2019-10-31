@@ -6,11 +6,6 @@
 \usepackage{lipsum}
 \usepackage{booktabs}
 \usepackage{hyperref}
-\usepackage{graphicx}
-\usepackage{float}
-\usepackage{rotating}
-\usepackage{graphicx}
-\graphicspath{ {./img/} }
 
 \begin{document}
 
@@ -61,29 +56,29 @@ The following are the goals of the system:
 \section{Reference documents}
 \lipsum[1]
 \section{Document structure}
-\lipsum[1]
+
+The document consists of 4 chapters:
+\\ 
+\\
+\textbf{Chapter 1}: In this chapter is presented basically the domain of the application, taking into consideration all the phenomena (world, shared and machine ones) that the application observes and/or controls. The scope of the application is specified, listing all the goals.
+It also contains additional information to make the reading of the document more understandable.\\ \\
+\textbf{Chapter 2}: In this chapter the application itself is taken into consideration, concerning its function and the potential stakeholder that actually will use it. Considering users and the world in which they act, all the assumption made on the domain are listed. A series of UML diagrams (Class and State diagrams) are then presented to help understanding how the application should work in terms of entities involved and functionalities.\\ \\
+\textbf{Chapter 3}: 
+In this chapter the application behaviour is described: at first by providing  UML diagrams (sequence diagrams, scenario and use cases); at last by specifying requirements in terms of :
+\begin{itemize}
+\item functional requirements;
+\item non-functional requirements;
+\item interface requirements.\\ \\
+\end{itemize}
+\textbf{Chapter 4}: In the last chapter a brief but concise and effective formal analysis of the problem is presented. The formal analysis is made with Alloy.  Domain assumptions are actually specified in Alloy language and the entities represent entities in the UML class diagram presented in chapter 3.
+\\
 
 \chapter{Overall Description}
 \section{Product perspective}
-In figure \ref{fig:class-diagram} is reported an \textit{UML Class Diagram} which represents the domain of the application with main concepts and data involved, including their relationships.\\
-Not all classes will necessary become effective classes in the implementation (e.g. the \textit{Visitor} class).\\
-\begin{figure}[hp]
-\includegraphics[width=\textwidth]{ClassDiagram}
-\caption{UML Class Diagram}
-\label{fig:class-diagram}
-\end{figure}
-Some data appear to be duplicated in the \textit{TrafficTicket} class but it needs to be considered the fact that the application will receive also data about traffic tickets which have not been issued as a consequence of a SafeStreet report, but instead have been independently issued by the local police in their traditional control activities. They are necessary to correctly build statistics and they need to include data which are already present in the corresponding report, when it exists.\\
-For what concerns the \textit{Accidents} here it has been supposed a representation for all types of accidents, coming from the municipality data, then the system will be able to discriminate the ones related to parking violations.\\
-In figure \ref{fig:state-diagram1} is reported an \textit{UML State Diagram} to clearly represent the state evolution of a \textit{ViolationReport}, which is the main object which change its state in the time, while the other ones do not present significant evolutions from this point of view.
-\begin{figure}[hp]
-\centering
-\includegraphics[angle=90, scale=0.6]{StateReport}
-\caption{UML State Diagram for ViolationReport}
-\label{fig:state-diagram1}
-\end{figure}
-
+\lipsum[1]
 \section{Product functions}
-In this part are underlined the main functions offered by SafeStreet, divided by the users that can actually have access to them.
+
+In this part are underlined the main functions offered by SafeStreets, divided by the users that can actually have access to them.
 
 \subsection{Visitor}
 
@@ -104,11 +99,8 @@ Differently from the function previously explained and meant for normal Users, t
 
 \subsubsection{Violation checking}
 
-This function is provided if and only if the municipality involved has installed the service needed to exploit SafeStreet data. After logging in as a municipality agent, the system notifies the agent about all the current not resolved reported violations. The agent can visualize individually each report, checking if the report corresponds to an actual violation. He can  either directly emit a traffic ticket or send an agent directly on the street to check and eventually emit the ticket.
-Additionally, when logged in, the agent is notified of new incoming reports.
-
-//TODO nico 
-
+This function is provided if and only if the municipality involved has installed the service needed to exploit SafeStreet data. After logging in as a municipality agent, the system notifies the agent about all the current not resolved reported violations. The agent can visualize individually each report, starting from the older one in terms of date and time, checking if the report corresponds to an actual violation. He can either directly emit a traffic ticket or send an agent directly on the street to check and eventually emit the ticket. At the end he can file the report and check the next report on the queue, if present.
+Additionally, when logged in, the agent is notified of new incoming reports. 
 
 \subsection{Municipality supervisor}
 
@@ -148,6 +140,225 @@ The presence of some services provided by the municipalities is necessary to mak
 
 \chapter{Specific Requirements}
 \lipsum[1]
+\section{Scenarios identification} 
+Here are presented possible scenarios for different users.\\ \\
+
+\textbf{Scenario 1.Reports a violation}\\
+\\
+Mark is a man in his thirties. He’s an employee at Esselunga supermarkets. One day, walking down the main street of his city he finds a car parked illegally in the middle of the bike lane. Mark is registered in the application SafeStreet. He takes out his smartphone and opens the application. After writing his credentials and logging in, he clicks the button “Report a violation” in the home page. He inserts the type of violation, so in this case he just writes “car illegally parked in bike lane”, and takes three different pictures of the car: one of the front of the car, clearly showing the license plate; the second showing the entire car and, in the background, the signal of bike lane; the third one highlighting important elements of the streets where the potential violation occurred, to help the matching of the photo with the GPS position of the user. He then confirms clicking on the “Confirm” button. The potential violation is now sent to the server for a verification. Finally, he closes the application and continues his walk.
+\\
+\\ 
+\textbf{Scenario 2.The agent receives a notification and issues a traffic ticket}\\
+\\
+Lukas is a municipality agent that is working as usual at his desk and has the SafeStreet Web app opened in the background on his PC. While checking his papers he receives a notification from the SafeStreet. He opens the window of the app and finds that a new report has been made about a violation. Lukas clicks on the row linked to the new violation. He observes that the violation has been reported by a certain Gianluca Verdi. The pictures of the report clearly show the vehicle that has made the violation (not paid parking meter), his license plate and the place where the violation occurred. There is now enough evidence that allows Lukas to issue a traffic ticket to the owner of the vehicle.
+\\
+\\
+\textbf{Scenario 2b. The policeman receives a notification and send an agent to control because the picture is not clear}\\
+\\
+Laura is a municipality agent that has just started her new day at work. She works in Milan’s police station. She starts her PC at her desk, opens Internet Browser and search for SafeStreet Web App. After logging in, the reported violation queue is filled with 10 notifications of new potential violations reported. She opens the first one and she discovers that the system wasn’t able to correctly identify the vehicle involved and the user hasn’t inserted the license plate as plain text to help recognition. She checks the pictures but she can’t find out what is written on the license plate. She tells his supervisor the problem, in order to send an agent to directly check in the place of the supposed violation (based on the GPS position sent by the user) and, possibly, to issue a traffic ticket.
+\\
+\\
+\textbf{Scenario 3. Checks for unsafe streets in his zone}\\
+\\
+Bob is a curious user that has the SafeStreet application installed in his iPhone 8 but is not registered in the SafeStreet database. One day, he witnesses an accident in the streets while driving his car, where a car hits a biker during a parking manoeuvre on a runs over a biker correctly biking in his bike lane.
+As he goes home, he’s curious about the most dangerous and unsafe areas and streets in his city and he wants to see if the street where he saw the accident is one of them. He opens the SafeStreet application and clicks the button “Check statistics in a city”. After this, a new page opens in which Bob clicks on the “Check for most dangerous areas/streets”. The last click he does is on the “Search for a city using your GPS position” button. Now the screen shows a map with highlighted the most unsafe areas (with most accidents) in his city. Bob selects then the area in which he is interested in and he sees which are the most dangerous streets in the area. Bob discovers that the street he was searching for is the most dangerous one. Finally, Bob closes the application.
+\\
+\\
+\textbf{Scenario 4. Needs to travel and searches for safe places for a car}\\
+\\
+Marie is a woman who often travels for work. She typically travels by car. She lives in Milan and this week she needs to go to Turin. He wants to know where she can safely park the car and take an hotel reservation. Before searching for an hotel, she takes out her Huawei and opens the SafeStreet application. She clicks the button “Check statistics in a city”. After this, a new page opens in which Bob clicks on the “Check for most dangerous areas/streets”. The last click he does is on the “Select a city you want” button. She chooses “Turin” among all the possible ones. Now she can use found information to look for safe zones near her workplace.
+\\ 
+\\
+\textbf{Scenario 5. New intervention in an unsafe street}\\
+\\
+Marco is a local police supervisor in the municipality of Varese. He logins in the SafeStreet application and he sees a notification about a suggestion for an intervention to improve safety. He opens it and he reads that in Via Roma there have been a lot of reports and consequent tickets in the last months due to cars parked on the sidewalk. The system is suggesting to add barriers to prevent cars from going on the sidewalk. This seems a good suggestion for him, he will discuss it with the competent municipality sector. 
+\\
+\\
+\textbf{Scenario 6.the user registers to the application}\\
+\\
+Luke and Walter are two close friends. Luke doesn’t know about SafeStreet application while Walter is a regular registered user of it. One day, Walter and Luke are walking down a road. Walter notices a potential violation and stops. He takes out his phone and opens the SafeStreet application. Luke asks Walter what he’s doing and Walter explains what SafeStreet is. Walter is pretty convincing and makes Luke install the application. Luke learns that to report violations he needs to register. So, he starts the process of registration providing his name, surname, birthdate, fiscal code and number of the identity card. After this, he creates his own unique username and the password. On screen, Luke sees that the registration has been successful. 
+\\
+\\
+\textbf{Scenario 7. A supervisor wants to check see what areas are registering improvements since the municipality has started to use SafeStreet}\\
+\\
+Giulio is a local police supervisor in the municipality of Milan. It’s six months since they have started to use the SafeStreet application to receive report from citizens about parking violations and he want to check what benefits it has brought. He opens the web application, he logins inserting his credentials and he clicks on Improvements under the Statistics section. Here he can see what streets have seen the best reduces in the number of issued tickets. He sees that a lot of central zones have seen reductions from 20 to 50%, while in the peripheral areas the numbers are much less substantial. He is happy because of this result, but he wants to improve it and he thinks to start a marketing campaign to encourage more people to use the application, especially in the peripherals. 
+\\ 
+\\
+\textbf{Scenario 8. Marco wants to make a joke to a friend and send a fake report}\\
+\\
+Marco and Luigi are two very close friends. One day Marco decides it’s time to make a very not funny joke to his friend and he decides to use the SafeStreet application to make him receive a traffic ticket. He finds an illegally parked car, he photographs it and then he tries to modify the license plate in the photo with Luigi’s car license plate. He sends the report with the modified photo thinking about the face of Luigi when he will receive the ticket. 
+Some weeks later he receives a letter from the judicial authority stating that they have started a criminal proceeding against him for the crime of slander (see [SLANDER]).
+Probably he won’t do it another time. 
+
+\section{UML diagrams analysis}
+
+\subsection{Use case diagram}
+
+//insert Use case here
+
+\subsection{Use case identification}
+This part consists in all possible use cases taken from use case diagram and the scenarios previously described.\\ \\
+\textbf{1.User log in}
+\\
+\\
+Actors: User
+Entry condition: 
+\begin{itemize}
+\item The User needs to have the application opened
+\end{itemize}
+Flow of events:
+\begin{itemize}
+\item The User clicks on the login button
+\item The user input his username (ID) and his password
+\item The user clicks on the “confirm” button
+\item The system redirects the taxi driver to his personal homepage
+\end{itemize}
+Exit conditions: 
+\begin{itemize}
+\item The user is successfully redirected to his personal homepage
+\end{itemize}
+Exceptions: 
+\begin{itemize}
+\item The code and password provided by the user are not correct. In this case, the system does not redirect the user to his personal homepage but notifies him that an error has been made and allows to input his code and password again
+\end{itemize}
+\textbf{2.	User reports a violation} \\ \\
+Actors: User\\
+Entry condition:
+\begin{itemize}
+ \item The user must be logged in and on his personal homepage.
+ \end{itemize}
+Flow of events:
+ \begin{itemize}
+\item The user input clicks on the “Report violation” button.
+\item The user sets the “type of violation” button to a desired value, chosen from a choice list.
+\item The user clicks on the “take photos” button and complete the operation.
+\item The user eventually fills the form “license plate”.
+\item The user clicks on the “confirm” button and is redirected to his personal home page.
+\end{itemize}
+Exit conditions:
+\begin{itemize}
+\item The system checks the report and manages it, checking if images are corrupted and eventually forwarding the report to the municipality agent.
+\item	Before confirming, the User clicks on the "Back” button and cancels the current report. Pictures are cancelled too. 
+\end{itemize}
+Exceptions: \\
+There are no exceptions for this use case. 
+\\
+\\
+\textbf{3.	Agent logs in }
+\\
+\\
+Actors: Municipality agent \\
+Entry condition:
+\begin{itemize}
+\item the agent needs to have the Web App opened.
+\end{itemize}
+Flow of events:
+\begin{itemize}
+\item The agent opens the application and arrives at the homepage.
+\item The agent clicks on the “Login” button.
+\item The agent input his username and password.
+\item	The agent clicks on the log in button.
+\item	The system redirects the agent to his personal page.
+\end{itemize}
+Exit conditions:
+\begin{itemize}
+\item The agent is successfully redirected to his personal page.
+ \end{itemize}
+Exceptions: 
+ \begin{itemize}
+ \item The username and password furnished by the agent are not correct. In this case, the system does not redirect the agent to his personal page, but notifies him that an error has been made and allows to input his username and password again.
+\end{itemize}
+\textbf{4.	Checking statistics}
+\\ \\
+Entry condition: 
+\begin{itemize}
+\item The user needs to have the application opened
+\end{itemize}
+Flow of events:
+\begin{itemize}
+\item The user clicks on the Checking statistics button in the main page
+\item The user chooses to get statistics either from his city or from another one
+\item The user clicks on the statistics he wants to know 
+\item After checking, user presses the Back button to return to the home page
+\item The system asks the user if he wants to confirm with a “Yes” or “No” choice
+\item The user presses the button he wants, confirming his choice
+\end{itemize}
+Exit conditions:
+\begin{itemize}
+\item User is successfully brought back to the home page
+\end{itemize}
+Exceptions: \\There are no exception in this case
+\\ \\
+\textbf{5. Supervisor checks potential intervention}
+\\ \\
+Actors: Supervisor
+Entry condition: 
+\begin{itemize}
+\item The supervisor must be logged in. Possibly he have received a notification about a new available suggestion. 
+\end{itemize}
+Flow of events:
+\begin{itemize}
+\item The supervisor clicks on the “Recent Suggestions” button or clicks on the new suggestion notification.
+\item The system redirects the supervisor to a page where he can choose between the ten most recent suggestions.
+\item The supervisor chooses a suggestion.
+\item The system shows the supervisor the whole text of the suggestion.
+\item The supervisor clicks the “Done” button and is redirected again to his personal homepage.
+\end{itemize}
+Exit conditions:
+\begin{itemize}
+\item The supervisor is successfully brought back to his personal home page.
+\end{itemize}
+Exceptions:
+\begin{itemize}
+\item There are no recent suggestions, so the system notifies the supervisor about this exception. The system redirect the supervisor to his personal page.
+\end{itemize}
+\textbf{6.	Agent checks a notified violation}
+\\ \\
+Actor: Municipality Agent \\ \\
+Entry condition: 	
+\begin{itemize}
+\item The agent needs to be logged in the municipality Web App
+\end{itemize}
+Flow of events:
+\begin{itemize} 
+\item The agent receives the notification through the Web App of a new incoming report violation
+\item  If the reported violation queue is not empty, the agent clicks on another report.
+\item  If the reported violation queue is empty, the agent clicks on the small rectangle in the main page to see more about the new violation
+\item If the pictures are clear enough (helped by the info provided by the user, the agent issues the traffic ticket.
+\item If the pictures are not clear enough, the agent contacts the supervisor to send an agent in the streets to check and issue the traffic ticket.
+\item The agent clicks the “File” button to file the report
+\end{itemize}
+Exit conditions:
+\begin{itemize}
+\item The violation is filed and the agent
+\end{itemize}
+Exceptions: \\ No exception is possible in this case
+\\ \\
+\textbf{7.	User registers to the Application}
+Entry condition: 
+\begin{itemize}
+\item User needs to have the application opened in the main page
+\end{itemize}
+Flow of events:
+\begin{itemize}
+\item User clicks on the “sign in” button.
+\item User provides the required information: fiscal code, identity card number, name username and birthdate;
+\item User provides a Username and a password;
+\item User clicks on “Confirm” button
+\end{itemize}
+Exit conditions: 
+\begin{itemize}
+\item The registration is completed and a message of confirmation is sent to the user, redirecting him to the main page of the application
+\end{itemize} 
+Exceptions: 
+\begin{itemize}
+\item The username provided is already in use the system shows an error message to the user; he has to insert a new Username (and password)
+\item The sensitive information inserted are not correct (fiscal code or identity card number). The system shows an error message and the user has to insert again all his informations.
+\item User doesn’t complete the registration process by pressing the “back” button in the page. He’s redirected to the main page.
+\end{itemize}
+
+
+\subsection{Sequence diagrams}
 \section{External interface requirements}
 \subsection{User Interfaces}
 \lipsum[1]
@@ -230,9 +441,7 @@ Vittorio Torri \\
 21-10-2019 & 1 h & Software, Hardware and Communication Interfaces, Performance requirements, Design constraints, Software system attributes \\ \midrule
 22-10-2019 & 1 h & Goal and requirements revision \\ \midrule
 23-10-2019 & 1 h & Goal and requirements revision \\ \midrule
-26-10-2019 & 2 h & Scenarios, requirements, functions, scope \\ \midrule
-28-10-2019 & 1.5 h & Product perspective and UML Class Diagram \\ \midrule
-29-10-2019 & 1 h & State diagram and sequence diagram \\
+26-10-2019 & 2 h & Scenarios, requirements, functions, scope \\
 \bottomrule
 \end{tabular}
 \end{center}
