@@ -280,58 +280,58 @@ There are no exceptions for this use case.
 \\
 \\
 
-\textbf{3.Agent registers}
+\textbf{3.Agent or supervisor registers}
 \\
 \\
-Actors: Municipality agent \\
+Actors: Municipality agent or Municipality supervisor \\
 Entry condition:
 \begin{itemize}
-\item the agent needs to have the Web App opened.
+\item the agent or supervisor needs to have the Web App opened.
 \end{itemize}
 Flow of events:
 \begin{itemize}
-\item The agent opens the application and arrives at the homepage.
-\item The agent clicks on the “Register” button.
-\item The agent input his name, surname, birthdate and rank.
-\item The agent input his choosen password.
-\item	The agent clicks on the "Complete Registration" button.
+\item The agent/supervisor opens the application and arrives at the homepage.
+\item The agent/supervisor clicks on the “Register” button.
+\item The agent/supervisor input his name, surname, birthdate and rank.
+\item The agent/supervisor input his choosen password.
+\item	The agent/supervisorr clicks on the "Complete Registration" button.
 \item The system processes the registration and send information to the Municipality Service.
-\item The system notify the agent about his new Unique Identifier (ID) and suggest to remember it.
-\item The agent clicks on the "Understood" button.
-\item	The system redirects the agent to login page.
+\item The system notify the agent/supervisor about his new Unique Identifier (ID) and suggest to remember it.
+\item The agent/supervisor clicks on the "Understood" button.
+\item	The system redirects the agent/supervisor to login page.
 \end{itemize}
 Exit conditions:
 \begin{itemize}
-\item The agent is successfully redirected to login page.
+\item The agent/supervisor is successfully redirected to login page.
  \end{itemize}
 Exceptions: 
  \begin{itemize}
- \item The name, surnamem birthdate and rank furnished by the agent are not found by the municipality service. In this case, the system does not redirect the agent to the login page, but notifies him that an error has been made and allows to insert name, surname, birthdate, rank and password again.
+ \item The name, surnamem birthdate and rank furnished by the agent are not found by the municipality service. In this case, the system does not redirect the agent/supervisor to the login page, but notifies him that an error has been made and allows to insert name, surname, birthdate, rank and password again.
 \end{itemize}
 
-\textbf{3.Agent logs in }
+\textbf{3.Agent or supervisor logs in }
 \\
 \\
-Actors: Municipality agent \\
+Actors: Municipality agent or Municipality supervisor \\
 Entry condition:
 \begin{itemize}
-\item the agent needs to have the Web App opened.
+\item the agent/supervisor needs to have the Web App opened.
 \end{itemize}
 Flow of events:
 \begin{itemize}
-\item The agent opens the application and arrives at the homepage.
-\item The agent clicks on the “Login” button.
-\item The agent input his username and password.
-\item	The agent clicks on the log in button.
-\item	The system redirects the agent to his personal page.
+\item The agent/supervisor opens the application and arrives at the homepage.
+\item The agent/supervisor clicks on the “Login” button.
+\item The agent/supervisor input his username and password.
+\item	The agent/supervisor clicks on the log in button.
+\item	The system redirects the agent/supervisor to his personal page.
 \end{itemize}
 Exit conditions:
 \begin{itemize}
-\item The agent is successfully redirected to his personal page.
+\item The agent/supervisor is successfully redirected to his personal page.
  \end{itemize}
 Exceptions: 
  \begin{itemize}
- \item The username and password furnished by the agent are not correct. In this case, the system does not redirect the agent to his personal page, but notifies him that an error has been made and allows to input his username and password again.
+ \item The username and password furnished by the agent/supervisor are not correct. In this case, the system does not redirect the agent/supervisor to his personal page, but notifies him that an error has been made and allows to input his username and password again.
 \end{itemize}
 \textbf{4.	Checking statistics}
 \\ \\
