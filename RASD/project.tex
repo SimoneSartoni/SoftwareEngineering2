@@ -219,6 +219,11 @@ Giulio is a local police supervisor in the municipality of Milan. It’s six mon
 Marco and Luigi are two very close friends. One day Marco decides it’s time to make a very not funny joke to his friend and he decides to use the SafeStreet application to make him receive a traffic ticket. He finds an illegally parked car, he photographs it and then he tries to modify the license plate in the photo with Luigi’s car license plate. He sends the report with the modified photo thinking about the face of Luigi when he will receive the ticket. 
 Some weeks later he receives a letter from the judicial authority stating that they have started a criminal proceeding against him for the crime of slander (see [SLANDER]).
 Probably he won’t do it another time. 
+\\ 
+\\
+\textbf{Scenario 9. A municipality agent registers to the application}\\
+\\
+Ben is a new local police agent in the municipality of Bologna hired only two days ago and his supervisor says him that he has to register to the SafeStreet application. So Ben open the already installed application from his Computer and clicks on the "Register" button on the homepage. He inserts his name, surname, birthdate and rank, then he choooses his password, equal to "LKJVC89", and confirm the inputs. After the registration is processed, Ben receives his unique ID and is returned to the home page. He can now properly work.
 
 \section{UML diagrams analysis}
 
@@ -274,6 +279,36 @@ Exceptions: \\
 There are no exceptions for this use case. 
 \\
 \\
+
+\textbf{3.Agent registers}
+\\
+\\
+Actors: Municipality agent \\
+Entry condition:
+\begin{itemize}
+\item the agent needs to have the Web App opened.
+\end{itemize}
+Flow of events:
+\begin{itemize}
+\item The agent opens the application and arrives at the homepage.
+\item The agent clicks on the “Register” button.
+\item The agent input his name, surname, birthdate and rank.
+\item The agent input his choosen password.
+\item	The agent clicks on the "Complete Registration" button.
+\item The system processes the registration and send information to the Municipality Service.
+\item The system notify the agent about his new Unique Identifier (ID) and suggest to remember it.
+\item The agent clicks on the "Understood" button.
+\item	The system redirects the agent to login page.
+\end{itemize}
+Exit conditions:
+\begin{itemize}
+\item The agent is successfully redirected to login page.
+ \end{itemize}
+Exceptions: 
+ \begin{itemize}
+ \item The name, surnamem birthdate and rank furnished by the agent are not found by the municipality service. In this case, the system does not redirect the agent to the login page, but notifies him that an error has been made and allows to insert name, surname, birthdate, rank and password again.
+\end{itemize}
+
 \textbf{3.Agent logs in }
 \\
 \\
@@ -456,7 +491,15 @@ Simone Sartoni \\
 \begin{tabular}{p{2cm}p{1.5cm}p{7cm}}
 \toprule
 \textit{Date} & \textit{Hour} & \textit{Section} \\ \midrule
-17-10-2019 & 1.5 h* & Goals \\
+17-10-2019 & 1.5 h* & Goals \\ \midrule
+20-10-2019 & 4.5 h & Goals revision and requirements  \\ \midrule
+22-10-2019 & 3 h & Goals and requirements revision \\ \midrule
+23-10-2019 & 1.5 h & Use Case UML model design and draw \\ \midrule
+24-10-2019 & 2 h & Goal and requirements revision, functions \\ \midrule
+25-10-2019 & 2 h & Use Case UML model update \\ \midrule
+27-10-2019 & 1.5 h & Use Cases writing \\ \midrule
+29-10-2019 & 2 h & Use Case UML model and use cases revision \\ \midrule
+31-10-2019 & 1 h & Scenario and use cases revision \\ 
 \bottomrule
 \end{tabular}
 \end{center}
