@@ -114,7 +114,7 @@ Subsequently, the user must provide at least one picture of the violation. Throu
 
 \subsection{Municipality agent}
 \subsubsection{Authority agent registering}
-Differently from the function previously explained and meant for normal Users, this function is only meant for Municipality agents. Each agent (tipically a maximum of 3 per municipality) can register to SafeStreet to exploit his services as agent. He needs to provide his name, surname, birthdate and rank. After providing a password, the registration is sent for a verification to the municipality service and completed if the data inserted is correct. An ID code is then given to the agent to be uniquely identified.
+Differently from the function previously explained and meant for normal Users, this function is only meant for Municipality agents. Each agent can register to SafeStreet to exploit his services as agent. He needs to provide his name, surname, birthdate and rank. After providing a password, the registration is sent for a verification to the municipality service and completed if the data inserted is correct. An ID code is then given to the agent to be uniquely identified.
 
 \subsubsection{Violation checking}
 
@@ -155,7 +155,18 @@ The presence of some services provided by the municipalities is necessary to mak
 \item \textit{Agents Identity Check}: allows to check the identity of a registering agents given his personal data, including his badge number. 
 \end{itemize}
 \subsection{Domain Assumptions}
-\lipsum[1]
+Here are shown the domain assumptions:
+\begin{itemize}
+\item{[D1]}GPS is always precise, giving the position with an error of maximum 5 meters.
+\item{[D2]}Smartphone cameras have enough resolution to enable recognizing algorithms
+\item{[D3]}Reported violation are always checked by an agent 
+\item{[D4]}The identity card is unique for each person.
+\item{[D5]}Each person has only one identity card.
+\item{[D6]}The municipalities always issue traffic tickets if the reported violation is real and either pictures are clear or the agent on the street witnesses it directly.
+\item{[D7]}Every registered municipality agent is associated with a unique ID.
+\item{[D8]}Every municipality that uses Safestreet has at least 1 Agent and 1 supervisor that are in charge for managing SafeStreet services.
+\item{[D9]}Every agent and supervisor works for exactly one municipality.
+\end{itemize}
 
 \chapter{Specific Requirements}
 \lipsum[1]
@@ -263,7 +274,7 @@ Exceptions: \\
 There are no exceptions for this use case. 
 \\
 \\
-\textbf{3.	Agent logs in }
+\textbf{3.Agent logs in }
 \\
 \\
 Actors: Municipality agent \\
