@@ -79,7 +79,7 @@ sig Ticket{
 }
 
 sig Accident{
-	str: one Street,
+	street: one Street,
 	cause: one AccidentCause,
 	time : one Time,
 	licensePlate: one LicensePlate
@@ -87,26 +87,34 @@ sig Accident{
 
 abstract sig AccidentCause{}
 
-one sig HighSpeed extends AccidentCause{}
-one sig DrugOrAlchol extends AccidentCause{}
+--one sig HighSpeed extends AccidentCause{}
+--one sig DrugOrAlchol extends AccidentCause{}
 one sig BadParkedCar extends AccidentCause{}
 one sig Other extends AccidentCause{}
 
 sig Suggestion{
-	street: one Street
+	street: one Street,
+	time: one Time
 }
 
 --all streets where there has been at least two accidents caused by parking or two approved violation reports must present a suggestion
+--here, considering the Time type available, has been used the interval [t.prev,t] to find the events corresponding to a Suggestion at the time t
+--clearly this should be a defined interval of time (a month)
 fact suggestionForUnsafeStreets{
 --	all s:Street | ( #(all a:Accident | a.cause = BadParkedCar and a.street=s) >= 2 or #(all r:Report | r.status = Approved and r.street =s)>=2 ) implies (some sg:Suggestion|sg.street=s)
-	all s:Street | ( #(getAccidentsByPark[s]) >= 2 or #(getApprovedReport[s]) >= 2 ) implies  (some sg:Suggestion|sg.street=s)
+	all s:Street, t:Time | ( #(getParkAccidentsInStreetAndTime[s,t.prev,t]) >= 2 and #(getApprovedReportsInStreetAndTime[s,t.prev,t]) >= 2 ) iff  (some sg:Suggestion|sg.street=s and sg.time = t)
 }
 
-fun getAccidentsByPark[s:Street] : set Accident{
-	(Accident.str :> s)
+/*fun getAccidentsByPark3[s:Street] : set Accident{
+	((Accident <: street) :> s).Street & ((Accident <: cause) :> BadParkedCar).BadParkedCar
 }
-fun getApprovedReport[s:Street] : set Report{
-	(street :> s).Street
+fun getAccidentsByPark2[s:Street] : set Accident{
+	(Accident <: street).s & (Accident <: cause).BadParkedCar
+}*/
+
+fun getApprovedReportsInStreetAndTime[s:Street,t1,t2:Time] : set Report{
+	--((Report <: street) :> s).Street  & ((Report <: status) :> Approved).Approved
+	{r:Report | r.street = s and r.status = Approved and gte[r.time,t1] and lte[r.time,t2]}
 }
 
 abstract sig SuggestionType{}
@@ -155,44 +163,85 @@ sig PublicStatisticsData extends StatisticsData {
 	num_park_accidents: one Int
 }
 
-sig ReservedStatiticsData extends StatisticsData {
+sig ReservedStatisticsData extends StatisticsData {
 	most_egregious_offender : one LicensePlate
 }
 
 --ensure public statistics values coerence with reports,tickets and accidents data
-/*fact publicStatDataCoherent{
+fact publicStatDataCoherent{
 	all psd:PublicStatisticsData |
 		((psd.street != none) implies (
-			psd.num_report = #(all r:Report | r.street = psd.street and gte[r.time,psd.startTime] and lte[r.time,psd.endTime]) and
-			psd.num_report = #(all t:Ticket | t.street = psd.street and gte[t.time,psd.startTime] and lte[t.time,psd.endTime]) and
-			psd.num_accidents = #(all a:Accidents | a.street = psd.street and gte[a.time,psd.startTime] and lte[a.time,psd.endTime]) and
-			psd.num_parks_accidents = #(all a:Accident | a.street = psd.street and a.cause = BadParkedCard and gte[a.time,psd.startTime] and lte[a.time,psd.endTime])
+			psd.num_report = #(getReportsInStreetAndTime[psd.street,psd.startTime,psd.endTime]) and
+			psd.num_report = #(getTicketsInStreetAndTime[psd.street,psd.startTime,psd.endTime]) and
+			psd.num_accidents = #(getAccidentsInStreetAndTime[psd.street,psd.startTime,psd.endTime]) and
+			psd.num_park_accidents = #(getParkAccidentsInStreetAndTime[psd.street,psd.startTime,psd.endTime])
 		))
 		and
 		((psd.area != none) implies(
-			psd.num_report = #(all r:Report | r.street.area in psd.area and gte[r.time,psd.startTime] and lte[r.time,psd.endTime]) and
-			psd.num_report = #(all t:Ticket | t.street.area in psd.area and gte[t.time,psd.startTime] and lte[t.time,psd.endTime]) and
-			psd.num_accidents = #(all a:Accidents | a.street.area in psd.area and gte[a.time,psd.startTime] and lte[a.time,psd.endTime]) and
-			psd.num_parks_accidents = #(all a:Accident | a.street.area in psd.area and a.cause = BadParkedCard and gte[a.time,psd.startTime] and lte[a.time,psd.endTime])
+			psd.num_report = #(getReportsInAreaAndTime[psd.area,psd.startTime,psd.endTime]) and
+			psd.num_report = #(getTicketsInAreaAndTime[psd.area,psd.startTime,psd.endTime]) and
+			psd.num_accidents = #(getAccidentsInAreaAndTime[psd.area,psd.startTime,psd.endTime]) and
+			psd.num_park_accidents = #(getParkAccidentsInAreaAndTime[psd.area,psd.startTime,psd.endTime])
 		))
 }
 
---ensure public statistics values coerence with reports,tickets and accidents data
+fun getReportsInStreetAndTime[s:Street, t1, t2:Time]: set Report{
+	{r:Report | r.street = s and gte[r.time,t1] and lte[r.time,t2]}
+}
+
+fun getTicketsInStreetAndTime[s:Street, t1, t2:Time]: set Ticket{
+	{t:Ticket | t.street = s and gte[t.time,t1] and lte[t.time,t2]}
+}
+
+fun getAccidentsInStreetAndTime[s:Street, t1, t2:Time]: set Accident{
+	{a:Accident | a.street = s and gte[a.time,t1] and lte[a.time,t2]}
+}
+
+fun getParkAccidentsInStreetAndTime[s:Street, t1, t2:Time]: set Accident{
+	{a:getAccidentsInStreetAndTime[s,t1,t2]| a.cause = BadParkedCar}
+}
+
+fun getReportsInAreaAndTime[a:Area, t1, t2:Time]: set Report{
+	{r:Report | a in r.street.area and gte[r.time,t1] and lte[r.time,t2]}
+}
+
+fun getTicketsInAreaAndTime[a:Area, t1, t2:Time]: set Ticket{
+	{t:Ticket | a in t.street.area and gte[t.time,t1] and lte[t.time,t2]}
+}
+
+fun getAccidentsInAreaAndTime[a:Area, t1, t2:Time]: set Accident{
+	{ac:Accident | a in ac.street.area and gte[a.time,t1] and lte[a.time,t2]}
+}
+
+fun getParkAccidentsInAreaAndTime[a:Area, t1, t2:Time]: set Accident{
+	{ac:getAccidentsInAreaAndTime[a,t1,t2]| ac.cause = BadParkedCar}
+}
+
+
+--ensure reserved statistics values coerence with the tickets data
 fact reservedStatDataCoherent{
 	all rsd:ReservedStatisticsData | 
-		(rsd.street != none) implies (
-			let max = #(all t:Ticket | t.licensePlate = rsd.most_egregious_offender and t.street = rsd.street) |
-			(all lp:LicensePlate | #(all t:Ticket | t.licensePlate = lp and t.street = rsd.street) <= max)
-		)
+		((rsd.street != none) implies (
+			let max = #(getTicketsForLPAndStreet[rsd.most_egregious_offender,rsd.street]) |
+			(all lp:LicensePlate | #(getTicketsForLPAndStreet[lp,rsd.street]) <= max)
+		))
+		and
+		((rsd.area != none) implies (
+			let max = #(getTicketsForLPAndArea[rsd.most_egregious_offender,rsd.area]) |
+			(all lp:LicensePlate | #(getTicketsForLPAndArea[lp,rsd.area]) <= max)
+		))
+	
 
-}*/
+}
 
-pred show {}
+fun getTicketsForLPAndStreet[lp:LicensePlate,s:Street] : set Ticket{
+	{t:Ticket | t.licensePlate = lp and t.street = s}
+}
 
-run show
+fun getTicketsForLPAndArea[lp:LicensePlate,a:Area] : set Ticket{
+	{t:Ticket | t.licensePlate = lp and a in t.street.area}
+}
 
+pred show(){}
 
-
-
-
-
+run show for 3 but exactly 10 String, exactly 1 Municipality, exactly 1 Street, exactly 12 Report, exactly 8 Accident, exactly 1 Suggestion
