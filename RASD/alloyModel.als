@@ -65,12 +65,29 @@ sig Report{
 	licensePlate: one LicensePlate,
 }
 
-abstract sig ReportStatus {}
+abstract sig ReportStatus {
+	nextStatus : set ReportStatus
+}
 one sig WaitingAnalysis extends ReportStatus{}
+{	
+	#(nextStatus) = 2 and (WaitingAgent in nextStatus) and (Refused in nextStatus)
+}
 one sig WaitingAgent extends ReportStatus{}
+{
+	#(nextStatus) = 3 and (WaitingControl in nextStatus) and (Refused in nextStatus) and (Approved in nextStatus)
+}
 one sig Approved extends ReportStatus{}
+{
+	#(nextSatus) = 0
+}
 one sig Refused extends ReportStatus{}
+{
+	#(nextSatus) = 0
+}
 one sig WaitingControl extends ReportStatus{}
+{
+	#(nextStatus) = 2 and ( Approved in nextStatus) and (Refused in nextStatus)
+}
 
 sig Ticket{
 	street: one Street,
