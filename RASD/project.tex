@@ -49,7 +49,23 @@ and the following shared phenomena controlled by the machine and observed by the
 \end{itemize}
 
 \section{Purpose}
-The following are the goals of the system:
+The system is characterized by the following goals, distinguished by the function provided:
+\begin{itemize}
+\item {Violations and tickets function:}
+
+\begin{itemize}
+\item{[G1]} People must be allowed to report parking violations (missing parking disk, not paid parking meter, illegally parked vehicles).
+\item {[G2]} Municipality agents must be notified about potential violations, which are reported in their area of interest and are used to generate traffic tickets.	
+\end{itemize}
+
+\item {Statistic functions:}
+\begin{itemize}
+\item  {[G3]} People must be allowed to retrieve information about streets or areas with the highest frequency of violations.
+\item  {[G4]} People must be able to retrieve statistics and trends about the accidents correlated to the parking violations, the 		effectiveness of SafeStreet initiatives and the issuing of traffic tickets.
+\item  {[G5]} Municipality supervisors must be able to retrieve data about the vehicles with the highest number of violations.
+\item  {[G6]} Municipalities must be suggested for possible interventions about the mostly unsafe areas.
+\end{itemize}
+\end{itemize}
 
 \section{Definitions, acronyms and abbreviations}
 \begin{itemize}
@@ -211,7 +227,7 @@ Luke and Walter are two close friends. Luke doesn’t know about SafeStreet appl
 \\
 \textbf{Scenario 7. A supervisor wants to check see what areas are registering improvements since the municipality has started to use SafeStreet}\\
 \\
-Giulio is a local police supervisor in the municipality of Milan. It’s six months since they have started to use the SafeStreet application to receive report from citizens about parking violations and he want to check what benefits it has brought. He opens the web application, he logins inserting his credentials and he clicks on Improvements under the Statistics section. Here he can see what streets have seen the best reduces in the number of issued tickets. He sees that a lot of central zones have seen reductions from 20 to 50%, while in the peripheral areas the numbers are much less substantial. He is happy because of this result, but he wants to improve it and he thinks to start a marketing campaign to encourage more people to use the application, especially in the peripherals. 
+Giulio is a local police supervisor in the municipality of Milan. It’s six months since they have started to use the SafeStreet application to receive report from citizens about parking violations and he want to check what benefits it has brought. He opens the web application, he logins inserting his credentials and he clicks on Improvements under the Statistics section. Here he can see what streets have seen the best reduces in the number of issued tickets. He sees that a lot of central zones have seen reductions from 20 to 50 percent, while in the peripheral areas the numbers are much less substantial. He is happy because of this result, but he wants to improve it and he thinks to start a marketing campaign to encourage more people to use the application, especially in the peripherals. 
 \\ 
 \\
 \textbf{Scenario 8. Marco wants to make a joke to a friend and send a fake report}\\
@@ -468,8 +484,73 @@ The communication between users and SafeStreet servers exploit internal APIs thr
 For the \textit{users} the communication is unidirectional, in the sense that they cannot receive requests/notification by the server, all communications start from them. \\
 The \textit{municipality agents} can be notified from the server when there are new report to be analyzed. \\
 The \textit{municipality supervisors} can be notified about suggestions for interventions on the most unsafe areas.
+
 \section{Functional requirements}
-\lipsum[1]
+For each goal we can describe some necessary functional requirements, which guarantee its satisfaction with the domain assumptions:
+\begin{itemize}
+\item {[G1]} People must be allow to report parking violations (missing parking disk, not paid parking meter, illegally parked vehicles).
+\begin{itemize}
+\item {[R1]}	The system must allow people to register to it providing personal data (name, surname, birthdate, identity card number, fiscal code) and selecting a username and a password.
+\item {[R2]}	The system must verify the correctness of the provided personal data of a registered user checking them from the identity card number, blocking the registration if they are not correct.
+\item {[R3]}	The system must allow registered users to login through their username and password.
+\item {[R4]}	The system must allow logged user to fill a report violation form.
+\item {[R5]}	The system must let the user select the type of violation detected.
+\item {[R6]}	The system must allow the user to insert the license plate in a violation report.
+\item {[R7]}	While reporting the violation, the system must allow users to take one or more pictures of the potential violation.
+\item {[R8]}	The system must not allow users to choose pictures not taken in the moment of the report.
+\item {[R9]}	The system must collect the current position of the user, using GPS.
+\item {[R10]}	The system must allow user to confirm or delete the current report.
+\item {[R11]}	After confirmation, the system must add the current date and time to the report.
+\item {[R12]}	The system must store confirmed report.
+\end{itemize}
+\item {[G2]} Municipality agents must be notified about potential violations, which are reported in their area of interest and are used to generate traffic tickets.
+\begin{itemize}
+\item {[R1]}	The system must check reports to try to find if the pictures of the violations have been modified.
+\item {[R2]}	The system must try to find, according to the GPS position of the user and the pictures sent, if the position is fake or not.
+\item {[R3]}	The system must try to automatically recognize the license plate in the photo, possibly with the help of the value inserted by the user.
+\item {[R4]}	The system must discard the report if it has been recognized as fake according to the previous requirements (R1-R3).
+\item {[R5]}	The system must store into stable memory the reported violation if correct (i.e. not recognized as fake).
+\item {[R6]}	The involved municipality must be calculated considering in which city the reported violation has been found, based on the GPS of the client that has sent the report.
+\item {[R7]}	The system must send the reported violation to the involved municipality.
+\item {[R8]}	The system must allow an agent to issue a traffic ticket to a certain person (i.e. license plate) through the correspondent municipality service.
+\item {[R9]}	The system must allow an agent to put on hold a violation report if it needs to be checked in person.
+\item {[R10]}	The system must allow an agent to discard a violation if it has been verified as fake or it cannot be verified (the vehicle is not there anymore).
+\item {[R11]}	The system must allow an agent to retrieve the data of the author of a violation report.
+\item {[R12]}	The system must allow an agent to create an account, asking the municipality services to verify its identity.
+\item {[R13]}	The system must allow an agent to login, inserting its username and password.
+\end{itemize}
+\item  {[G3]} People must be allowed to retrieve information about streets or areas with the highest frequency of violations.
+\begin{itemize}
+\item {[R1]}	The system must mine this information from the reported violations.
+\item {[R2]}	The system must allow the users (even if not authenticated) to select the see information for a city. The user can choose either the city where he is, using the GPS position, or an arbitrary selected location.
+\item {[R3]}	The system must allow the user to select information about streets or areas in the city selected.
+\item {[R4]}	The system must show the areas or the streets, according to the selection, with the highest frequency of violations, in the selected city.
+\end{itemize}
+\item  {[G4]} People must be able to retrieve statistics and trends about the accidents correlated to the parking violations, the 		effectiveness of SafeStreet initiatives and the issuing of traffic tickets.
+\begin{itemize}
+\item {[R1]}	The system must take information about accidents from the municipality.
+\item {[R2]}	The system must use this information to build statistics, crossing them with reported violations.
+\item {[R3]}	The system must not allow user to see confidential data about other people.
+\item {[R4]}	The system must allow the user to choose a topic: areas with most accidents, areas with the highest number of traffic tickets issued, areas where there have been the best improvements.
+\item {[R5]}	The system must show to the user the information about the topic selected.
+\end{itemize}
+\item  {[G5]} Municipality supervisors must be able to retrieve data about the vehicles with the highest number of violations.
+\begin{itemize}
+\item {[R1]}	The system must allow authenticated supervisors to retrieve information about the vehicles with the highest number of violations in a selected area.
+\item {[R2]}	The system must allow supervisors to see what areas or streets has seen the best improvements in the ticket emissions.
+\item {[R3]}	The system must allow supervisors to access only to information about their own area of competence.
+\item {[R4]}	The system must allow a supervisor to create an account, asking the municipality services to verify its identity.
+\item {[R5]}	The system must allow a supervisor to login, inserting its username and password.
+\end{itemize}
+\item  {[G6]} Municipalities must be suggested for possible interventions about the mostly unsafe areas.
+\begin{itemize}
+\item {[R1]}	The system must take information about accidents and street networks (bike lanes, sidewalks, parking areas…) from the municipality, exploiting the municipality services.
+\item {[R2]}	The system must elaborate this information and try to find possible solutions for problems.
+\item {[R3]}	The system must notify the municipality supervisors about the solutions it has found.
+\end{itemize}
+\end{itemize}
+
+
 \section{Performance requirements}
 Performance requirements are not particularly critical for the system, but it is anyway desirable that all requests sent to the server are answered within 1 second, to assure a good user experience. \\
 The server infrastructure will be designed to be scalable so that it will be possible to adapt it to the increment of users when the app diffusion will increase.
