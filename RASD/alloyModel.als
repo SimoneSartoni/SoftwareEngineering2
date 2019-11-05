@@ -1,4 +1,5 @@
 open util/time
+open util/ordering[Time] as T0
 
 abstract sig User{
 	password : one String
@@ -60,9 +61,24 @@ sig Report{
 	user: one AuthenticatedUser,
 	-- for simplicity the gps position is substituted by a direct association with the Street
 	street: one Street,	
-	status: one ReportStatus,
+	currStatus: one ReportStatus,
+	statusHistory: Time -> lone ReportStatus,
 	time: one Time,
 	licensePlate: one LicensePlate,
+}{
+	--the currentStatus is the last status in the statusHistory
+	currStatus = {s:ReportStatus | (some  t1:Time | (t1->s in statusHistory  and no t2:Time | (gt[t2,t1] and (some s2:ReportStatus | t2->s2 in statusHistory))))}
+	--a ReportStatus cannot be present more than one time in the history
+	no s:ReportStatus | some disj t1,t2:Time | t1->s in statusHistory and t2->s in statusHistory	
+	--the state evolution must be consistent with the state diagram (see fig. 2.2)
+	no t:Time, s1,s2:ReportStatus | (t!=T0/last and t->s1 in statusHistory and (t.next)->s2 in statusHistory and (s2 & s1.nextStatus = none))
+	--all t:Time | (t!=T0/last and t in statusHistory.ReportStatus and t.next in statusHistory.ReportStatus) implies (some s1,s2:ReportStatus | t->s1 in statusHistory and t.next -> s2 in statusHistory and s2 in s1.nextStatus)
+
+}
+
+--agents must check reports in order of emission
+fact reportAnalysisOrder{
+	no r1,r2:Report | gt[r2.time,r1.time] and (r1.currStatus = WaitingAnalysis or r1.currStatus = WaitingAgent ) and (r2.currStatus not in WaitingAgent) and (r2.currStatus not in WaitingAnalysis)
 }
 
 abstract sig ReportStatus {
@@ -78,11 +94,11 @@ one sig WaitingAgent extends ReportStatus{}
 }
 one sig Approved extends ReportStatus{}
 {
-	#(nextSatus) = 0
+	nextStatus = none
 }
 one sig Refused extends ReportStatus{}
 {
-	#(nextSatus) = 0
+	nextStatus = none
 }
 one sig WaitingControl extends ReportStatus{}
 {
@@ -93,6 +109,11 @@ sig Ticket{
 	street: one Street,
 	report: lone Report,
 	time: one Time
+}
+
+
+fact everyApprovedReportGeneratesATicket{
+	all s:Street, t1,t2:Time | #getTicketsInStreetAndTime[s,t1,t2] >= #getApprovedReportsInStreetAndTime[s,t1,t2]
 }
 
 sig Accident{
@@ -131,7 +152,7 @@ fun getAccidentsByPark2[s:Street] : set Accident{
 
 fun getApprovedReportsInStreetAndTime[s:Street,t1,t2:Time] : set Report{
 	--((Report <: street) :> s).Street  & ((Report <: status) :> Approved).Approved
-	{r:Report | r.street = s and r.status = Approved and gte[r.time,t1] and lte[r.time,t2]}
+	{r:Report | r.street = s and r.currStatus = Approved and gte[r.time,t1] and lte[r.time,t2]}
 }
 
 abstract sig SuggestionType{}
@@ -261,4 +282,4 @@ fun getTicketsForLPAndArea[lp:LicensePlate,a:Area] : set Ticket{
 
 pred show(){}
 
-run show for 3 but exactly 10 String, exactly 1 Municipality, exactly 1 Street, exactly 12 Report, exactly 8 Accident, exactly 1 Suggestion
+run show for 3 but exactly 10 String, exactly 1 Municipality, exactly 1 Street, exactly 12 Report, exactly 8 Accident, exactly 1 Suggestion, exactly 4 Time
