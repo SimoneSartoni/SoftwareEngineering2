@@ -14,6 +14,7 @@
 \usepackage{alloy-style}
 \usepackage{geometry}
 \usepackage{pdflscape}
+\usepackage{caption}
 \graphicspath{{./img/}}
 
 \begin{document}
@@ -64,6 +65,10 @@ Milano, 10/11/2019
 
 \tableofcontents
 \listoffigures
+\begingroup
+\let\clearpage\relax %avoid to put it on a new page
+\listoftables
+\endgroup
 
 \chapter{Introduction}
 \section{Scope}
@@ -126,6 +131,7 @@ In the following table is shown which world and shared phenoma are involved for 
     G5 & X &   &   &   &   & X & X &   &   \\ \hline
     G6 &   &   & X &   &   &   &   &   & X \\ \hline
   \end{tabular}
+  \caption{Correspondence between goals and world and shared phenoma}
 \end{table}
 
 \section{Definitions, acronyms and abbreviations}
@@ -545,6 +551,7 @@ In the following table is shown which goals are involved in every use case.
     UC7 &   & X &   &   &   &   \\ \hline
     UC8 & X &   &   &   &   &   \\ \hline
   \end{tabular}
+  \caption{Correspondence between use cases and goals}
 \end{table}
 
 
@@ -579,7 +586,19 @@ in figures \ref{fig:seq-userlogin}, \ref{fig:seq-userreport}, \ref{fig:seq-agent
 
 \section{External interface requirements}
 \subsection{User Interfaces}
-\lipsum[1]
+In figures \ref{fig:mock-webreports} and \ref{fig:mock-suggestions} are provided some mockups of the user interfaces for the main functions of the system. They are just an approximate idea of how they should appear.
+\begin{figure}[htp]
+\centering
+\includegraphics[width= \textwidth]{mockups/homeReport.png}
+\caption[Web mockup for reports page]{Web interface mockup for the report list for a logged Municipality Agent }
+\label{fig:mock-webreports}
+\end{figure}
+\begin{figure}[htp]
+\centering
+\includegraphics[width= \textwidth]{mockups/homeSuggestions.png}
+\caption[Web mockup for suggestions page]{Web interface mockup for the suggestions list for a logged Municipality Supervisor}
+\label{fig:mock-suggestions}
+\end{figure}
 \subsection{Hardware Interfaces}
 No hardware interfaces are provided, being SafeStreets just a software system.
 \subsection{Software Interfaces}
@@ -759,7 +778,8 @@ Finally the predicate \textit{ApproveReport} (figure \ref{fig:approveReport}) sh
 
 \chapter{Effort spent}
 
-\begin{center}
+\begin{table}[H]
+\centering
 Nicola Rosetti \\
 %\begin{tabular}{lll}
 \begin{tabular}{p{2cm}p{1.5cm}p{7cm}}
@@ -768,9 +788,13 @@ Nicola Rosetti \\
 17-10-2019 & 1.5 h* & Goals \\
 \bottomrule
 \end{tabular}
-\end{center}
+\caption[Nicola Rosetti's effort table]{}
+\end{table}
+
+
 \vspace*{1 cm}
-\begin{center}
+\begin{table}[H]
+\centering
 Simone Sartoni \\
 \begin{tabular}{p{2cm}p{1.5cm}p{7cm}}
 \toprule
@@ -784,13 +808,17 @@ Simone Sartoni \\
 27-10-2019 & 1.5 h & Use Cases writing \\ \midrule
 29-10-2019 & 2 h & Use Case UML model and use cases revision \\ \midrule
 31-10-2019 & 1 h & Scenario and use cases revision \\ \midrule
-4-11-2019 & 1.5 h & Goals transcription on the RASD \\ \midrule
-5-10-2019 & 2.5 h & Requirements transcription on the RASD \\ \midrule
+04-11-2019 & 1.5 h & Goals transcription on the RASD \\ \midrule
+05-11-2019 & 2.5 h & Requirements transcription on the RASD \\ \midrule
+07-11-2019 & 1.5 h & Title page disposition \\ \midrule
+08-11-2019 & 1 h & Title page update \\
 \bottomrule
 \end{tabular}
-\end{center}
+\caption[Simone Sartoni's effort table]{}
+\end{table}
 \vspace*{1 cm}
-\begin{center}
+\begin{table}[H]
+\centering
 Vittorio Torri \\
 \begin{tabular}{p{2cm}p{1.5cm}p{7cm}}
 \toprule
@@ -813,10 +841,13 @@ Vittorio Torri \\
 07-11-2019 & 1h & General revision \\ \midrule
 08-11-2019 & 2h & General revision \\ \midrule
 08-11-2019 & 2h & Alloy \\ \midrule
-08-11-2019 & 2h & Web interface mockup \\
+08-11-2019 & 2h & Web interface mockup (report list) \\ \midrule
+09-11-2019 & 1h & Web interface mockup (suggestion list) \\ \midrule
+09-11-2019 & 2h & General revision, tables 1.1 and 3.1\\
 \bottomrule
 \end{tabular}
-\end{center}
+\caption[Vittorio Torri's effort table]{}
+\end{table}
 \textit{* Group work}
 
 \chapter{References}
