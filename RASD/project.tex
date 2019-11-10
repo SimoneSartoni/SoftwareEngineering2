@@ -49,7 +49,23 @@ and the following shared phenomena controlled by the machine and observed by the
 \end{itemize}
 
 \section{Purpose}
-The following are the goals of the system:
+The system is characterized by the following goals, distinguished by the function provided:
+\begin{itemize}
+\item {Violations and tickets function:}
+
+\begin{itemize}
+\item{[G1]} People must be allowed to report parking violations (missing parking disk, not paid parking meter, illegally parked vehicles).
+\item {[G2]} Municipality agents must be notified about potential violations, which are reported in their area of interest and are used to generate traffic tickets.	
+\end{itemize}
+
+\item {Statistic functions:}
+\begin{itemize}
+\item  {[G3]} People must be allowed to retrieve information about streets or areas with the highest frequency of violations.
+\item  {[G4]} People must be able to retrieve statistics and trends about the accidents correlated to the parking violations, the 		effectiveness of SafeStreet initiatives and the issuing of traffic tickets.
+\item  {[G5]} Municipality supervisors must be able to retrieve data about the vehicles with the highest number of violations.
+\item  {[G6]} Municipalities must be suggested for possible interventions about the mostly unsafe areas.
+\end{itemize}
+\end{itemize}
 
 \section{Definitions, acronyms and abbreviations}
 \begin{itemize}
@@ -173,22 +189,22 @@ Here are shown the domain assumptions:
 \section{Scenarios identification} 
 Here are presented possible scenarios for different users.\\ \\
 
-\textbf{Scenario 1.Reports a violation}\\
+\textbf{Scenario 1. Report of a violation}\\
 \\
 Mark is a man in his thirties. He’s an employee at Esselunga supermarkets. One day, walking down the main street of his city he finds a car parked illegally in the middle of the bike lane. Mark is registered in the application SafeStreet. He takes out his smartphone and opens the application. After writing his credentials and logging in, he clicks the button “Report a violation” in the home page. He inserts the type of violation, so in this case he just writes “car illegally parked in bike lane”, and takes three different pictures of the car: one of the front of the car, clearly showing the license plate; the second showing the entire car and, in the background, the signal of bike lane; the third one highlighting important elements of the streets where the potential violation occurred, to help the matching of the photo with the GPS position of the user. He then confirms clicking on the “Confirm” button. The potential violation is now sent to the server for a verification. Finally, he closes the application and continues his walk.
 \\
 \\ 
-\textbf{Scenario 2.The agent receives a notification and issues a traffic ticket}\\
+\textbf{Scenario 2. The agent receives a notification and issues a traffic ticket}\\
 \\
 Lukas is a municipality agent that is working as usual at his desk and has the SafeStreet Web app opened in the background on his PC. While checking his papers he receives a notification from the SafeStreet. He opens the window of the app and finds that a new report has been made about a violation. Lukas clicks on the row linked to the new violation. He observes that the violation has been reported by a certain Gianluca Verdi. The pictures of the report clearly show the vehicle that has made the violation (not paid parking meter), his license plate and the place where the violation occurred. There is now enough evidence that allows Lukas to issue a traffic ticket to the owner of the vehicle.
 \\
 \\
-\textbf{Scenario 2b. The policeman receives a notification and send an agent to control because the picture is not clear}\\
+\textbf{Scenario 2b. A policeman receives a notification and send an agent to control because the picture is not clear}\\
 \\
 Laura is a municipality agent that has just started her new day at work. She works in Milan’s police station. She starts her PC at her desk, opens Internet Browser and search for SafeStreet Web App. After logging in, the reported violation queue is filled with 10 notifications of new potential violations reported. She opens the first one and she discovers that the system wasn’t able to correctly identify the vehicle involved and the user hasn’t inserted the license plate as plain text to help recognition. She checks the pictures but she can’t find out what is written on the license plate. She tells his supervisor the problem, in order to send an agent to directly check in the place of the supposed violation (based on the GPS position sent by the user) and, possibly, to issue a traffic ticket.
 \\
 \\
-\textbf{Scenario 3. Checks for unsafe streets in his zone}\\
+\textbf{Scenario 3. A user checks for unsafe streets in his zone}\\
 \\
 Bob is a curious user that has the SafeStreet application installed in his iPhone 8 but is not registered in the SafeStreet database. One day, he witnesses an accident in the streets while driving his car, where a car hits a biker during a parking manoeuvre on a runs over a biker correctly biking in his bike lane.
 As he goes home, he’s curious about the most dangerous and unsafe areas and streets in his city and he wants to see if the street where he saw the accident is one of them. He opens the SafeStreet application and clicks the button “Check statistics in a city”. After this, a new page opens in which Bob clicks on the “Check for most dangerous areas/streets”. The last click he does is on the “Search for a city using your GPS position” button. Now the screen shows a map with highlighted the most unsafe areas (with most accidents) in his city. Bob selects then the area in which he is interested in and he sees which are the most dangerous streets in the area. Bob discovers that the street he was searching for is the most dangerous one. Finally, Bob closes the application.
@@ -199,19 +215,19 @@ As he goes home, he’s curious about the most dangerous and unsafe areas and st
 Marie is a woman who often travels for work. She typically travels by car. She lives in Milan and this week she needs to go to Turin. He wants to know where she can safely park the car and take an hotel reservation. Before searching for an hotel, she takes out her Huawei and opens the SafeStreet application. She clicks the button “Check statistics in a city”. After this, a new page opens in which Bob clicks on the “Check for most dangerous areas/streets”. The last click he does is on the “Select a city you want” button. She chooses “Turin” among all the possible ones. Now she can use found information to look for safe zones near her workplace.
 \\ 
 \\
-\textbf{Scenario 5. New intervention in an unsafe street}\\
+\textbf{Scenario 5. New intervention suggestion for an unsafe street}\\
 \\
 Marco is a local police supervisor in the municipality of Varese. He logins in the SafeStreet application and he sees a notification about a suggestion for an intervention to improve safety. He opens it and he reads that in Via Roma there have been a lot of reports and consequent tickets in the last months due to cars parked on the sidewalk. The system is suggesting to add barriers to prevent cars from going on the sidewalk. This seems a good suggestion for him, he will discuss it with the competent municipality sector. 
 \\
 \\
-\textbf{Scenario 6.the user registers to the application}\\
+\textbf{Scenario 6. The user registers to the application}\\
 \\
 Luke and Walter are two close friends. Luke doesn’t know about SafeStreet application while Walter is a regular registered user of it. One day, Walter and Luke are walking down a road. Walter notices a potential violation and stops. He takes out his phone and opens the SafeStreet application. Luke asks Walter what he’s doing and Walter explains what SafeStreet is. Walter is pretty convincing and makes Luke install the application. Luke learns that to report violations he needs to register. So, he starts the process of registration providing his name, surname, birthdate, fiscal code and number of the identity card. After this, he creates his own unique username and the password. On screen, Luke sees that the registration has been successful. 
 \\
 \\
 \textbf{Scenario 7. A supervisor wants to check see what areas are registering improvements since the municipality has started to use SafeStreet}\\
 \\
-Giulio is a local police supervisor in the municipality of Milan. It’s six months since they have started to use the SafeStreet application to receive report from citizens about parking violations and he want to check what benefits it has brought. He opens the web application, he logins inserting his credentials and he clicks on Improvements under the Statistics section. Here he can see what streets have seen the best reduces in the number of issued tickets. He sees that a lot of central zones have seen reductions from 20 to 50%, while in the peripheral areas the numbers are much less substantial. He is happy because of this result, but he wants to improve it and he thinks to start a marketing campaign to encourage more people to use the application, especially in the peripherals. 
+Giulio is a local police supervisor in the municipality of Milan. It’s six months since they have started to use the SafeStreet application to receive report from citizens about parking violations and he want to check what benefits it has brought. He opens the web application, he logins inserting his credentials and he clicks on Improvements under the Statistics section. Here he can see what streets have seen the best reduces in the number of issued tickets. He sees that a lot of central zones have seen reductions from 20 to 50 percent, while in the peripheral areas the numbers are much less substantial. He is happy because of this result, but he wants to improve it and he thinks to start a marketing campaign to encourage more people to use the application, especially in the peripherals. 
 \\ 
 \\
 \textbf{Scenario 8. Marco wants to make a joke to a friend and send a fake report}\\
@@ -219,6 +235,11 @@ Giulio is a local police supervisor in the municipality of Milan. It’s six mon
 Marco and Luigi are two very close friends. One day Marco decides it’s time to make a very not funny joke to his friend and he decides to use the SafeStreet application to make him receive a traffic ticket. He finds an illegally parked car, he photographs it and then he tries to modify the license plate in the photo with Luigi’s car license plate. He sends the report with the modified photo thinking about the face of Luigi when he will receive the ticket. 
 Some weeks later he receives a letter from the judicial authority stating that they have started a criminal proceeding against him for the crime of slander (see [SLANDER]).
 Probably he won’t do it another time. 
+\\ 
+\\
+\textbf{Scenario 9. A municipality agent registers to the application}\\
+\\
+Ben is a new local police agent in the municipality of Bologna hired only two days ago and his supervisor says him that he has to register to the SafeStreet application. So Ben open the already installed application from his Computer and clicks on the "Register" button on the homepage. He inserts his name, surname, birthdate and rank, then he choooses his password, equal to "LKJVC89", and confirm the inputs. After the registration is processed, Ben receives his unique ID and is returned to the home page. He can now properly work.
 
 \section{UML diagrams analysis}
 
@@ -228,7 +249,7 @@ Probably he won’t do it another time.
 
 \subsection{Use case identification}
 This part consists in all possible use cases taken from use case diagram and the scenarios previously described.\\ \\
-\textbf{1.User log in}
+\textbf{1. User logs in}
 \\
 \\
 Actors: User
@@ -251,7 +272,7 @@ Exceptions:
 \begin{itemize}
 \item The code and password provided by the user are not correct. In this case, the system does not redirect the user to his personal homepage but notifies him that an error has been made and allows to input his code and password again
 \end{itemize}
-\textbf{2.	User reports a violation} \\ \\
+\textbf{2. User reports a violation} \\ \\
 Actors: User\\
 Entry condition:
 \begin{itemize}
@@ -274,31 +295,59 @@ Exceptions: \\
 There are no exceptions for this use case. 
 \\
 \\
-\textbf{3.Agent logs in }
+\textbf{3. Agent or supervisor registers}
 \\
 \\
-Actors: Municipality agent \\
+Actors: Municipality agent or Municipality supervisor \\
 Entry condition:
 \begin{itemize}
-\item the agent needs to have the Web App opened.
+\item the agent or supervisor needs to have the Web App opened.
 \end{itemize}
 Flow of events:
 \begin{itemize}
-\item The agent opens the application and arrives at the homepage.
-\item The agent clicks on the “Login” button.
-\item The agent input his username and password.
-\item	The agent clicks on the log in button.
-\item	The system redirects the agent to his personal page.
+\item The agent/supervisor opens the application and arrives at the homepage.
+\item The agent/supervisor clicks on the “Register” button.
+\item The agent/supervisor input his name, surname, birthdate and rank.
+\item The agent/supervisor input his choosen password.
+\item	The agent/supervisorr clicks on the "Complete Registration" button.
+\item The system processes the registration and send information to the Municipality Service.
+\item The system notify the agent/supervisor about his new Unique Identifier (ID) and suggest to remember it.
+\item The agent/supervisor clicks on the "Understood" button.
+\item	The system redirects the agent/supervisor to login page.
 \end{itemize}
 Exit conditions:
 \begin{itemize}
-\item The agent is successfully redirected to his personal page.
+\item The agent/supervisor is successfully redirected to login page.
  \end{itemize}
 Exceptions: 
  \begin{itemize}
- \item The username and password furnished by the agent are not correct. In this case, the system does not redirect the agent to his personal page, but notifies him that an error has been made and allows to input his username and password again.
+ \item The name, surnamem birthdate and rank furnished by the agent are not found by the municipality service. In this case, the system does not redirect the agent/supervisor to the login page, but notifies him that an error has been made and allows to insert name, surname, birthdate, rank and password again.
 \end{itemize}
-\textbf{4.	Checking statistics}
+\textbf{4. Agent or supervisor logs in }
+\\
+\\
+Actors: Municipality agent or Municipality supervisor \\
+Entry condition:
+\begin{itemize}
+\item the agent/supervisor needs to have the Web App opened.
+\end{itemize}
+Flow of events:
+\begin{itemize}
+\item The agent/supervisor opens the application and arrives at the homepage.
+\item The agent/supervisor clicks on the “Login” button.
+\item The agent/supervisor input his username and password.
+\item	The agent/supervisor clicks on the log in button.
+\item	The system redirects the agent/supervisor to his personal page.
+\end{itemize}
+Exit conditions:
+\begin{itemize}
+\item The agent/supervisor is successfully redirected to his personal page.
+ \end{itemize}
+Exceptions: 
+ \begin{itemize}
+ \item The username and password furnished by the agent/supervisor are not correct. In this case, the system does not redirect the agent/supervisor to his personal page, but notifies him that an error has been made and allows to input his username and password again.
+\end{itemize}
+\textbf{5. Checking statistics}
 \\ \\
 Entry condition: 
 \begin{itemize}
@@ -319,7 +368,7 @@ Exit conditions:
 \end{itemize}
 Exceptions: \\There are no exception in this case
 \\ \\
-\textbf{5. Supervisor checks potential intervention}
+\textbf{6. Supervisor checks potential intervention}
 \\ \\
 Actors: Supervisor
 Entry condition: 
@@ -342,7 +391,7 @@ Exceptions:
 \begin{itemize}
 \item There are no recent suggestions, so the system notifies the supervisor about this exception. The system redirect the supervisor to his personal page.
 \end{itemize}
-\textbf{6.	Agent checks a notified violation}
+\textbf{7. Agent checks a notified violation}
 \\ \\
 Actor: Municipality Agent \\ \\
 Entry condition: 	
@@ -352,19 +401,24 @@ Entry condition:
 Flow of events:
 \begin{itemize} 
 \item The agent receives the notification through the Web App of a new incoming report violation
-\item  If the reported violation queue is not empty, the agent clicks on another report.
-\item  If the reported violation queue is empty, the agent clicks on the small rectangle in the main page to see more about the new violation
-\item If the pictures are clear enough (helped by the info provided by the user, the agent issues the traffic ticket.
-\item If the pictures are not clear enough, the agent contacts the supervisor to send an agent in the streets to check and issue the traffic ticket.
-\item The agent clicks the “File” button to file the report
+%\item  If the reported violation queue is not empty, the agent clicks on another report.
+%\item  If the reported violation queue is empty, the agent clicks on the small rectangle in the main page to see more about the new violation
+\item Clicking on it, or entering in the Reports section, the system shows him the first report in the queue.
+\item If the pictures are not clear enough, the agent contacts the supervisor to send an agent in the street to check and in the meanwhile he can put the report on hold by clicking on the button "On Hold".
+\item If he is sure that what is reported is not a violation he can discard the report with the button "Discard". Before doing this he can possibly retrieve data about the author of the report, clicking on the button "Author".
+\item Otherwise the agent clicks the "Send ticket" button to file the report and send a ticket to the recognized owner of the vehicle. The system allows him to specify the amount of the ticket and a description.
 \end{itemize}
 Exit conditions:
 \begin{itemize}
-\item The violation is filed and the agent
+\item The violation is filed and the agent can continue with the next report in the queue, if it is not empty.
 \end{itemize}
-Exceptions: \\ No exception is possible in this case
+Exceptions: 
+\begin{itemize}
+\item The municipality service used to issue traffic tickets is unreachable: in this case the system informs the agent and does not fill the report. The agent can retry until the system answers correctly.
+\end{itemize}
+\textbf{8. User registers to the Application}
 \\ \\
-\textbf{7.	User registers to the Application}
+Actor: Visitor \\ \\
 Entry condition: 
 \begin{itemize}
 \item User needs to have the application opened in the main page
@@ -389,6 +443,34 @@ Exceptions:
 
 
 \subsection{Sequence diagrams}
+Here are reported some UML Sequence Diagrams for the most interesting use cases: \\
+\begin{figure}[H]
+\includegraphics[width=\textwidth]{SequenceUserLogin}
+\caption{Sequence diagram for use case n.1 (User logs in) }
+\label{fig:seq-userlogin}
+\end{figure}
+
+\begin{figure}[H]
+\includegraphics[width=\textwidth]{SequenceSendReport}
+\caption{Sequence diagram for use case n.2 (User reports a violation) }
+\label{fig:seq-userreport}
+\end{figure}
+
+\begin{figure}[H]
+\includegraphics[width=\textwidth]{SequenceAgentCheckReport}
+\caption{Sequence diagram for use case n.7 (Agents checks a notified violation) }
+\label{fig:seq-agentcheckreport}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.7]{SequenceCheckStatistics}
+\caption{Sequence diagram for use case n.5 (Checking statistics) }
+\label{fig:seq-checkstats}
+\end{figure}
+
+
+
 \section{External interface requirements}
 \subsection{User Interfaces}
 \lipsum[1]
@@ -402,8 +484,73 @@ The communication between users and SafeStreet servers exploit internal APIs thr
 For the \textit{users} the communication is unidirectional, in the sense that they cannot receive requests/notification by the server, all communications start from them. \\
 The \textit{municipality agents} can be notified from the server when there are new report to be analyzed. \\
 The \textit{municipality supervisors} can be notified about suggestions for interventions on the most unsafe areas.
+
 \section{Functional requirements}
-\lipsum[1]
+For each goal we can describe some necessary functional requirements, which guarantee its satisfaction with the domain assumptions:
+\begin{itemize}
+\item {[G1]} People must be allow to report parking violations (missing parking disk, not paid parking meter, illegally parked vehicles).
+\begin{itemize}
+\item {[R1]}	The system must allow people to register to it providing personal data (name, surname, birthdate, identity card number, fiscal code) and selecting a username and a password.
+\item {[R2]}	The system must verify the correctness of the provided personal data of a registered user checking them from the identity card number, blocking the registration if they are not correct.
+\item {[R3]}	The system must allow registered users to login through their username and password.
+\item {[R4]}	The system must allow logged user to fill a report violation form.
+\item {[R5]}	The system must let the user select the type of violation detected.
+\item {[R6]}	The system must allow the user to insert the license plate in a violation report.
+\item {[R7]}	While reporting the violation, the system must allow users to take one or more pictures of the potential violation.
+\item {[R8]}	The system must not allow users to choose pictures not taken in the moment of the report.
+\item {[R9]}	The system must collect the current position of the user, using GPS.
+\item {[R10]}	The system must allow user to confirm or delete the current report.
+\item {[R11]}	After confirmation, the system must add the current date and time to the report.
+\item {[R12]}	The system must store confirmed report.
+\end{itemize}
+\item {[G2]} Municipality agents must be notified about potential violations, which are reported in their area of interest and are used to generate traffic tickets.
+\begin{itemize}
+\item {[R1]}	The system must check reports to try to find if the pictures of the violations have been modified.
+\item {[R2]}	The system must try to find, according to the GPS position of the user and the pictures sent, if the position is fake or not.
+\item {[R3]}	The system must try to automatically recognize the license plate in the photo, possibly with the help of the value inserted by the user.
+\item {[R4]}	The system must discard the report if it has been recognized as fake according to the previous requirements (R1-R3).
+\item {[R5]}	The system must store into stable memory the reported violation if correct (i.e. not recognized as fake).
+\item {[R6]}	The involved municipality must be calculated considering in which city the reported violation has been found, based on the GPS of the client that has sent the report.
+\item {[R7]}	The system must send the reported violation to the involved municipality.
+\item {[R8]}	The system must allow an agent to issue a traffic ticket to a certain person (i.e. license plate) through the correspondent municipality service.
+\item {[R9]}	The system must allow an agent to put on hold a violation report if it needs to be checked in person.
+\item {[R10]}	The system must allow an agent to discard a violation if it has been verified as fake or it cannot be verified (the vehicle is not there anymore).
+\item {[R11]}	The system must allow an agent to retrieve the data of the author of a violation report.
+\item {[R12]}	The system must allow an agent to create an account, asking the municipality services to verify its identity.
+\item {[R13]}	The system must allow an agent to login, inserting its username and password.
+\end{itemize}
+\item  {[G3]} People must be allowed to retrieve information about streets or areas with the highest frequency of violations.
+\begin{itemize}
+\item {[R1]}	The system must mine this information from the reported violations.
+\item {[R2]}	The system must allow the users (even if not authenticated) to select the see information for a city. The user can choose either the city where he is, using the GPS position, or an arbitrary selected location.
+\item {[R3]}	The system must allow the user to select information about streets or areas in the city selected.
+\item {[R4]}	The system must show the areas or the streets, according to the selection, with the highest frequency of violations, in the selected city.
+\end{itemize}
+\item  {[G4]} People must be able to retrieve statistics and trends about the accidents correlated to the parking violations, the 		effectiveness of SafeStreet initiatives and the issuing of traffic tickets.
+\begin{itemize}
+\item {[R1]}	The system must take information about accidents from the municipality.
+\item {[R2]}	The system must use this information to build statistics, crossing them with reported violations.
+\item {[R3]}	The system must not allow user to see confidential data about other people.
+\item {[R4]}	The system must allow the user to choose a topic: areas with most accidents, areas with the highest number of traffic tickets issued, areas where there have been the best improvements.
+\item {[R5]}	The system must show to the user the information about the topic selected.
+\end{itemize}
+\item  {[G5]} Municipality supervisors must be able to retrieve data about the vehicles with the highest number of violations.
+\begin{itemize}
+\item {[R1]}	The system must allow authenticated supervisors to retrieve information about the vehicles with the highest number of violations in a selected area.
+\item {[R2]}	The system must allow supervisors to see what areas or streets has seen the best improvements in the ticket emissions.
+\item {[R3]}	The system must allow supervisors to access only to information about their own area of competence.
+\item {[R4]}	The system must allow a supervisor to create an account, asking the municipality services to verify its identity.
+\item {[R5]}	The system must allow a supervisor to login, inserting its username and password.
+\end{itemize}
+\item  {[G6]} Municipalities must be suggested for possible interventions about the mostly unsafe areas.
+\begin{itemize}
+\item {[R1]}	The system must take information about accidents and street networks (bike lanes, sidewalks, parking areas…) from the municipality, exploiting the municipality services.
+\item {[R2]}	The system must elaborate this information and try to find possible solutions for problems.
+\item {[R3]}	The system must notify the municipality supervisors about the solutions it has found.
+\end{itemize}
+\end{itemize}
+
+
 \section{Performance requirements}
 Performance requirements are not particularly critical for the system, but it is anyway desirable that all requests sent to the server are answered within 1 second, to assure a good user experience. \\
 The server infrastructure will be designed to be scalable so that it will be possible to adapt it to the increment of users when the app diffusion will increase.
@@ -456,7 +603,17 @@ Simone Sartoni \\
 \begin{tabular}{p{2cm}p{1.5cm}p{7cm}}
 \toprule
 \textit{Date} & \textit{Hour} & \textit{Section} \\ \midrule
-17-10-2019 & 1.5 h* & Goals \\
+17-10-2019 & 1.5 h* & Goals \\ \midrule
+20-10-2019 & 4.5 h & Goals revision and requirements outline  \\ \midrule
+22-10-2019 & 3 h & Goals and requirements revision \\ \midrule
+23-10-2019 & 1.5 h & Use Case UML model design and draw \\ \midrule
+24-10-2019 & 2 h & Goal and requirements revision, functions \\ \midrule
+25-10-2019 & 2 h & Use Case UML model update \\ \midrule
+27-10-2019 & 1.5 h & Use Cases writing \\ \midrule
+29-10-2019 & 2 h & Use Case UML model and use cases revision \\ \midrule
+31-10-2019 & 1 h & Scenario and use cases revision \\ \midrule
+4-11-2019 & 1.5 h & Goals transcription on the RASD \\ \midrule
+5-10-2019 & 2.5 h & Requirements transcription on the RASD \\ \midrule
 \bottomrule
 \end{tabular}
 \end{center}
@@ -471,7 +628,15 @@ Vittorio Torri \\
 21-10-2019 & 1 h & Software, Hardware and Communication Interfaces, Performance requirements, Design constraints, Software system attributes \\ \midrule
 22-10-2019 & 1 h & Goal and requirements revision \\ \midrule
 23-10-2019 & 1 h & Goal and requirements revision \\ \midrule
-26-10-2019 & 2 h & Scenarios, requirements, functions, scope \\
+26-10-2019 & 2 h & Scenarios, requirements, functions, scope \\  \midrule
+28-10-2019 & 1.5 h & Product perspective and UML Class Diagram \\ \midrule
+29-10-2019 & 1 h & State diagram and sequence diagram \\ \midrule
+31-10-2019 & 0.5 h & Sequence diagram \\ \midrule
+31-10-2019 & 1 h* & Alloy \\ \midrule
+02-11-2019 & 1.5 h & Sequence diagrams \& minor fixes \\ \midrule
+03-11-2019 & 4 h & Alloy \\ \midrule
+04-11-2019 & 1 h & Alloy \\ \midrule 
+05-11-2019 & 1.5h & Alloy \\
 \bottomrule
 \end{tabular}
 \end{center}
