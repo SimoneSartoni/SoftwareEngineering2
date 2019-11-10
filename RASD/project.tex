@@ -46,7 +46,7 @@
     \textnormal{ \LARGE{Requirement Analysis and Specification Document\\}}
 \end{center}
 
-\vspace{20mm}
+\vspace{18mm}
 
 \begin{center}
     \textnormal{\large{\bf Authors:\\}}
@@ -58,18 +58,21 @@
 \centering{\large{
 Academic Year 2019/2020 \\
 \vspace{10mm}
-Milano, 10/11/2019 
+Milano, 10/11/2019 \\
+\vspace{2mm}
+Version 1.0 
 }}
 
 \end{titlepage}
 
+\newgeometry{top=3cm}
 \tableofcontents
 \listoffigures
 \begingroup
 \let\clearpage\relax %avoid to put it on a new page
 \listoftables
 \endgroup
-
+\restoregeometry
 \chapter{Introduction}
 \section{Scope}
 SafeStreets is an application meant to provide a mechanism to more efficiently detect parking violations and to try to make streets safer. This is meant both for normal people and for municipality agents. 
@@ -210,26 +213,27 @@ Subsequently, the user must provide at least one picture of the violation. Throu
 
 \subsection{Municipality agent}
 \label{sub-agentfun}
-\subsubsection{Authority agent registering}
-Differently from the function previously explained and meant for normal Users, this function is only meant for Municipality agents. Each agent can register to SafeStreets to exploit his services as agent. He needs to provide his name, surname, birthdate and rank. After providing a password, the registration is sent for a verification to the municipality service and completed if the data inserted is correct. An ID code is then given to the agent to be uniquely identified.
-
 \subsubsection{Violation checking}
 After logging in as a municipality agent, the system notifies the agent about all the current not resolved reported violations. The agent can visualize individually each report, starting from the oldest one in terms of date and time, checking if the report corresponds to an actual violation. He can either directly emit a traffic ticket or send an agent on the street to check and eventually emit the ticket.  If he decides to send an agent to verify the report he can put it on hold and take it back later from the "On hold" queue. It can also refuse the report if it is duplicated or if he is sure that is not a real violation. In this case he can also access the report author's data. He can then proceed and check the next report on the queue, if present.\\
 Additionally, when he is logged, the agent is notified of new incoming reports.\\
-Reports which are automatically rejected by the system controls are shown to the agents as rejected and they can check them, obtain the author's data and possibly change the automatically taken decision.
+Reports which are automatically rejected by the system controls are shown to the agents as rejected and they can check them and obtain the author's data.
 
 \subsection{Municipality supervisor}
 
 \subsubsection{Suggesting possible solutions} 
 This function consists of a task periodically executed by the system (once a month) which tries to analyze reported violations, issued tickets, accidents information and data about the streets network coming from the municipality to suggest possible interventions to increase the safety (e.g. add barriers, create new park spots, increase the allowed parking time, send more agents in a certain area in certain hours...). When the system finds new suggestions for certain streets it sends them to the municipality supervisors.
 
-\subsubsection{Getting sensible information}
-This function allows logged in municipality supervisors to retrieve information about the vehicles with the highest number of violations in a selected area. The system must return information belonging to the supervisor's area of competence, communicated during the registration process.
+\subsubsection{Consult reserved statistics}
+This function allows logged in municipality supervisors to retrieve information about the vehicles with the highest number of violations in a selected area/street. The area/street must be in the supervisor's area of competence.
+
+\subsection{Municipality agents and supervisors}
+\subsubsection{Authority agent registering}
+Differently from the function previously explained and meant for normal Users, this function is only meant for Municipality agents or supervisors. Each agent which needs to be officially registered needs to provide his name, surname, birthdate, rank and badge number. After providing a password, the registration is sent for a verification to the municipality service and completed if the data inserted is correct. An ID code is then given to the agent to be uniquely identified.
 
 \subsection{Everyone} 
 
 \subsubsection{Consulting statistics}
-This function allows visitors, users, municipality agents or supervisors to retrieve information about the streets and areas with the highest frequency of violations; it is possible to retrieve statistics and trends about the accidents correlated to the parking violations, the effectiveness of SafeStreets initiatives and the issuing of traffic tickets. The information provided must be mined by the system from the reported violations, crossed with information from municipality. The system must not allow user to see confidential data about other people; it must allow the user to choose a topic: areas with most accidents, areas with the highest number of traffic tickets issued or areas where there have been the best improvements and in the end the system must show to the user the information about the topic selected.
+This function allows visitors, users, municipality agents or supervisors to retrieve information about the streets and areas with the highest frequency of violations; it is possible to retrieve statistics and trends about the accidents correlated to the parking violations, the effectiveness of SafeStreets initiatives and the issuing of traffic tickets. The information provided must be mined by the system from the reported violations, crossed with information from municipality. The system must not allow users to see confidential data about other people; it must allow the user to choose a topic: areas/streets with most accidents, areas/streets with the highest number of traffic tickets issued or areas/streets where there have been the best improvements or he can select a specific street or area for which he want to see the data. In the end the system must show to the user the information about the topic selected.
 
 
 
@@ -396,7 +400,7 @@ Flow of events:
 \begin{itemize}
 \item The agent/supervisor opens the application and arrives at the homepage.
 \item The agent/supervisor clicks on the "Register" button.
-\item The agent/supervisor input his name, surname, birthdate and rank.
+\item The agent/supervisor input his name, surname, birthdate, rank and badge number.
 \item The agent/supervisor input his choosen password.
 \item The agent/supervisor clicks on the "Complete Registration" button.
 \item The system processes the registration and send information to the Municipality Service.
@@ -440,7 +444,7 @@ Exceptions:
 \phantomsection
 \textbf{5. Checking statistics}\label{uc:5}
 \\ \\
-Actors: everyone (logged or not) \\ \\
+Actors: everyone \\ \\
 Entry condition: 
 \begin{itemize}
 \item The user needs to have the application opened
@@ -588,43 +592,43 @@ in figures \ref{fig:seq-userlogin}, \ref{fig:seq-userreport}, \ref{fig:seq-agent
 \subsection{User Interfaces}
 In figures \ref{fig:mock-webreports} and \ref{fig:mock-suggestions} are provided some mockups of the user interfaces for the main functions of the system. They are just an approximate idea of how they should appear.
 \begin{figure}
-\begin{minipage}{.5\textwidth}
+\begin{minipage}{.45\textwidth}
 \centering
-\includegraphics[width=.4\linewidth]{mockups/phoneschermatainiziale.png}
+\includegraphics[width=.7\linewidth]{mockups/phoneschermatainiziale.png}
 \caption[Mobile App mockup for initial page]{Mobile App mockup for the starting page after having opened the app for a User}
 \label{fig:initial-page}
-\end{minipage}%
-\begin{minipage}{.5\textwidth}
+\end{minipage}\hfill
+\begin{minipage}{.45\textwidth}
 \centering
-\includegraphics[width=.4\linewidth]{mockups/Schermata_principale.png}
+\includegraphics[width=.7\linewidth]{mockups/Schermata_principale.png}
 \caption[Mobile App mockup for main page]{Mobile App mockup for the main page of the application after a User has logged in }
 \label{fig:main-screen}
 \end{minipage}
 \end{figure}
 \begin{figure}
-\begin{minipage}{.5\textwidth}
+\begin{minipage}{.45\textwidth}
 \centering
-\includegraphics[width=.4\linewidth]{mockups/Register.png}
+\includegraphics[width=.7\linewidth]{mockups/Register.png}
 \caption[Mobile App mockup for the registration]{Mobile App mockup for a User when he wants to register}
 \label{fig:register-page}
-\end{minipage}%
-\begin{minipage}{.5\textwidth}
+\end{minipage}\hfill
+\begin{minipage}{.45\textwidth}
 \centering
-\includegraphics[width=.4\linewidth]{mockups/loginscreen.png}
+\includegraphics[width=.7\linewidth]{mockups/loginscreen.png}
 \caption[Mobile App mockup for the login screen]{Mobile App mockup interface for the login of a registered User}
 \label{fig:login-page}
 \end{minipage}
 \end{figure}
 \begin{figure}
-\begin{minipage}{.5\textwidth}
+\begin{minipage}{.45\textwidth}
 \centering
-\includegraphics[width=.4\linewidth]{mockups/Report.png}
+\includegraphics[width=.7\linewidth]{mockups/Report.png}
 \caption[Mobile App mockup for the report page]{Mobile App interface mockup for the reporting of a violation for registered Users}
 \label{fig:report-page}
-\end{minipage}%
-\begin{minipage}{.5\textwidth}
+\end{minipage}\hfill
+\begin{minipage}{.45\textwidth}
 \centering
-\includegraphics[width=.4\linewidth]{mockups/Checkstatistics.png}
+\includegraphics[width=.7\linewidth]{mockups/Checkstatistics.png}
 \caption[Mobile App mockup for statistics]{Mobile App interface mockup for the statistics for Users}
 \label{fig:check-statistics}
 \end{minipage}
@@ -701,7 +705,7 @@ For each goal we describe here the necessary functional requirements, which guar
 \begin{itemize}
 \item {[R31]}	\label{R31}The system must take information about accidents and tickets from the municipality.
 \item {[R32]}	\label{R32}The system must use this information to build statistics, crossing them with reported violations.
-\item {[R33]}	\label{R33}The system must not allow users to see confidential data about other people.
+\item {[R33]}	\label{R33}The system must not allow common users to see confidential data about other people.
 \item {[R34]}	\label{R34}The system must allow the user to choose a topic: areas or streets with most accidents, areas or streets with the highest number of traffic tickets issued, areas or streets where there have been the best improvements, information for a specific area or street.
 \item {[R35]}	\label{R35}The system must show to the user the information about the topic selected according to [R34].
 \end{itemize}
@@ -769,10 +773,10 @@ This Alloy model manly consists of signatures and facts. A summary of what is ex
 \item An agents cannot issue traffic tickets in another city \hyperref[R19]{[R19, R21]}
 \item For every approved report there is a correspondent ticket \hyperref[R21]{[R21]}
 \item For every street where there have been at least two accidents caused by bad parked cars and two approved reports there must be a suggestion. This is an easy example to answer the requirement \hyperref[R41]{[R41]}
-\item \textit{ReservedStatistics} cannot be accessed by normal users \hyperref[R33]{[R33]}
+\item \textit{ReservedStatistics} can be accessed only by Supervisors \hyperref[R33]{[R33]}
 \item Correctness of statistics data \hyperref[R29]{[R29,R30,R34,R35,R36]}
 \end{itemize}
-This model does not easy allow to express assertions to be checked, because it already covers almost all about the requirements/assumptions which involves and there are no very interesting and non trivial properties which should be implied by it and so should be checked through assertions. Anyway there are a pair of assertions which state that the number of approved reports must be smaller or equal to the number of the tickets, for all agents and for all streets. This clearly follows by the fact that every approved reports has a consequent ticket and it's not a simple equality because the municipality can issue other tickets, not associated to reports, but still in the application data thanks to the information collected from the municipality for statistics elaboration.\\
+This model does not easy allow to express assertions to be checked, because it already covers almost all about the requirements/assumptions which involves and there are no very interesting and non trivial properties which should be implied by it and so should be checked through assertions. The goals of system, which are what is really implicated by the combination of requirements and assumptions, cannot be easily expressed in a "machine" formal way, without falling in a repetition of the requirements. Anyway there are a pair of assertions which state that the number of approved reports must be smaller or equal to the number of the tickets, for all agents and for all streets. This clearly follows by the fact that every approved reports has a consequent ticket and it's not a simple equality because the municipality can issue other tickets, not associated to reports, but still in the application data thanks to the information collected from the municipality for statistics elaboration.\\
 At the end of the Alloy code there are some predicates which are then shown and explained.\\
 The predicates are consistent and no counterexample has been found for the assertions, by the tool:
 \begin{figure}[hp]
@@ -785,7 +789,7 @@ The predicates are consistent and no counterexample has been found for the asser
 \lstinputlisting[language=alloy]{alloyModel.als}
 
 \section{Generated worlds}
-The predicate world1 generates a first world (figure \ref{fig:world1}) which shows the presence of a \textit{Suggestion} as a consequence of the two \textit{Approved} \textit{Reports} and the two \textit{Accidents} caused by \textit{BadParkedCars} in the unique \textit{Street} of the world, all over two consecutive time instants (not shown in figure, the diagram is projected over time for better readability). It can also be observed the presence of the two \textit{Tickets} associated to the two \textit{Approved Reports} and the correspondence of \textit{MunicipalityAgents} for \textit{Tickets} and relative \textit{Reports}.\\
+The predicate \textit{world1} generates a first world (figure \ref{fig:world1}) which shows the presence of a \textit{Suggestion} as a consequence of the two \textit{Approved} \textit{Reports} and the two \textit{Accidents} caused by \textit{BadParkedCars} in the unique \textit{Street} of the world, all over two consecutive time instants (not shown in figure, the diagram is projected over time for better readability). It can also be observed the presence of the two \textit{Tickets} associated to the two \textit{Approved Reports} and the correspondence of \textit{MunicipalityAgents} for \textit{Tickets} and relative \textit{Reports}.\\
 The second one (figure \ref{fig:world2} ) shows Statistics information which are coherent with the tickets, reports and accidents data (it's still projected over Time, but it can be seen that all events happen at the same time). \\
 Finally the predicate \textit{ApproveReport} (figure \ref{fig:approveReport}) shows the change of state of a Report which becomes \textit{Approved}, showing the consistency of the state evolution and the corresponding \textit{Ticket} generated.
 
@@ -901,7 +905,8 @@ Vittorio Torri \\
 08-11-2019 & 2h & Alloy \\ \midrule
 08-11-2019 & 2h & Web interface mockup (report list) \\ \midrule
 09-11-2019 & 1h & Web interface mockup (suggestion list) \\ \midrule
-09-11-2019 & 2h & General revision, tables 1.1 and 3.1\\
+09-11-2019 & 2h & General revision, tables 1.1 and 3.1\\ \midrule
+10-11-2019 & 0.5h & Graphic corrections\\
 \bottomrule
 \end{tabular}
 \caption[Vittorio Torri's effort table]{}
