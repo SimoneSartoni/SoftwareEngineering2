@@ -1,0 +1,144 @@
+\documentclass[a4paper]{report}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{titlesec}
+\usepackage{lipsum}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{rotating}
+\usepackage[dvipsnames]{xcolor}
+
+\usepackage{geometry}
+\usepackage{pdflscape}
+\usepackage{caption}
+\graphicspath{{./img/}}
+
+\begin{document}
+
+%%The two following lines remove the line "Chapter n" at the beginning of each chapter, before the title
+%\titleformat{\chapter}[display]
+%  {\normalfont\bfseries}{}{0pt}{\Large}
+\titleformat{\chapter}[hang] 
+{\normalfont\huge\bfseries}{\thechapter}{1em}{} 
+
+\title{SafeStreets}
+\author{Rosetti Nicola, Sartoni Simone, Torri Vittorio}
+\date{date} %%TODO
+
+\begin{titlepage}
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.3\textwidth]{Logo}
+\end{figure}
+\begin{center}
+    \textsc{ \LARGE{Politecnico di Milano \\}}
+	\textsc{ \Large {School of Industrial and Information Engineering\\ }}
+	\textnormal{ \Large{Master of Science in Computer Science and Engineering\\}}
+	\vspace{3mm}
+	\textnormal{ \Large{Software Engineering 2 Mandatory Project\\}}
+	\vspace{30mm}
+	\fontsize{10mm}{7mm}\selectfont 
+    \textup{Safe Streets.}\\
+    \textnormal{ \LARGE{Design Document\\}}
+\end{center}
+
+\vspace{18mm}
+
+\begin{center}
+    \textnormal{\large{\bf Authors:\\}}
+	{\large Rosetti Nicola \\ Sartoni Simone \\ Torri Vittorio }
+	\fontsize{10mm}{5mm}\selectfont 
+\end{center}
+\vspace{15mm}
+
+\centering{\large{
+Academic Year 2019/2020 \\
+\vspace{10mm}
+Milano, 09/12/2019 \\
+\vspace{2mm}
+Version 1.0 
+}}
+
+\end{titlepage}
+
+\newgeometry{top=3cm}
+\tableofcontents
+\listoffigures
+\begingroup
+\let\clearpage\relax %avoid to put it on a new page
+\listoftables
+\endgroup
+\restoregeometry
+
+\chapter{Introduction}
+\section{Purpose}
+\section{Scope}
+\section{Definitions,Acronyms,Abbreviations}
+\section{Revision History}
+\section{Reference Documents}
+\section{Document Structure}
+
+\chapter{Architectural Design}
+\section{Overview: High­‐level components and their	interaction}
+\section{Component view}
+\section{Deployment view}
+\section{Runtime view}
+\section{Component interfaces}
+\section{Selected architectural	styles and patterns}
+\section{Other design decisions}
+
+\chapter{User interface design}
+
+\chapter{Requirements Traceability}
+
+\chapter{Implementation, integration and test plan}
+
+\chapter{Effort spent}
+
+\begin{table}[H]
+\centering
+Nicola Rosetti \\
+%\begin{tabular}{lll}
+\begin{tabular}{p{2cm}p{1.5cm}p{7cm}}
+\toprule
+\textit{Date} & \textit{Hour} & \textit{Section} \\ \midrule
+17-10-2019 & 1.5 h* & Goals \\ \midrule
+\bottomrule
+\end{tabular}
+\caption[Nicola Rosetti's effort table]{}
+\end{table}
+
+
+\vspace*{1 cm}
+\begin{table}[H]
+\centering
+Simone Sartoni \\
+\begin{tabular}{p{2cm}p{1.5cm}p{7cm}}
+\toprule
+\textit{Date} & \textit{Hour} & \textit{Section} \\ \midrule
+17-10-2019 & 1.5 h* & Goals \\ \midrule
+\bottomrule
+\end{tabular}
+\caption[Simone Sartoni's effort table]{}
+\end{table}
+\vspace*{1 cm}
+\begin{table}[H]
+\centering
+Vittorio Torri \\
+\begin{tabular}{p{2cm}p{1.5cm}p{7cm}}
+\toprule
+\textit{Date} & \textit{Hour} & \textit{Section} \\ \midrule
+18-11-2019 & 1 h* & Goals \\ \midrule
+\bottomrule
+\end{tabular}
+\caption[Vittorio Torri's effort table]{}
+\end{table}
+\textit{* Group work}
+
+\chapter{References}
+
+
+\end{document}
