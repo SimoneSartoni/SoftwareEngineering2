@@ -83,8 +83,8 @@ Version 1.0
 
 \chapter{Architectural Design}
 \section{Overview: High­‐level components and their	interaction}
-The application will be developed using the client-server paradigm on a three-tiered architecture. The three layers of the application (Presentation, Application and Data) are divided into clusters of machines (i.e. tiers) that actually cooperate to provide a specific functionality. In this case we have three tiers  and each tier is responsible for one of the three layers. The client side is responsible (only) for the presentation layer; therefore, in this architecture, the thin-client has been adopted considering the fact that the required functionalities client-side are limited. The UIs provided are just meant to show results and to allow clients to choose what they want.  In the App case, the client contains all the presentation layer while in the WebApp case the layer is splitted between the client and WebServer; the WebServer is responsible for contacting the application server and forward the client requests to it. The Application tier takes care of the application layer encapsulating all is needed concerning the application logic. It receives the requests from the clients and handles them. It's also responsible for sending asynchronous notifications to the presentation layer when certain conditions are met.  Here we have multiple Servers cooperating together to improve performance, scalability, fault tolerance and availability. An elastic component (i.e. load balancer) is used to rule the accesses to different Application Servers, dinamically balancing the load among all the Servers. The Application tier communicates with the Data tier, responsible for the Data Access layer. This tier is composed by several DataServers: each one is associated with a single replica of the data and exploits the DBMS technology to access the DataBase. The Database is fully replicated in different nodes. Techniques and protocols are used to ensure consistency among replicas: they will be fullt explained in "Other design decisions" section. Again a load balancer is used to dinamically share the load among different machines. 
-To ensure and improve security firewalls are installed before and after the application servers to filter accesses from external and unsafe networks. By the creation of a DMZ (demilitarized zone) external entities can only have access to the exposed services. Security is crucial because the application works mainly with sensible informations.
+The application will be developed using the client-server paradigm on a three-tiered architecture. The three layers of the application (Presentation, Application and Data) are divided into clusters of machines (i.e. tiers) that actually cooperate to provide a specific functionality. In this case we have three tiers  and each tier is responsible for one of the three layers. The client side is responsible (only) for the presentation layer; therefore, in this architecture, the thin-client has been adopted considering the fact that the required functionalities client-side are limited. The UIs provided are just meant to show results and to allow clients to choose what they want.  In the App case, the client contains all the presentation layer while in the WebApp case the layer is splitted between the client and WebServer; the WebServer is responsible for contacting the application server and forward the client requests to it. The Application tier takes care of the application layer encapsulating all is needed concerning the application logic. It receives the requests from the clients and handles them. It's also responsible for sending asynchronous notifications to the presentation layer when certain conditions are met.  Here we have multiple Servers cooperating together to improve performance, scalability, fault tolerance and availability. An elastic component (i.e. load balancer) is used to rule the accesses to different Application Servers, dinamically balancing the load among all the Servers. The Application tier communicates with the Data tier, responsible for the Data Access layer. This tier is composed by several DataServers: each one is associated with a single replica of the data and exploits the DBMS technology to access the DataBase. The Database is fully replicated in different nodes. Techniques and protocols are used to ensure consistency among replicas: they will be full explained in "Other design decisions" section. Again a load balancer is used to dinamically share the load among different machines. 
+To ensure and improve security firewalls are installed before and after the application servers to filter accesses from external and unsafe networks. By the creation of a DMZ (demilitarized zone) external entities can only have access to the exposed services. Security is crucial because the application works mainly with sensible information.
 To provide the required functionalities the system exploits datawarehousing. The datawarehouse is a component in the Data tier able to deal with historical data and aggregate data taken from the Databases exploiting data mining technologies to answer complex queries: used techniques are clustering, associative rules and classification. This component periodically queries one dataServer to retrieve new information and updates on the data since its last update. 
 \section{Component view}
 In the figure \ref{fig:component-diagram} is reported the \textit{Component Diagram} for the SafeStreet system. This is a high level view in which the main components are shown, then some components will be better detailed.
@@ -165,7 +165,7 @@ reported, for the sake of readability. The various components are now described 
 \section{Deployment view}
 
 \section{Runtime view}
-In the figures \ref{fig:seq-sendReport}, \ref{fig:seq-userLogin}, \ref{fig:seq-checkReport}, some architectural sequence diagrams are provided, showing the interactions among the different components in the execution of various functions of the systems. \\
+In the figures \ref{fig:seq-sendReport}, \ref{fig:seq-userLogin}, \ref{fig:seq-checkReport}, \ref{fig:seq-checkStats} some architectural sequence diagrams are provided, showing the interactions among the different components in the execution of various functions of the systems. \\
 The only methods present here and not mentioned in the \textit{Component Intefaces} section are internal method of a single component.
 
 \newgeometry{left=0.5cm, bottom=2cm}
@@ -173,7 +173,7 @@ The only methods present here and not mentioned in the \textit{Component Intefac
 
 \begin{figure}[hp]
 \includegraphics[angle=0, scale=0.70]{ArchSequenceSendReport}
-\caption{UML Architectural Sequence Diagram for SendReport use case}
+\caption{UML Architectural Sequence Diagram for \textit{SendReport} use case}
 \label{fig:seq-sendReport}
 \end{figure}
 
@@ -183,7 +183,7 @@ The only methods present here and not mentioned in the \textit{Component Intefac
 
 \begin{figure}[hp]
 \includegraphics[angle=0, scale=0.70]{ArchSequenceUserLogin}
-\caption{UML Architectural Sequence Diagram for UserLogin use case}
+\caption{UML Architectural Sequence Diagram for \textit{UserLogin} use case}
 \label{fig:seq-userLogin}
 \end{figure}
 
@@ -192,10 +192,21 @@ The only methods present here and not mentioned in the \textit{Component Intefac
 \newgeometry{left=0.5cm,right=0.5cm,bottom=3cm}
 \begin{figure}[hp]
 \includegraphics[width=\textwidth]{ArchSequenceAgentCheckReport}
-\caption{UML Architectural Sequence Diagram for AgentCheckReport use case}
+\caption{UML Architectural Sequence Diagram for \textit{AgentCheckReport} use case}
 \label{fig:seq-checkReport}
 \end{figure}
 \restoregeometry
+
+\begin{landscape}
+
+\begin{figure}[hp]
+\includegraphics[angle=0, scale=0.70]{ArchSequenceCheckStatistics}
+\caption{UML Architectural Sequence Diagram for the \textit{CheckStatistics} use case}
+\label{fig:seq-checkStats}
+\end{figure}
+
+\end{landscape}
+In the sequence diagram of figure \ref{fig:seq-sendReport} it has assumed that the \textit{getCity} request to the municipality API returns a city for which the \textit{SafeStreets service} is active. In effect the mobile app should not allow the user to send a report for a city in which the system is not active.\\
 In the sequence diagram of figure \ref{fig:seq-checkReport} the control for the user authentication is shown for every request, but only the first one presents the \textit{Alternative} choice, for the others, marked with *, is has been assumed a positive answer, for the sake of readability, avoiding to repeat the \textit{Alt} with the error message returned in case of authentication failure. 
 A similar assumption has been made for the municipality answer to the ticket emission request, it has been avoided to report the negative answer, for which the agent would be required to retry the request.
 
