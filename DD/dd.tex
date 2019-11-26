@@ -87,9 +87,118 @@ The application will be developed using the client-server paradigm on a three-ti
 To ensure and improve security firewalls are installed before and after the application servers to filter accesses from external and unsafe networks. By the creation of a DMZ (demilitarized zone) external entities can only have access to the exposed services. Security is crucial because the application works mainly with sensible informations.
 To provide the required functionalities the system exploits datawarehousing. The datawarehouse is a component in the Data tier able to deal with historical data and aggregate data taken from the Databases exploiting data mining technologies to answer complex queries: used techniques are clustering, associative rules and classification. This component periodically queries one dataServer to retrieve new information and updates on the data since its last update. 
 \section{Component view}
+In the figure \ref{fig:component-diagram} is reported the \textit{Component Diagram} for the SafeStreet system. This is a high level view in which the main components are shown, then some components will be better detailed.
+
+\newgeometry{bottom=2cm}
+\begin{landscape}
+
+\begin{figure}[hp]
+\includegraphics[angle=0, scale=0.55]{Component1}
+\caption{UML Component Diagram}
+\label{fig:component-diagram}
+\end{figure}
+
+\end{landscape}
+\restoregeometry
+In this diagram when two components can communicate using different interfaces a single interface link is 
+reported, for the sake of readability. The various components are now described and detailed:
+\begin{itemize}
+\item \textbf{Router}: it has the role of dispatching the requests coming from the users applications. Before doing this it has also the important role of verifying the user authentication, checking the token which is sent with all requests performed by an authenticated user. In figure \ref{fig:router-component} a more detailed view is provided, putting in evidence the various interfaces for the mobile and for the web app.
+\begin{figure}[hp]
+\includegraphics[width=\textwidth]{Router}
+\caption{UML Component Diagram for \textit{Router} component}
+\label{fig:router-component}
+\end{figure}
+\item \textbf{SuggestionsManager} this components is the one which elaborates and provides the \textit{Suggestions} for the municipalities. It analyzes the data exploiting the \textit{DataWarehouse} component for the aggregated queries about reports, accidents and tickets and the \textit{DBMS Component} to retrieve non-aggregated information about the streets. It can provide the actual available suggestions for a municipality as an answer to a request coming from the \textit{Router}, but it also notify the \textit{Municipality Supervisor web apps} through the \textit{NotificationManager} component when it discovers a new suggestion (the suggestion discover task is periodically executed, once a month).
+\item \textbf{ReportManager}: this component is in charge of all concern the management of the reports sent by the users. It receives them by the mobile application and execute the automatic analysis to identify possible fake reports, it stores them through the \textit{DBMS Component} and it provides the reports to the the \textit{Municipality Agents web app}, answering to their requests of confirm/enqueue/discard and allowing them to emit a ticket, exploiting the \textit{Municipality APIs} which provide an interface for this service. Its detailed diagram is shown in figure \ref{fig:reportmgr-component}.
+
+\begin{figure}[htp]
+\includegraphics[width=\textwidth]{ReportManager}
+\caption{UML Component Diagram for \textit{ReportManager} component}
+\label{fig:reportmgr-component}
+\end{figure}
+
+\item \textbf{AccessManager}: it manages everything about registration and login of the users. For the citizens registration it calls the municipality service for the verification of identity cards, while for the agents and supervisors registration it calls the municipality service for their identity verification. He stores the accounts data through the \textit{DBMS} component and it calls it also to verify the correctness of the login credentials. Once a login has been correctly performed it generates a token, stored in the database and sent back to the user, necessary to perform authenticated requests. This component is detailed in figure \ref{fig:accessmgr-component}.
+
+\begin{figure}[htp]
+\includegraphics[width=\textwidth]{AccessManager}
+\caption{UML Component Diagram for \textit{AccessManager} component}
+\label{fig:accessmgr-component}
+\end{figure}
+
+\item \textbf{StatisticsManager}: it answers to the statistics requests, both public and reserved, and in doing this it calls the \textit{DataWarehouse} component. It is shown in the diagram in figure \ref{fig:statisticsmgr-component}.
+
+\begin{figure}[htp]
+\includegraphics[width=\textwidth]{StatisticsManager}
+\caption{UML Component Diagram for \textit{StatisticsManager} component}
+\label{fig:statisticsmgr-component}
+\end{figure}
+
+\item \textbf{NotificationManager}: this component is the one able to send push notifications to the user clients, both mobile apps and web apps. It is exploited by the \textit{SuggestionManager} and by the \textit{ReportManager}.
+
+\item \textbf{DataCollectionManager}: this component periodically retrieves the data made available by the municipality about accidents, tickets and street characteristics. These latter are store in the operational database, while the others are retrieved as aggregated data and so are directly stored in the datawarehouse.
+
+\begin{figure}[htp]
+\includegraphics[width=\textwidth]{DataCollectionManager2}
+\caption{UML Component Diagram for \textit{DataCollectionManager} component}
+\label{fig:statisticsmgr-component}
+\end{figure}
+
+\item \textbf{DBMS}: this component manages the operational database, the main base for the functions of SafeStreets, being in charge of reports, users and streets data.
+
+\item \textbf{DataWarehouse}: this component manages the datawarehouse, the secondary database for the system, used to answer aggregate queries for statistics and suggestions. It is periodically alimented with the dbms data and with the already aggregated data coming from the municipality through the \textit{DataCollectionManager} component.
+
+\item \textbf{MunicipalityAPI}: this is an external component, managed by the municipalities (an instance for each of them which supports the system), whose interface is standardized as described in the \textit{Components Interfaces} section. It is necessary to retrieve the data for building statistics and suggestions and to have the possibility of traffic ticket emission through SafeStreets.
+
+\item \textbf{MapsAPI}: this is an external component which is exploited to show maps with the statistics data.
+
+\item \textbf{UserMobileApp}: this component entirely resides in the \textit{Presentation layer} and it's just an interface to allow the users to use SafeStreets on their mobile devices, sending reports and retrieving statistics information. It performs only minimal controls on the forms before sending them (ex: they are not missing mandatory field).
+
+\item \textbf{AgentWebApp}: this component is the \textit{Presentation layer} of the web app which allows agents to see the reports, analyze them, emit tickets and retrieve users data.
+
+\item \textbf{SupervisorWebApp}: this component is the \textit{Presentation layer} of the web app which allows supervisors to see the reports, possibly analyze them, retrieve all type of statistics and receive the suggestions elaborated by the system. 
+
+
+
+\end{itemize}
 
 \section{Deployment view}
+
 \section{Runtime view}
+In the figures \ref{fig:seq-sendReport}, \ref{fig:seq-userLogin}, \ref{fig:seq-checkReport}, some architectural sequence diagrams are provided, showing the interactions among the different components in the execution of various functions of the systems. \\
+The only methods present here and not mentioned in the \textit{Component Intefaces} section are internal method of a single component.
+
+\newgeometry{left=0.5cm, bottom=2cm}
+\begin{landscape}
+
+\begin{figure}[hp]
+\includegraphics[angle=0, scale=0.70]{ArchSequenceSendReport}
+\caption{UML Architectural Sequence Diagram for SendReport use case}
+\label{fig:seq-sendReport}
+\end{figure}
+
+\end{landscape}
+\restoregeometry
+\begin{landscape}
+
+\begin{figure}[hp]
+\includegraphics[angle=0, scale=0.70]{ArchSequenceUserLogin}
+\caption{UML Architectural Sequence Diagram for UserLogin use case}
+\label{fig:seq-userLogin}
+\end{figure}
+
+\end{landscape}
+
+\newgeometry{left=0.5cm,right=0.5cm,bottom=3cm}
+\begin{figure}[hp]
+\includegraphics[width=\textwidth]{ArchSequenceAgentCheckReport}
+\caption{UML Architectural Sequence Diagram for AgentCheckReport use case}
+\label{fig:seq-checkReport}
+\end{figure}
+\restoregeometry
+In the sequence diagram of figure \ref{fig:seq-checkReport} the control for the user authentication is shown for every request, but only the first one presents the \textit{Alternative} choice, for the others, marked with *, is has been assumed a positive answer, for the sake of readability, avoiding to repeat the \textit{Alt} with the error message returned in case of authentication failure. 
+A similar assumption has been made for the municipality answer to the ticket emission request, it has been avoided to report the negative answer, for which the agent would be required to retry the request.
+
 \section{Component interfaces}
 \section{Selected architectural	styles and patterns}
 \section{Other design decisions}
@@ -159,7 +268,7 @@ Nicola Rosetti \\
 \begin{tabular}{p{2cm}p{1.5cm}p{7cm}}
 \toprule
 \textit{Date} & \textit{Hour} & \textit{Section} \\ \midrule
-17-10-2019 & 1.5 h* & Goals \\ \midrule
+17-10-2019 & 1.5 h* & Component and high-level architecture analysis \\ \midrule
 \bottomrule
 \end{tabular}
 \caption[Nicola Rosetti's effort table]{}
@@ -173,7 +282,7 @@ Simone Sartoni \\
 \begin{tabular}{p{2cm}p{1.5cm}p{7cm}}
 \toprule
 \textit{Date} & \textit{Hour} & \textit{Section} \\ \midrule
-17-10-2019 & 1.5 h* & Goals \\ \midrule
+17-10-2019 & 1.5 h* & Component and high-level architecture analysis \\ \midrule
 \bottomrule
 \end{tabular}
 \caption[Simone Sartoni's effort table]{}
@@ -185,7 +294,11 @@ Vittorio Torri \\
 \begin{tabular}{p{2cm}p{1.5cm}p{7cm}}
 \toprule
 \textit{Date} & \textit{Hour} & \textit{Section} \\ \midrule
-18-11-2019 & 1 h* & Goals \\ \midrule
+18-11-2019 & 1 h* & Componenst and high-level architecture analysis \\ \midrule
+21-11-2019 & 1 h  & Components diagram \\ \midrule
+22-11-2019 & 0.5 h & Components diagrams \\ \midrule
+23-11-2019 & 1.5 h & Components diagrams and components view\\ \midrule
+24-11-2019 & 2 h & Sequence diagrams and components view \\ \midrule
 \bottomrule
 \end{tabular}
 \caption[Vittorio Torri's effort table]{}
