@@ -110,7 +110,7 @@ reported, for the sake of readability. The various components are now described 
 \caption{UML Component Diagram for \textit{Router} component}
 \label{fig:router-component}
 \end{figure}
-\item \textbf{SuggestionsManager} this components is the one which elaborates and provides the \textit{Suggestions} for the municipalities. It analyzes the data exploiting the \textit{DataWarehouse} component for the aggregated queries about reports, accidents and tickets and the \textit{DBMS Component} to retrieve non-aggregated information about the streets. It can provide the actual available suggestions for a municipality as an answer to a request coming from the \textit{Router}, but it also notify the \textit{Municipality Supervisor web apps} through the \textit{NotificationManager} component when it discovers a new suggestion (the suggestion discover task is periodically executed, once a month).
+\item \textbf{SuggestionsManager} this components is the one which elaborates and provides the \textit{Suggestions} for the municipalities. It analyzes the data exploiting the \textit{DataWarehouse} component for the aggregated queries about reports, accidents and tickets and the \textit{DBMS Component} to retrieve non-aggregated information about the streets. It can provide the actual available suggestions for a municipality as an answer to a request coming from the \textit{Router}, but it also notify the \textit{Municipality Supervisor web app} through the \textit{NotificationManager} component when it discovers a new suggestion (the suggestion discover task is periodically executed, once a month).
 \item \textbf{ReportManager}: this component is in charge of all concern the management of the reports sent by the users. It receives them by the mobile application and execute the automatic analysis to identify possible fake reports, it stores them through the \textit{DBMS Component} and it provides the reports to the the \textit{Municipality Agents web app}, answering to their requests of confirm/enqueue/discard and allowing them to emit a ticket, exploiting the \textit{Municipality APIs} which provide an interface for this service. Its detailed diagram is shown in figure \ref{fig:reportmgr-component}.
 
 \begin{figure}[htp]
@@ -168,7 +168,7 @@ reported, for the sake of readability. The various components are now described 
 \section{Runtime view}
 In the figures \ref{fig:seq-sendReport}, \ref{fig:seq-userLogin}, \ref{fig:seq-checkReport}, \ref{fig:seq-checkStats} some architectural sequence diagrams are provided, showing the interactions among the different components in the execution of various functions of the systems. \\
 The only methods present here and not mentioned in the \textit{Component Intefaces} section are internal method of a single component.
-
+\subsection{User sends a Report}
 \newgeometry{left=0.5cm, bottom=2cm}
 \begin{landscape}
 
@@ -180,6 +180,10 @@ The only methods present here and not mentioned in the \textit{Component Intefac
 
 \end{landscape}
 \restoregeometry
+
+In this sequence diagram is shown what messages are actually exchanged among components to process correctly a report send by a User. The User, through the Mobile App, fills the report form and sends it to the server for a confirm. The report is handled at first by the Router that checks if the User can actually send reports (i.e. verifies if the corresponding token has the rights needed). if the check is negative, then the request is discarded. Otherwise the ReportManager contacts the MapsAPI to retrieve the municipality in charge for a specific report. After this, the ReportManager checks internally if the pictures in the report have been modified or not. If so, the report is stored as "Refused" and sent to the Notification Manager, that will send a notification about the refused report to the involved MunicipalityAgent Web App. If the pictures are not fake then the report is stored as New report and the NotificationManager will be in charge of notifying the Municipality Web App about the new pending report.
+  
+\subsection{User Logs in}
 \begin{landscape}
 
 \begin{figure}[hp]
@@ -189,7 +193,7 @@ The only methods present here and not mentioned in the \textit{Component Intefac
 \end{figure}
 
 \end{landscape}
-
+\subsection{Agent Checks Report}
 \newgeometry{left=0.5cm,right=0.5cm,bottom=3cm}
 \begin{figure}[hp]
 \includegraphics[width=\textwidth]{ArchSequenceAgentCheckReport}
@@ -198,6 +202,9 @@ The only methods present here and not mentioned in the \textit{Component Intefac
 \end{figure}
 \restoregeometry
 
+In this sequence diagram are described the components involved i nthe user login and their interaction. The User fills the spaces in the Mobile App inserting his username and password. The login request is then sent to the Router that forwards the message to the AccessManager. In particular the subcomponent CitizenLogin handles the login, asking the DB the password corresponding to the specified username. After having received the password, it internally checks if  the two passwords (the one coming from the user and the one stored)coincide: if so, the user is successfully logged in and this is notified back to the client, showing him the main page of the App; if not, a notification is sent back to the client, showing him an error message and asking him to insert again username and password. Notice that everytime a new login is performed a new token is generated associated to the specific logged client.
+
+\subsection{Supervisor Checks Statistics}
 \begin{landscape}
 
 \begin{figure}[hp]
@@ -207,6 +214,7 @@ The only methods present here and not mentioned in the \textit{Component Intefac
 \end{figure}
 
 \end{landscape}
+
 In the sequence diagram of figure \ref{fig:seq-sendReport} it has assumed that the \textit{getCity} request to the municipality API returns a city for which the \textit{SafeStreets service} is active. In effect the mobile app should not allow the user to send a report for a city in which the system is not active.\\
 In the sequence diagram of figure \ref{fig:seq-checkReport} the control for the user authentication is shown for every request, but only the first one presents the \textit{Alternative} choice, for the others, marked with *, it has been assumed a positive answer, for the sake of readability, avoiding to repeat the \textit{Alt} with the error message returned in case of authentication failure. 
 A similar assumption has been made for the municipality answer to the ticket emission request, it has been avoided to report the negative answer, for which the agent would be required to retry the request.
