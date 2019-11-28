@@ -15,6 +15,7 @@
 \usepackage{geometry}
 \usepackage{pdflscape}
 \usepackage{caption}
+\usepackage{soul}
 \graphicspath{{./img/}}
 
 \begin{document}
@@ -146,6 +147,14 @@ In the following table is shown which world and shared phenoma are involved for 
 \section{Revision history}
 \begin{itemize}
 \item 10-11-2019 Version 1.0
+\item 09-12-2019 Version 1.1 Small modifications to registration requirements to clarify them better, removed useless R17 and a small inconsistency in R39. Added mapsAPI.
+	\begin{itemize} 
+	\item Update R3, R25, R38, R39 
+	\item Delete R17 
+	\item Add R25b, 38b
+	\item In the section \ref{SS-Dep&Const} added a reference to maps API.
+	\end{itemize}
+	
 \end{itemize}
 \section{Reference documents}
 \begin{itemize}
@@ -256,6 +265,7 @@ The presence of some services provided by the municipalities is necessary to mak
 \item \textit{Traffic Ticket Issue}: allows to send traffic tickets to a certain person by a certain agent
 \item \textit{Agents Identity Check}: allows to check the identity of a registering agent given his personal data, including his badge number. 
 \end{itemize}
+The system requires also a Map service to obtain the map for a given area and to obtain the municipality name for a given GPS position (see \hyperref[ref:maps-api]{\textit{[MAPS-API]}}). 
 \subsection{Domain Assumptions}
 \label{subsec:domain-ass} 
 Here are shown the domain assumptions:
@@ -665,7 +675,7 @@ For each goal we describe here the necessary functional requirements, which guar
 \item {[R1]}	\label{R1}The system must allow people to register to it providing personal data (name, surname, birthdate, identity card number, fiscal code) and selecting a username and a password.
 \phantomsection
 \item {[R2]}	\label{R2}The system must verify the correctness of the provided personal data of a registered user checking them from the identity card number, blocking the registration if they are not correct.
-\item {[R3]}	\label{R3}The system must allow registered users to login through their username and password.
+\item {[R3]}	\label{R3}The system must allow registered users to login through their username and password, if they provide them correctly. 
 \item {[R4]}	\label{R4}The system must allow logged user to fill a report violation form.
 \item {[R5]}	\label{R5}The system must let the user select the type of violation detected.
 \item {[R6]}	\label{R6}The system must allow the user to insert the license plate in a violation report.
@@ -682,7 +692,7 @@ For each goal we describe here the necessary functional requirements, which guar
 \item {[R14]}	\label{R14}The system must try to find, according to the GPS position of the user and the pictures sent, if the position is fake or not.
 \item {[R15]}	\label{R15}The system must discard the report if it has been recognized as fake according to the previous requirements (R13-R14).
 \item {[R16]}	\label{R16}The system must try to automatically recognize the license plate in the photo, possibly with the help of the value inserted by the user.
-\item {[R17]}	\label{R17}The system must store into stable memory the reported violation if correct (i.e. not recognized as fake).
+\item {[R17]}	\st{The system must store into stable memory the reported violation if correct (i.e. not recognized as fake). }
 \item {[R18]}	\label{R18}The involved municipality must be calculated considering in which city the reported violation has been found, based on the GPS position of the user that has sent the report.
 \item {[R19]}	\label{R19}The system must send the reported violations to the involved municipality.
 \item {[R20]}   \label{R20}The system must allow an agent to see the reports for its municipality, checking them in order of arrival
@@ -691,7 +701,8 @@ For each goal we describe here the necessary functional requirements, which guar
 \item {[R23]}	\label{R23}\label{R20}The system must allow an agent to discard a violation if it has been verified as fake or it cannot be verified (the vehicle is not there anymore) or it is a duplicated report.
 \item {[R24]}	\label{R24}The system must allow an agent to retrieve the data of the author of a violation report.
 \phantomsection
-\item {[R25]}	\label{R25}The system must allow an agent to create an account, asking the municipality services to verify its identity.
+\item {[R25]}	\label{R25}The system must allow an agent to create an account.
+\item {[R25b]} \label{R25b}The system must verify the correctness of the provided personal data of a registered agent checking them through the municipality services, blocking the registration if they are not correct.
 \item {[R26]}	\label{R26}The system must allow an agent to login, inserting its username and password.
 \end{itemize}
 \item  \hyperref[G3]{[G3]} People must be allowed to retrieve information about streets or areas with the highest frequency of violations.
@@ -714,8 +725,9 @@ For each goal we describe here the necessary functional requirements, which guar
 \item {[R36]}	\label{R36}The system must allow authenticated supervisors to retrieve information about the vehicles with the highest number of violations in a selected area or street.
 %\item {[R37]}	\label{R37}The system must allow supervisors to see what areas or streets has seen the best improvements in the ticket emissions.
 \item {[R37]}	\label{R37}The system must allow supervisors to access only information about their own municipality.
-\item {[R38]}	\label{R38}The system must allow a supervisor to create an account, asking the municipality services to verify its identity.
-\item {[R39]}	\label{R39}The system must allow a supervisor to login, inserting its username and password.
+\item {[R38]}	\label{R38}The system must allow a supervisor to create an account, providing personal data (name, surname, birthdate, rank, badge number).
+\item {[R38b]}  \label{R38b}The system must verify the correctness of the provided personal data of a registered supervisor checking them through the municipality services, blocking the registration if they are not correct.
+\item {[R39]}	\label{R39}The system must allow a supervisor to login, inserting its ID and password.
 \end{itemize}
 \item  \hyperref[G6]{[G6]} Municipalities must be suggested for possible interventions about the mostly unsafe areas.
 \begin{itemize}
@@ -920,6 +932,8 @@ Vittorio Torri \\
 \item \label{ref:os-stats} \hyperref[use:os-stats]{\textit{[OS-STAT]}} \href{https://gs.statcounter.com}{\textit{https://gs.statcounter.com}} - statistics on operating systems market share and versions diffusion
 
 \item \label{ref:slander} \hyperref[use:slander]{\textit{[SLANDER]}} see art. 368, 370 and 69 c.p.p. (Italian law)
+
+\item \label{ref:maps-api} \hyperref[use:maps-api]{\textit{[MAPS-API]}} \href{https://developers.google.com/maps/documentation/geocoding/start?csw=1\#reverse}{\textit{https://developers.google.com/maps/documentation/geocoding/start?csw=1\#reverse}} - Google Maps API to obtain the address (including city name) from a GPS location
 
 \end{itemize}
 
