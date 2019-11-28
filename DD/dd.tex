@@ -10,7 +10,8 @@
 \usepackage{float}
 \usepackage{rotating}
 \usepackage[dvipsnames]{xcolor}
-
+\usepackage{enumerate}
+\usepackage[shortlabels]{enumitem}
 \usepackage{geometry}
 \usepackage{pdflscape}
 \usepackage{caption}
@@ -109,7 +110,7 @@ reported, for the sake of readability. The various components are now described 
 \caption{UML Component Diagram for \textit{Router} component}
 \label{fig:router-component}
 \end{figure}
-\item \textbf{SuggestionsManager} this components is the one which elaborates and provides the \textit{Suggestions} for the municipalities. It analyzes the data exploiting the \textit{DataWarehouse} component for the aggregated queries about reports, accidents and tickets and the \textit{DBMS Component} to retrieve non-aggregated information about the streets. It can provide the actual available suggestions for a municipality as an answer to a request coming from the \textit{Router}, but it also notify the \textit{Municipality Supervisor web apps} through the \textit{NotificationManager} component when it discovers a new suggestion (the suggestion discover task is periodically executed, once a month).
+\item \textbf{SuggestionsManager} this components is the one which elaborates and provides the \textit{Suggestions} for the municipalities. It analyzes the data exploiting the \textit{DataWarehouse} component for the aggregated queries about reports, accidents and tickets and the \textit{DBMS Component} to retrieve non-aggregated information about the streets. It can provide the actual available suggestions for a municipality as an answer to a request coming from the \textit{Router}, but it also notify the \textit{Municipality Supervisor web app} through the \textit{NotificationManager} component when it discovers a new suggestion (the suggestion discover task is periodically executed, once a month).
 \item \textbf{ReportManager}: this component is in charge of all concern the management of the reports sent by the users. It receives them by the mobile application and execute the automatic analysis to identify possible fake reports, it stores them through the \textit{DBMS Component} and it provides the reports to the the \textit{Municipality Agents web app}, answering to their requests of confirm/enqueue/discard and allowing them to emit a ticket, exploiting the \textit{Municipality APIs} which provide an interface for this service. Its detailed diagram is shown in figure \ref{fig:reportmgr-component}.
 
 \begin{figure}[htp]
@@ -167,7 +168,7 @@ reported, for the sake of readability. The various components are now described 
 \section{Runtime view}
 In the figures \ref{fig:seq-sendReport}, \ref{fig:seq-userLogin}, \ref{fig:seq-checkReport}, \ref{fig:seq-checkStats} some architectural sequence diagrams are provided, showing the interactions among the different components in the execution of various functions of the systems. \\
 The only methods present here and not mentioned in the \textit{Component Intefaces} section are internal method of a single component.
-
+\subsection{User sends a Report}
 \newgeometry{left=0.5cm, bottom=2cm}
 \begin{landscape}
 
@@ -179,6 +180,10 @@ The only methods present here and not mentioned in the \textit{Component Intefac
 
 \end{landscape}
 \restoregeometry
+
+In this sequence diagram is shown what messages are actually exchanged among components to process correctly a report send by a User. The User, through the Mobile App, fills the report form and sends it to the server for a confirm. The report is handled at first by the Router that checks if the User can actually send reports (i.e. verifies if the corresponding token has the rights needed). if the check is negative, then the request is discarded. Otherwise the ReportManager contacts the MapsAPI to retrieve the municipality in charge for a specific report. After this, the ReportManager checks internally if the pictures in the report have been modified or not. If so, the report is stored as "Refused" and sent to the Notification Manager, that will send a notification about the refused report to the involved MunicipalityAgent Web App. If the pictures are not fake then the report is stored as New report and the NotificationManager will be in charge of notifying the Municipality Web App about the new pending report.
+  
+\subsection{User Logs in}
 \begin{landscape}
 
 \begin{figure}[hp]
@@ -188,7 +193,7 @@ The only methods present here and not mentioned in the \textit{Component Intefac
 \end{figure}
 
 \end{landscape}
-
+\subsection{Agent Checks Report}
 \newgeometry{left=0.5cm,right=0.5cm,bottom=3cm}
 \begin{figure}[hp]
 \includegraphics[width=\textwidth]{ArchSequenceAgentCheckReport}
@@ -197,6 +202,9 @@ The only methods present here and not mentioned in the \textit{Component Intefac
 \end{figure}
 \restoregeometry
 
+In this sequence diagram are described the components involved i nthe user login and their interaction. The User fills the spaces in the Mobile App inserting his username and password. The login request is then sent to the Router that forwards the message to the AccessManager. In particular the subcomponent \textbf{CitizenLogin}  handles the login, asking the DB the password corresponding to the specified username. After having received the password, it internally checks if  the two passwords (the one coming from the user and the one stored)coincide: if so, the user is successfully logged in and this is notified back to the client, showing him the main page of the App; if not, a notification is sent back to the client, showing him an error message and asking him to insert again username and password. Notice that everytime a new login is performed a new token is generated associated to the specific logged client.
+
+\subsection{Supervisor Checks Statistics}
 \begin{landscape}
 
 \begin{figure}[hp]
@@ -207,6 +215,7 @@ The only methods present here and not mentioned in the \textit{Component Intefac
 
 \end{landscape}
 
+<<<<<<< HEAD
 \newgeometry{left=0.5cm,right=0.5cm,bottom=3cm}
 \begin{figure}[hp]
 \includegraphics[scale=0.7]{ArchSequenceRegistration}
@@ -216,11 +225,15 @@ The only methods present here and not mentioned in the \textit{Component Intefac
 \restoregeometry
 
 
+=======
+>>>>>>> 0c5334583fba224fe99b06e599777876753a23cd
 In the sequence diagram of figure \ref{fig:seq-sendReport} it has assumed that the \textit{getCity} request to the municipality API returns a city for which the \textit{SafeStreets service} is active. In effect the mobile app should not allow the user to send a report for a city in which the system is not active.\\
 In the sequence diagram of figure \ref{fig:seq-checkReport} the control for the user authentication is shown for every request, but only the first one presents the \textit{Alternative} choice, for the others, marked with *, it has been assumed a positive answer, for the sake of readability, avoiding to repeat the \textit{Alt} with the error message returned in case of authentication failure. 
 A similar assumption has been made for the municipality answer to the ticket emission request, it has been avoided to report the negative answer, for which the agent would be required to retry the request.
 
 \section{Component interfaces}
+
+
 \section{Selected architectural	styles and patterns}
 \section{Other design decisions}
 \subsection{Consistency and update strategies among replicas}
@@ -232,51 +245,78 @@ Concerning the update propagation we opted for propagating a notification of the
 \chapter{Requirements Traceability}
 
 In this section is shown how the requirements are actually ensured and what components actually ensure them. It's worth to notice that for the sake of simplicity the Router has been ignored but it's always involved when dealing with a request coming from one of the clients. 
-\begin{itemize}
-\item {[R1]}	\label{R1}The system must allow people to register to it providing personal data (name, surname, birthdate, identity card number, fiscal code) and selecting a username and a password: This requirement is provided by the AccessManager that actually handles requests of registration from the client.
-\item {[R2]}	\label{R2}The system must verify the correctness of the provided personal data of a registered user checking them from the identity card number, blocking the registration if they are not correct: The AccessManager checks the received data from the Client and checks them calling the munipality API services that actually possesses sensible data of the users. /
-\item {[R3]}	\label{R3}The system must allow registered users to login through their username and password: this requirement is provided by the AccessManager (AuthoritiesLogin and CitizenLogin components) that handles the requests of login from the user. 
-\item {[R4]}	\label{R4}The system must allow logged user to fill a report violation form: this requirement is fulfilled by the User Mobile App comonent that allows user to choose the "Report a violation" feature.
-\item {[R5]}	\label{R5}The system must let the user select the type of violation detected: the requirement is fulfilled by the User Mobile App component, showing an empty space to fill with the type of violation detected in the report a violation process.
-\item {[R6]}	\label{R6}The system must allow the user to insert the license plate in a violation report:  the requirement is fulfilled by the User Mobile App component, showing an empty space to fill with the license plate of the car that committed the violation in the report a violation process.
-\item {[R7]}	\label{R7}While reporting the violation, the system must allow users to take one or more pictures of the potential violation: the requirement is fulfilled by the User Mobile App component, allowing user to click on the "Take a picture" button.
-\item {[R8]}	\label{R8}The system must not allow users to choose pictures not taken in the moment of the report: this requirement is guaranteed by the User Mobile App by not allowing client to just pick some random picture from his local storage.
-\item {[R9]}	\label{R9}The system must collect the current position of the user, using GPS: the User Mobile App component ensures this requirement by taking the current position of the User using GPS location.
-\item {[R10]}	\label{R10}The system must allow user to confirm or delete the current report: the User Mobile App component ensures this requirement by either sending the report for a check through the "confirm" button or deleting the current report clicking on the back button.
-\item {[R11]}	\label{R11}After confirmation, the system must add the current date and time to the report: the ReportManager actually takes the requests from the client and attaches to them the current time and date taken from the application server internal clock.
-\item {[R12]}	\label{R12}The system must store confirmed report: the ReportManager is responsible for this requirement, calling the DataServer to actually store the report.
-\item {[R13]}	\label{R13}The system must check reports to try to find if the pictures of the violations have been modified: the ReportManager manages to check if the pictures are fake or not or have been modified.
-\item {[R14]}	\label{R14}The system must try to find, according to the GPS position of the user and the pictures sent, if the position is fake or not: the ReportManager ensures this requirement by running an algorithm to define if the position is correct or not. 
-\item {[R15]}	\label{R15}The system must discard the report if it has been recognized as fake according to the previous requirements (R13-R14): the ReportManager is in charge of this, deleting the report if recognized as fake.
-\item {[R16]}	\label{R16}The system must try to automatically recognize the license plate in the photo, possibly with the help of the value inserted by the user: the Report Manager is in charge of this , running an algorithm for text recognition in the picture(s).
-\item {[R17]}	\label{R17} ????? The system must store into stable memory the reported violation if correct (i.e. not recognized as fake). ??????
-\item {[R18]}	\label{R18}The involved municipality must be calculated considering in which city the reported violation has been found, based on the GPS position of the user that has sent the report: the reportManager provides this requirement by asking the Maps Service the municipality associated to the position of the user.
-\item {[R19]}	\label{R19}The system must send the reported violations to the involved municipality: the ReportManager and the the NotificationManager are responsible for this. After having saved it, the ReportManager sends the report to the NotificationManager that forwards it to the involved municipality.
-\item {[R20]}   \label{R20}The system must allow an agent to see the reports for its municipality, checking them in order of arrival: The Municipality Web app component is responsible for this, showing on screen the reports in order of arrival.
-\item {[R21]}	\label{R21}The system must allow an agent to issue a traffic ticket to a certain person (i.e. license plate) through the correspondent municipality service:
-\item {[R22]}	\label{R22}The system must allow an agent to put on hold a violation report if it needs to be checked in person: The MunicipalityAgent Web App ensures this by shwoing the possibility of putting a report on hold while checking it.
-\item {[R23]}	\label{R23}The system must allow an agent to discard a violation if it has been verified as fake or it cannot be verified (the vehicle is not there anymore) or it is a duplicated report.??
-\item {[R24]}	\label{R24}The system must allow an agent to retrieve the data of the author of a violation report: the MunicipalityAgent Web App asks to the Municipality API Data about the author of the report. 
-\item {[R25]}	\label{R25}The system must allow an agent to create an account, asking the municipality services to verify its identity: the AccessManager is responsible for this, asking the Municipality API to check the identity of the agent.
-\item {[R26]}	\label{R26}The system must allow an agent to login, inserting its username and password: Municipality Web App and AccessManager are responsible for this. The Municipality Web App allows user to insert data, while AccessManager checks if they are correct.
-\item {[R27]}	\label{R27}The system must mine this information from the reported violations: the DataWareHouse is respnsible for this, performing datamining on reports stored in the DataBase of the application.
-\item {[R28]}	\label{R28}The system must allow the users (even if not authenticated) to select the see information for a city. The user can choose either the city where he is, using the GPS position, or an arbitrary selected location. The Mobile App component ensures this requirement by allowing user to choose the city he wants.
-\item {[R29]}	\label{R29}The system must allow the user to select information about streets or areas in the city selected and to specify if he wants information for a specific street or area or a classification of streets or areas. The Mobile Web App is responsible for this requirement by allowing user to choose the area or street he wants.
-\item {[R30]}	\label{R30}The system must show the the data corresponding to the selection of [R29]: the mobile Web App and Statisticsmanager components are responsible for this requirement; the StatisticsManager contacts the MapAPI to provide an image for the city/area/street selected. This image is then shown by the Mobile App component to the user.
-\item {[R31]}	\label{R31}The system must take information about accidents and tickets from the municipality: this requirement is ensured by the DataCollectionManager that periodically queries the Municipality API to retrieve new informations and saves them on the DataWareHouse.
-\item {[R32]}	\label{R32}The system must use this information to build statistics, crossing them with reported violations: the StatisticsManager and the DataWareHouse component ensure this requirement; the DataWareHouse components build statistics exploiting dataMining techniques
-\item {[R33]}	\label{R33}The system must not allow common users to see confidential data about other people: The Mobile App component is in charge for this requirement by showing only data that does not violate privacy.This requirement is also guaranteed by a subcomponent in the Router (i.e. AuthChecker) to check if a request made by a specific client is valid or not.
-\item {[R34]}	\label{R34}The system must allow the user to choose a topic: areas or streets with most accidents, areas or streets with the highest number of traffic tickets issued, areas or streets where there have been the best improvements, information for a specific area or street. The Mobile App iprovides this requirement by allowing user to choose the topic is interested into.
-\item {[R35]}	\label{R35}The system must show to the user the information about the topic selected according to [R34]: The Mobile App component ensures this requirement by showing as an image the topic requested to the user.
-\item {[R36]}	\label{R36}The system must allow authenticated supervisors to retrieve information about the vehicles with the highest number of violations in a selected area or street: the MunicipalitySupervisor Web App allows supervisors to select the statistics they want; the Statistics;anager asks the the DataWareHouse the type of Data requested by the User.
+In table ref? to highlight for each component what requirements it ensures.
+\begin{table}[H]  
+  \centering
+  \begin{tabular}{|c|c|}
+    \cline{1-2}
+   	\rule{0pt}{10pt} 
+   	\begin{large}
+    \textbf{Component} 
+    \end{large}&\begin{large}
+    \textbf{Requirements} 
+    \end{large}\\  \hline
+    User Mobile App &  \\ \hline
+    MunicipalityAgent Web App & \\ \hline
+    MunicipalitySupervisor Web App & \\ \hline
+    AccessManager & \\ \hline
+    ReportManager & \\ \hline
+    SuggestionManager & \\ \hline
+    StatisticsManager & \\ \hline
+    NotifcationManager & \\ \hline
+    DataCollectionManager & \\ \hline
+    DataWareHouse & \\ \hline
+    
+  \end{tabular}
+  \caption{Correspondence between goals and world and shared phenoma}
+\end{table}
+In the following lines is explained how the requirements are provided by the components:
+\begin{enumerate}[start=1,label={[R\arabic*]}]
+\item The system must allow people to register to it providing personal data (name, surname, birthdate, identity card number, fiscal code) and selecting a username and a password: This requirement is provided by the \textbf{AccessManager} and the \textbf{User Mobile App} components. The \textbf{User Mobile App} allows the user to fill blank spaces with username and password and the \textbf{AccessManager} handles requests of registration from the client.
+\item The system must verify the correctness of the provided personal data of a registered user checking them from the identity card number, blocking the registration if they are not correct: the \textbf{AccessManager} checks the received data from the Client and checks them calling the \textbf{munipality API services} that actually possesses sensible data of the users. 
+\item The system must allow registered users to login through their username and password: this requirement is provided by the AccessManager (AuthoritiesLogin and CitizenLogin components) that handles the requests of login from the user. 
+\item The system must allow logged user to fill a report violation form: this requirement is fulfilled by the User Mobile App comonent that allows user to choose the "Report a violation" feature.
+\item The system must let the user select the type of violation detected: the requirement is fulfilled by the User Mobile App component, showing an empty space to fill with the type of violation detected in the report a violation process.
+\item The system must allow the user to insert the license plate in a violation report:  the requirement is fulfilled by the User Mobile App component, showing an empty space to fill with the license plate of the car that committed the violation in the report a violation process.
+\item While reporting the violation, the system must allow users to take one or more pictures of the potential violation: the requirement is fulfilled by the User Mobile App component, allowing user to click on the "Take a picture" button.
+\item The system must not allow users to choose pictures not taken in the moment of the report: this requirement is guaranteed by the User Mobile App by not allowing client to just pick some random picture from his local storage.
+\item The system must collect the current position of the user, using GPS: the User Mobile App component ensures this requirement by taking the current position of the User using GPS location.
+\item The system must allow user to confirm or delete the current report: the User Mobile App component ensures this requirement by either sending the report for a check through the "confirm" button or deleting the current report clicking on the back button.
+\item After confirmation, the system must add the current date and time to the report: the ReportManager actually takes the requests from the client and attaches to them the current time and date taken from the application server internal clock.
+\item The system must store confirmed report: the ReportManager is responsible for this requirement, calling the DataServer to actually store the report.
+\item The system must check reports to try to find if the pictures of the violations have been modified: the ReportManager manages to check if the pictures are fake or not or have been modified.
+\item The system must try to find, according to the GPS position of the user and the pictures sent, if the position is fake or not: the ReportManager ensures this requirement by running an algorithm to define if the position is correct or not. 
+\item The system must discard the report if it has been recognized as fake according to the previous requirements (R13-R14): the ReportManager is in charge of this, deleting the report if recognized as fake.
+\item The system must try to automatically recognize the license plate in the photo, possibly with the help of the value inserted by the user: the ReportManager is in charge of this , running an algorithm for text recognition in the picture(s).
+\item ????? The system must store into stable memory the reported violation if correct (i.e. not recognized as fake). ??????
+\item The involved municipality must be calculated considering in which city the reported violation has been found, based on the GPS position of the user that has sent the report: the reportManager provides this requirement by asking the Maps Service the municipality associated to the position of the user.
+\item The system must send the reported violations to the involved municipality: the ReportManager and the the NotificationManager are responsible for this. After having saved it, the ReportManager sends the report to the NotificationManager that forwards it to the involved municipality.
+\item The system must allow an agent to see the reports for its municipality, checking them in order of arrival: The MunicipalityAgent Web app component is responsible for this, showing on screen the reports in order of arrival.
+\item The system must allow an agent to issue a traffic ticket to a certain person (i.e. license plate) through the correspondent municipality service:
+\item The system must allow an agent to put on hold a violation report if it needs to be checked in person: The MunicipalityAgent Web App ensures this by shwoing the possibility of putting a report on hold while checking it.
+\item The system must allow an agent to discard a violation if it has been verified as fake or it cannot be verified (the vehicle is not there anymore) or it is a duplicated report.??
+\item The system must allow an agent to retrieve the data of the author of a violation report: the MunicipalityAgent Web App asks to the Municipality API data about the author of the report. 
+\item The system must allow an agent to create an account, asking the municipality services to verify its identity: the AccessManager is responsible for this, asking the Municipality API to check the identity of the agent.
+\item The system must allow an agent to login, inserting its username and password: Municipality Web App and AccessManager are responsible for this. The MunicipalityAgent Web App allows agents to insert data, while AccessManager checks if they are correct.
+\item The system must mine this information from the reported violations: the DataWareHouse is responsible for this, performing datamining on reports stored in the DataBase of the application.
+\item The system must allow the users (even if not authenticated) to select the see information for a city. The user can choose either the city where he is, using the GPS position, or an arbitrary selected location. The User Mobile App component ensures this requirement by allowing user to choose the city he wants.
+\item The system must allow the user to select information about streets or areas in the city selected and to specify if he wants information for a specific street or area or a classification of streets or areas. The Mobile Web App is responsible for this requirement by allowing user to choose the area or street he wants.
+\item The system must show the the data corresponding to the selection of [R29]: the User Mobile App and Statisticsmanager components are responsible for this requirement; the StatisticsManager contacts the MapAPI to provide an image for the city/area/street selected. This image is then shown by the Mobile App component to the user.
+\item The system must take information about accidents and tickets from the municipality: this requirement is ensured by the DataCollectionManager that periodically queries the Municipality API to retrieve new informations and saves them on the DataWareHouse.
+\item The system must use this information to build statistics, crossing them with reported violations: the StatisticsManager and the DataWareHouse component ensure this requirement; the DataWareHouse components build statistics exploiting dataMining techniques
+\item The system must not allow common users to see confidential data about other people: The User Mobile App component is in charge for this requirement by showing only data that does not violate privacy.This requirement is also guaranteed by a subcomponent in the Router (i.e. AuthChecker) to check if a request made by a specific client is valid or not.
+\item The system must allow the user to choose a topic: areas or streets with most accidents, areas or streets with the highest number of traffic tickets issued, areas or streets where there have been the best improvements, information for a specific area or street. The User Mobile App iprovides this requirement by allowing user to choose the topic is interested into.
+\item The system must show to the user the information about the topic selected according to [R34]: The User Mobile App component ensures this requirement by showing as an image the topic requested to the user.
+\item The system must allow authenticated supervisors to retrieve information about the vehicles with the highest number of violations in a selected area or street: the MunicipalitySupervisor Web App allows supervisors to select the statistics they want; the Statistics;anager asks the the DataWareHouse the type of Data requested by the User.
 %\item {[R37]}	\label{R37}The system must allow supervisors to see what areas or streets has seen the best improvements in the ticket emissions.
-\item {[R37]}	\label{R37}The system must allow supervisors to access only information about their own municipality: the MunicipalitySupervisor Web App  is responsible for this, allowing supervisor to only check Statistics and suggestions about his city. This requirement is also guaranteed by a subcomponent in the Router (i.e. AuthChecker) to check if a request made by a specific client is valid or not.
-\item {[R38]}	\label{R38}The system must allow a supervisor to create an account, asking the municipality services to verify its identity: the AccessManager and the MunicipalitySupervisor Web App are responsible for this requirement. the accessManager receives the request and ask the MunicipalityAPI to check if the inserted identity is correct.
-\item {[R39]}	\label{R39}The system must allow a supervisor to login, inserting its username and password: The MunicipalitySupervisor Web App and the AccessManager are responsible for the requirement. The MunicipalitySupervisor WebApp allows supervisor to enter his username and password and forwards the request to the AccessManager that handles it asking the DataServer if the data inserted is correct.
-\item {[R40]}	\label{R40}The system must take information about accidents, tickets and street networks (bike lanes, sidewalks, parking areas,…) from the municipality, exploiting the municipality services: the DataWareHouse component ??'
-\item {[R41]}	\label{R41}The system must elaborate this information, combined with reports information, and try to find possible solutions for problems: the DataWareHouse component is responsible for this requirement trying to aggregate data coming from the Databases concerning reports, issued traffic tickets and accidents.
-\item {[R42]}	\label{R42}The system must notify the municipality about new possible interventions: the NotificationManager the DataWareHouse and SuggestionManager components are responsible for this requirement: the DW component forwards the new intervention to the SuggestionManager that forwards it to NotificationManager that sends it to  the involved municipality.
-\end{itemize}
+\item The system must allow supervisors to access only information about their own municipality: the MunicipalitySupervisor Web App  is responsible for this, allowing supervisor to only check Statistics and suggestions about his city. This requirement is also guaranteed by a subcomponent in the Router (i.e. AuthChecker) to check if a request made by a specific client is valid or not.
+\item The system must allow a supervisor to create an account, asking the municipality services to verify its identity: the AccessManager and the MunicipalitySupervisor Web App are responsible for this requirement. the accessManager receives the request and ask the MunicipalityAPI to check if the inserted identity is correct.
+\item The system must allow a supervisor to login, inserting its username and password: The MunicipalitySupervisor Web App and the AccessManager are responsible for the requirement. The MunicipalitySupervisor WebApp allows supervisor to enter his username and password and forwards the request to the AccessManager that handles it asking the DataServer if the data inserted is correct.
+\item The system must take information about accidents, tickets and street networks (bike lanes, sidewalks, parking areas,…) from the municipality, exploiting the municipality services: the DataWareHouse component. ??'
+\item The system must elaborate this information, combined with reports information, and try to find possible solutions for problems: the DataWareHouse component is responsible for this requirement trying to aggregate data coming from the Databases concerning reports, issued traffic tickets and accidents.
+\item The system must notify the municipality about new possible interventions: the NotificationManager the DataWareHouse and SuggestionManager components are responsible for this requirement: the DataWareHouse component forwards the new intervention to the SuggestionManager that forwards it to NotificationManager that sends it to  the involved municipality.
+
+\end{enumerate}
 
 \chapter{Implementation, integration and test plan}
 
