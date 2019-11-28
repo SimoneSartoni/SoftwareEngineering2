@@ -166,7 +166,7 @@ reported, for the sake of readability. The various components are now described 
 \section{Deployment view}
 
 \section{Runtime view}
-In the figures \ref{fig:seq-sendReport}, \ref{fig:seq-userLogin}, \ref{fig:seq-checkReport}, \ref{fig:seq-checkStats} some architectural sequence diagrams are provided, showing the interactions among the different components in the execution of various functions of the systems. \\
+In the figures \ref{fig:seq-sendReport}, \ref{fig:seq-userLogin}, \ref{fig:seq-checkReport}, \ref{fig:seq-checkStats}, \ref{fig:seq-register} and \ref{fig:seq-suggestions} some architectural sequence diagrams are provided, showing the interactions among the different components in the execution of various functions of the systems. \\
 The only methods present here and not mentioned in the \textit{Component Intefaces} section are internal method of a single component.
 \subsection{User sends a Report}
 \newgeometry{left=0.5cm, bottom=2cm}
@@ -219,8 +219,20 @@ In this sequence diagram are described the components involved i nthe user login
 \begin{figure}[hp]
 \includegraphics[scale=0.7]{ArchSequenceRegistration}
 \caption{UML Architectural Sequence Diagram for \textit{User Registration}}
-\label{fig:seq-checkReport}
+\label{fig:seq-register}
 \end{figure}
+\restoregeometry
+
+\newgeometry{left=1cm,right=1cm, bottom=2cm}
+\begin{landscape}
+
+\begin{figure}[hp]
+\includegraphics[angle=0, scale=0.65]{ArchSequenceSuggestions}
+\caption{UML Architectural Sequence Diagram for the \textit{Suggestions}}
+\label{fig:seq-suggestions}
+\end{figure}
+
+\end{landscape}
 \restoregeometry
 
 In the sequence diagram of figure \ref{fig:seq-sendReport} it has assumed that the \textit{getCity} request to the municipality API returns a city for which the \textit{SafeStreets service} is active. In effect the mobile app should not allow the user to send a report for a city in which the system is not active.\\
@@ -342,7 +354,7 @@ Simone Sartoni \\
 18-11-2019 & 1 h* & Componenst and high-level architecture analysis \\ \midrule
 24-11-2019 & 4 h &  System architecture diagram and deployment diagram\\ \midrule
 27-11-2019 & 1.5 h & Update deployment diagram, requirements traceability revision and Requirements Traceability Matrix creation \\ \midrule
-28-11-2019 & 1 h & Requirements Traceability Matrix update \\ \midrule
+28-11-2019 & 3 h & Requirements Traceability Matrix update and Interface Diagram \\ \midrule
 
 \bottomrule
 \end{tabular}
@@ -360,6 +372,10 @@ Vittorio Torri \\
 22-11-2019 & 0.5 h & Components diagrams \\ \midrule
 23-11-2019 & 1.5 h & Components diagrams and components view\\ \midrule
 24-11-2019 & 2 h & Sequence diagrams and components view \\ \midrule
+26-11-2019 & 1 h & Sequence diagrams \\ \midrule
+27-11-2019 & 1 h & Sequence diagrams \\ \midrule
+28-11-2019 & 1 h* & RASD Update \\ \midrule
+28-11-2019 & 1 h & Sequence Diagram \\ \midrule
 \bottomrule
 \end{tabular}
 \caption[Vittorio Torri's effort table]{}
