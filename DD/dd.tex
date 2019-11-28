@@ -215,7 +215,6 @@ In this sequence diagram are described the components involved i nthe user login
 
 \end{landscape}
 
-<<<<<<< HEAD
 \newgeometry{left=0.5cm,right=0.5cm,bottom=3cm}
 \begin{figure}[hp]
 \includegraphics[scale=0.7]{ArchSequenceRegistration}
@@ -224,9 +223,6 @@ In this sequence diagram are described the components involved i nthe user login
 \end{figure}
 \restoregeometry
 
-
-=======
->>>>>>> 0c5334583fba224fe99b06e599777876753a23cd
 In the sequence diagram of figure \ref{fig:seq-sendReport} it has assumed that the \textit{getCity} request to the municipality API returns a city for which the \textit{SafeStreets service} is active. In effect the mobile app should not allow the user to send a report for a city in which the system is not active.\\
 In the sequence diagram of figure \ref{fig:seq-checkReport} the control for the user authentication is shown for every request, but only the first one presents the \textit{Alternative} choice, for the others, marked with *, it has been assumed a positive answer, for the sake of readability, avoiding to repeat the \textit{Alt} with the error message returned in case of authentication failure. 
 A similar assumption has been made for the municipality answer to the ticket emission request, it has been avoided to report the negative answer, for which the agent would be required to retry the request.
@@ -256,16 +252,16 @@ In table ref? to highlight for each component what requirements it ensures.
     \end{large}&\begin{large}
     \textbf{Requirements} 
     \end{large}\\  \hline
-    User Mobile App &  \\ \hline
-    MunicipalityAgent Web App & \\ \hline
-    MunicipalitySupervisor Web App & \\ \hline
-    AccessManager & \\ \hline
-    ReportManager & \\ \hline
-    SuggestionManager & \\ \hline
-    StatisticsManager & \\ \hline
-    NotifcationManager & \\ \hline
-    DataCollectionManager & \\ \hline
-    DataWareHouse & \\ \hline
+    User Mobile App &  R1, R4, R5, R6, R7, R8, R9, R10, R28, R29, R30, R33, R34, R35 \\ \hline
+    MunicipalityAgent Web App & R20, R24, R26 \\ \hline
+    MunicipalitySupervisor Web App & R36, R37, R38, R39 \\ \hline
+    AccessManager & R1, R2, R3, R25, R26, R38, R39 \\ \hline
+    ReportManager & R11, R12, R13, R14, R15, R16, R18, R19, \\ \hline
+    SuggestionManager & R42 \\ \hline
+    StatisticsManager & R30, R32, R36 \\ \hline
+    NotifcationManager & R19, R42 \\ \hline
+    DataCollectionManager & R31 \\ \hline
+    DataWareHouse & R27, R31, R32, R36, R40, R41, R42 \\ \hline
     
   \end{tabular}
   \caption{Correspondence between goals and world and shared phenoma}
@@ -343,7 +339,11 @@ Simone Sartoni \\
 \begin{tabular}{p{2cm}p{1.5cm}p{7cm}}
 \toprule
 \textit{Date} & \textit{Hour} & \textit{Section} \\ \midrule
-17-10-2019 & 1.5 h* & Component and high-level architecture analysis \\ \midrule
+18-11-2019 & 1 h* & Componenst and high-level architecture analysis \\ \midrule
+24-11-2019 & 4 h &  System architecture diagram and deployment diagram\\ \midrule
+27-11-2019 & 1.5 h & Update deployment diagram, requirements traceability revision and Requirements Traceability Matrix creation \\ \midrule
+28-11-2019 & 1 h & Requirements Traceability Matrix update \\ \midrule
+
 \bottomrule
 \end{tabular}
 \caption[Simone Sartoni's effort table]{}
