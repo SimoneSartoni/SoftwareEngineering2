@@ -215,7 +215,6 @@ In this sequence diagram are described the components involved i nthe user login
 
 \end{landscape}
 
-<<<<<<< HEAD
 \newgeometry{left=0.5cm,right=0.5cm,bottom=3cm}
 \begin{figure}[hp]
 \includegraphics[scale=0.7]{ArchSequenceRegistration}
@@ -224,9 +223,6 @@ In this sequence diagram are described the components involved i nthe user login
 \end{figure}
 \restoregeometry
 
-
-=======
->>>>>>> 0c5334583fba224fe99b06e599777876753a23cd
 In the sequence diagram of figure \ref{fig:seq-sendReport} it has assumed that the \textit{getCity} request to the municipality API returns a city for which the \textit{SafeStreets service} is active. In effect the mobile app should not allow the user to send a report for a city in which the system is not active.\\
 In the sequence diagram of figure \ref{fig:seq-checkReport} the control for the user authentication is shown for every request, but only the first one presents the \textit{Alternative} choice, for the others, marked with *, it has been assumed a positive answer, for the sake of readability, avoiding to repeat the \textit{Alt} with the error message returned in case of authentication failure. 
 A similar assumption has been made for the municipality answer to the ticket emission request, it has been avoided to report the negative answer, for which the agent would be required to retry the request.
