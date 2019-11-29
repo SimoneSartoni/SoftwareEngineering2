@@ -202,7 +202,7 @@ In this sequence diagram is shown what messages are actually exchanged among com
 \end{figure}
 \restoregeometry
 
-In this sequence diagram are described the components involved i nthe user login and their interaction. The User fills the spaces in the Mobile App inserting his username and password. The login request is then sent to the Router that forwards the message to the AccessManager. In particular the subcomponent \textbf{CitizenLogin}  handles the login, asking the DB the password corresponding to the specified username. After having received the password, it internally checks if  the two passwords (the one coming from the user and the one stored)coincide: if so, the user is successfully logged in and this is notified back to the client, showing him the main page of the App; if not, a notification is sent back to the client, showing him an error message and asking him to insert again username and password. Notice that everytime a new login is performed a new token is generated associated to the specific logged client.
+In this sequence diagram are described the components involved i nthe user login and their interaction. The User fills the spaces in the Mobile App inserting his username and password. The login request is then sent to the Router that forwards the message to the AccessManager. In particular the subcomponent CitizenLogin handles the login, asking the DB the password corresponding to the specified username. After having received the password, it internally checks if  the two passwords (the one coming from the user and the one stored)coincide: if so, the user is successfully logged in and this is notified back to the client, showing him the main page of the App; if not, a notification is sent back to the client, showing him an error message and asking him to insert again username and password. Notice that everytime a new login is performed a new token is generated associated to the specific logged client.
 
 \subsection{Supervisor Checks Statistics}
 \begin{landscape}
@@ -214,14 +214,6 @@ In this sequence diagram are described the components involved i nthe user login
 \end{figure}
 
 \end{landscape}
-
-\newgeometry{left=0.5cm,right=0.5cm,bottom=3cm}
-\begin{figure}[hp]
-\includegraphics[scale=0.7]{ArchSequenceRegistration}
-\caption{UML Architectural Sequence Diagram for \textit{User Registration}}
-\label{fig:seq-checkReport}
-\end{figure}
-\restoregeometry
 
 In the sequence diagram of figure \ref{fig:seq-sendReport} it has assumed that the \textit{getCity} request to the municipality API returns a city for which the \textit{SafeStreets service} is active. In effect the mobile app should not allow the user to send a report for a city in which the system is not active.\\
 In the sequence diagram of figure \ref{fig:seq-checkReport} the control for the user authentication is shown for every request, but only the first one presents the \textit{Alternative} choice, for the others, marked with *, it has been assumed a positive answer, for the sake of readability, avoiding to repeat the \textit{Alt} with the error message returned in case of authentication failure. 
@@ -252,16 +244,16 @@ In table ref? to highlight for each component what requirements it ensures.
     \end{large}&\begin{large}
     \textbf{Requirements} 
     \end{large}\\  \hline
-    User Mobile App &  R1, R4, R5, R6, R7, R8, R9, R10, R28, R29, R30, R33, R34, R35 \\ \hline
-    MunicipalityAgent Web App & R20, R24, R26 \\ \hline
-    MunicipalitySupervisor Web App & R36, R37, R38, R39 \\ \hline
-    AccessManager & R1, R2, R3, R25, R26, R38, R39 \\ \hline
-    ReportManager & R11, R12, R13, R14, R15, R16, R18, R19, \\ \hline
-    SuggestionManager & R42 \\ \hline
-    StatisticsManager & R30, R32, R36 \\ \hline
-    NotifcationManager & R19, R42 \\ \hline
-    DataCollectionManager & R31 \\ \hline
-    DataWareHouse & R27, R31, R32, R36, R40, R41, R42 \\ \hline
+    User Mobile App &  \\ \hline
+    MunicipalityAgent Web App & \\ \hline
+    MunicipalitySupervisor Web App & \\ \hline
+    AccessManager & \\ \hline
+    ReportManager & \\ \hline
+    SuggestionManager & \\ \hline
+    StatisticsManager & \\ \hline
+    NotifcationManager & \\ \hline
+    DataCollectionManager & \\ \hline
+    DataWareHouse & \\ \hline
     
   \end{tabular}
   \caption{Correspondence between goals and world and shared phenoma}
@@ -284,13 +276,12 @@ In the following lines is explained how the requirements are provided by the com
 \item The system must try to find, according to the GPS position of the user and the pictures sent, if the position is fake or not: the ReportManager ensures this requirement by running an algorithm to define if the position is correct or not. 
 \item The system must discard the report if it has been recognized as fake according to the previous requirements (R13-R14): the ReportManager is in charge of this, deleting the report if recognized as fake.
 \item The system must try to automatically recognize the license plate in the photo, possibly with the help of the value inserted by the user: the ReportManager is in charge of this , running an algorithm for text recognition in the picture(s).
-\item ????? The system must store into stable memory the reported violation if correct (i.e. not recognized as fake). ??????
 \item The involved municipality must be calculated considering in which city the reported violation has been found, based on the GPS position of the user that has sent the report: the reportManager provides this requirement by asking the Maps Service the municipality associated to the position of the user.
 \item The system must send the reported violations to the involved municipality: the ReportManager and the the NotificationManager are responsible for this. After having saved it, the ReportManager sends the report to the NotificationManager that forwards it to the involved municipality.
 \item The system must allow an agent to see the reports for its municipality, checking them in order of arrival: The MunicipalityAgent Web app component is responsible for this, showing on screen the reports in order of arrival.
 \item The system must allow an agent to issue a traffic ticket to a certain person (i.e. license plate) through the correspondent municipality service:
 \item The system must allow an agent to put on hold a violation report if it needs to be checked in person: The MunicipalityAgent Web App ensures this by shwoing the possibility of putting a report on hold while checking it.
-\item The system must allow an agent to discard a violation if it has been verified as fake or it cannot be verified (the vehicle is not there anymore) or it is a duplicated report.??
+\item The system must allow an agent to discard a violation if it has been verified as fake or it cannot be verified (the vehicle is not there anymore) or it is a duplicated report: //TODO
 \item The system must allow an agent to retrieve the data of the author of a violation report: the MunicipalityAgent Web App asks to the Municipality API data about the author of the report. 
 \item The system must allow an agent to create an account, asking the municipality services to verify its identity: the AccessManager is responsible for this, asking the Municipality API to check the identity of the agent.
 \item The system must allow an agent to login, inserting its username and password: Municipality Web App and AccessManager are responsible for this. The MunicipalityAgent Web App allows agents to insert data, while AccessManager checks if they are correct.
@@ -308,7 +299,7 @@ In the following lines is explained how the requirements are provided by the com
 \item The system must allow supervisors to access only information about their own municipality: the MunicipalitySupervisor Web App  is responsible for this, allowing supervisor to only check Statistics and suggestions about his city. This requirement is also guaranteed by a subcomponent in the Router (i.e. AuthChecker) to check if a request made by a specific client is valid or not.
 \item The system must allow a supervisor to create an account, asking the municipality services to verify its identity: the AccessManager and the MunicipalitySupervisor Web App are responsible for this requirement. the accessManager receives the request and ask the MunicipalityAPI to check if the inserted identity is correct.
 \item The system must allow a supervisor to login, inserting its username and password: The MunicipalitySupervisor Web App and the AccessManager are responsible for the requirement. The MunicipalitySupervisor WebApp allows supervisor to enter his username and password and forwards the request to the AccessManager that handles it asking the DataServer if the data inserted is correct.
-\item The system must take information about accidents, tickets and street networks (bike lanes, sidewalks, parking areas,…) from the municipality, exploiting the municipality services: the DataWareHouse component. ??'
+\item The system must take information about accidents, tickets and street networks (bike lanes, sidewalks, parking areas,…) from the municipality, exploiting the municipality services: the DataCollectionManager is responsible for this requirement periodically asking data to the Municipallity API and saves it in the DataWareHouse.
 \item The system must elaborate this information, combined with reports information, and try to find possible solutions for problems: the DataWareHouse component is responsible for this requirement trying to aggregate data coming from the Databases concerning reports, issued traffic tickets and accidents.
 \item The system must notify the municipality about new possible interventions: the NotificationManager the DataWareHouse and SuggestionManager components are responsible for this requirement: the DataWareHouse component forwards the new intervention to the SuggestionManager that forwards it to NotificationManager that sends it to  the involved municipality.
 
@@ -339,11 +330,7 @@ Simone Sartoni \\
 \begin{tabular}{p{2cm}p{1.5cm}p{7cm}}
 \toprule
 \textit{Date} & \textit{Hour} & \textit{Section} \\ \midrule
-18-11-2019 & 1 h* & Componenst and high-level architecture analysis \\ \midrule
-24-11-2019 & 4 h &  System architecture diagram and deployment diagram\\ \midrule
-27-11-2019 & 1.5 h & Update deployment diagram, requirements traceability revision and Requirements Traceability Matrix creation \\ \midrule
-28-11-2019 & 1 h & Requirements Traceability Matrix update \\ \midrule
-
+17-10-2019 & 1.5 h* & Component and high-level architecture analysis \\ \midrule
 \bottomrule
 \end{tabular}
 \caption[Simone Sartoni's effort table]{}
