@@ -147,12 +147,13 @@ In the following table is shown which world and shared phenoma are involved for 
 \section{Revision history}
 \begin{itemize}
 \item 10-11-2019 Version 1.0
-\item 09-12-2019 Version 1.1 Small modifications to registration requirements to clarify them better, removed useless R17 and a small inconsistency in R39. Added mapsAPI.
+\item 09-12-2019 Version 1.1:
 	\begin{itemize} 
-	\item Update R3, R25, R38, R39 
-	\item Delete R17 
-	\item Add R25b, 38b
+	\item Update R3, R25, R38, R39 to better clarify registration process
+	\item Add R25b, R38b to better clarify registration process
+	\item Delete R17 (duplicated)
 	\item In the section \ref{SS-Dep&Const} added a reference to maps API.
+	\item Update R27, R32, R42 to make them more readable 
 	\end{itemize}
 	
 \end{itemize}
@@ -707,7 +708,7 @@ For each goal we describe here the necessary functional requirements, which guar
 \end{itemize}
 \item  \hyperref[G3]{[G3]} People must be allowed to retrieve information about streets or areas with the highest frequency of violations.
 \begin{itemize}
-\item {[R27]}	\label{R27}The system must mine this information from the reported violations.
+\item {[R27]}	\label{R27}The system must mine information about streets or areas from the reported violations.
 \item {[R28]}	\label{R28}The system must allow the users (even if not authenticated) to select the see information for a city. The user can choose either the city where he is, using the GPS position, or an arbitrary selected location.
 \item {[R29]}	\label{R29}The system must allow the user to select information about streets or areas in the city selected and to specify if he wants information for a specific street or area or a classification of streets or areas.
 \item {[R30]}	\label{R30}The system must show the the data corresponding to the selection of [R29]
@@ -715,7 +716,7 @@ For each goal we describe here the necessary functional requirements, which guar
 \item  \hyperref[G4]{[G4]} People must be able to retrieve statistics and trends about the accidents correlated to the parking violations, the effectiveness of SafeStreets initiatives and the issuing of traffic tickets.
 \begin{itemize}
 \item {[R31]}	\label{R31}The system must take information about accidents and tickets from the municipality.
-\item {[R32]}	\label{R32}The system must use this information to build statistics, crossing them with reported violations.
+\item {[R32]}	\label{R32}The system must use information about accidents and tickets to build statistics, crossing them with reported violations.
 \item {[R33]}	\label{R33}The system must not allow common users to see confidential data about other people.
 \item {[R34]}	\label{R34}The system must allow the user to choose a topic: areas or streets with most accidents, areas or streets with the highest number of traffic tickets issued, areas or streets where there have been the best improvements, information for a specific area or street.
 \item {[R35]}	\label{R35}The system must show to the user the information about the topic selected according to [R34].
@@ -733,7 +734,7 @@ For each goal we describe here the necessary functional requirements, which guar
 \begin{itemize}
 \item {[R40]}	\label{R40}The system must take information about accidents, tickets and street networks (bike lanes, sidewalks, parking areas,…) from the municipality, exploiting the municipality services.
 \phantomsection
-\item {[R41]}	\label{R41}The system must elaborate this information, combined with reports information, and try to find possible solutions for problems.
+\item {[R41]}	\label{R41}The system must elaborate information about accidents, tickets and streets, combined with reports information, and try to find possible solutions for problems.
 \item {[R42]}	\label{R42}The system must notify the municipality supervisors about the solutions it has found.
 \end{itemize}
 \end{itemize}
