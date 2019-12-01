@@ -76,15 +76,39 @@ Version 1.0
 
 \chapter{Introduction}
 \section{Purpose}
+
+The purpose of this document is to underline and explain in detail what are the design choices for the deployment of the SafeStreet Application.  The analysis has been made at different levels to underline different views of the same system.
+Different levels are identified through the document; here they are just mentioned:
+\begin{itemize}
+\item the high level architecture;
+\item the components that actually builds the system;
+\item the deployment view of the system;
+\item the messages exchanged among the components and the interfaces they offer;
+\item the pattern and technologies exploited for the system;
+\item the User Interfaces provided by the system.
+\end{itemize}
+
 \section{Scope}
+
 \section{Definitions,Acronyms,Abbreviations}
+
+
 \section{Revision History}
 \section{Reference Documents}
 \section{Document Structure}
+The document is divided into 6 chapters:
+\begin{itemize}
+\item \textit{Chapter 2}: in this chapter are presented all the design choices made the develop the application: the design choices are presented at different levels of abstraction, from the more general and abstract one concerning tiers and system architecture, to the more technical one, concerning the protocol and technologies chosen to deploy the system.
+\item \textit{Chapter 3}: in this chapter are presented the user interfaces using mockups to represent how they should actually be once implemented: different mockups are presented to cover all possible situation worth to be shown.
+\item \textit{Chapter 4}: in this chapter the requirements traceability is done. Each requirement described in the RASD is provided by one or more component presented in Chapter 2; in this chapter it's described which components provide what requirements and how this requirement are actually provided.
+\item \textit{Chapter 5}: this capter takes into account how the system is going to be implemented, how the components will be integrated and what strategies of testing is going to be used.
+\item \textit{Chapter 6}: this chapter is only meant to show for each component of the group the effort spent, with associated date and hours.
+\item \textit{Chapter 7}: in this last chapter are mentioned the references to documents or sites about techologies, pattern and architectures used in this document.
 
+\end{itemize}
 \chapter{Architectural Design}
 \section{Overview: High­‐level components and their	interaction}
-The application will be developed using the client-server paradigm on a three-tiered architecture. The three layers of the application (Presentation, Application and Data) are divided into clusters of machines (i.e. tiers) that actually cooperate to provide a specific functionality. In this case we have three tiers  and each tier is responsible for one of the three layers. The client side is responsible (only) for the presentation layer; therefore, in this architecture, the thin-client has been adopted considering the fact that the required functionalities client-side are limited. The UIs provided are just meant to show results and to allow clients to choose what they want.  In the App case, the client contains all the presentation layer while in the WebApp case the layer is splitted between the client and WebServer; the WebServer is responsible for contacting the application server and forward the client requests to it. The Application tier takes care of the application layer encapsulating all is needed concerning the application logic. It receives the requests from the clients and handles them. It's also responsible for sending asynchronous notifications to the presentation layer when certain conditions are met.  Here we have multiple Servers cooperating together to improve performance, scalability, fault tolerance and availability. An elastic component (i.e. load balancer) is used to rule the accesses to different Application Servers, dinamically balancing the load among all the Servers. The Application tier communicates with the Data tier, responsible for the Data Access layer. This tier is composed by several DataServers: each one is associated with a single replica of the data and exploits the DBMS technology to access the DataBase. The Database is fully replicated in different nodes. Techniques and protocols are used to ensure consistency among replicas: they will be full explained in "Other design decisions" section. Again a load balancer is used to dinamically share the load among different machines. 
+The application will be developed using the client-server paradigm on a three-tiered architecture. The three layers of the application (Presentation, Application and Data) are divided into clusters of machines (i.e. tiers) that actually cooperate to provide a specific functionality. In this case we have three tiers  and each tier is responsible for one of the three layers. The client tier is responsible (only) for the presentation layer; therefore, in this architecture, the thin-client has been adopted considering the fact that the required functionalities client-side are limited. The UIs provided are just meant to show results and to allow clients to choose what they want. /* In the App case, the client contains all the presentation layer while in the WebApp case the layer is splitted between the client and WebServer; the WebServer is responsible for contacting the application server and forward the client requests to it */. The Application tier takes care of the application layer encapsulating all is needed concerning the application logic. It receives the requests from the clients and handles them. It's also responsible for sending asynchronous notifications to the presentation layer when certain conditions are met. It can also filter requests from the clients, deleting invalid ones. /* Here we have multiple Servers cooperating together to improve performance, scalability, fault tolerance and availability. An elastic component (i.e. load balancer) is used to rule the accesses to different Application Servers, dinamically balancing the load among all the Servers.*/ The Application tier communicates with the Data tier, responsible for the Data Access layer, that is the tier responsible for accessing the DataBases and performing queries on them. . /*This tier is composed by several DataServers: each one is associated with a single replica of the data and exploits the DBMS technology to access the DataBase. The Database is fully replicated in different nodes. Techniques and protocols are used to ensure consistency among replicas: they will be full explained in "Other design decisions" section. Again a load balancer is used to dinamically share the load among different machines. */
 To ensure and improve security firewalls are installed before and after the application servers to filter accesses from external and unsafe networks. By the creation of a DMZ (demilitarized zone) external entities can only have access to the exposed services. Security is crucial because the application works mainly with sensible information.
 To provide the required functionalities the system exploits datawarehousing. The datawarehouse is a component in the Data tier able to deal with historical data and aggregate data taken from the Databases exploiting data mining technologies to answer complex queries: used techniques are clustering, associative rules and classification. This component periodically queries one dataServer to retrieve new information and updates on the data since its last update. 
 \section{Component view}
@@ -165,6 +189,15 @@ reported, for the sake of readability. The various components are now described 
 
 \section{Deployment view}
 
+So far, only an abstract and general view of the system has been provided. In this section a better detailed view of the system shows how the component previously described are actually deployed in different machines and how each tier is organized.
+
+
+(here needs to be modified, i just cut all the sentences that were on the first part and paste them here)
+ /* In the App case, the client contains all the presentation layer while in the WebApp case the layer is splitted between the client and WebServer; the WebServer is responsible for contacting the application server and forward the client requests to it */
+ /* Here we have multiple Servers cooperating together to improve performance, scalability, fault tolerance and availability. An elastic component (i.e. load balancer) is used to rule the accesses to different Application Servers, dinamically balancing the load among all the Servers.*/
+ /*This tier is composed by several DataServers: each one is associated with a single replica of the data and exploits the DBMS technology to access the DataBase. The Database is fully replicated in different nodes. Techniques and protocols are used to ensure consistency among replicas: they will be full explained in "Other design decisions" section. Again a load balancer is used to dinamically share the load among different machines. */
+/*To ensure and improve security firewalls are installed before and after the application servers to filter accesses from external and unsafe networks. By the creation of a DMZ (demilitarized zone) external entities can only have access to the exposed services. Security is crucial because the application works mainly with sensible information.
+To provide the required functionalities the system exploits datawarehousing. The datawarehouse is a component in the Data tier able to deal with historical data and aggregate data taken from the Databases exploiting data mining technologies to answer complex queries: used techniques are clustering, associative rules and classification. This component periodically queries one dataServer to retrieve new information and updates on the data since its last update. */
 \section{Runtime view}
 In the figures \ref{fig:seq-sendReport}, \ref{fig:seq-userLogin}, \ref{fig:seq-checkReport}, \ref{fig:seq-checkStats}, \ref{fig:seq-register} and \ref{fig:seq-suggestions} some architectural sequence diagrams are provided, showing the interactions among the different components in the execution of various functions of the systems. \\
 The only methods present here and not mentioned in the \textit{Component Intefaces} section are internal method of a single component.
@@ -253,7 +286,7 @@ Concerning the update propagation we opted for propagating a notification of the
 \chapter{Requirements Traceability}
 
 In this section is shown how the requirements are actually ensured and what components actually ensure them. It's worth to notice that for the sake of simplicity the Router has been ignored but it's always involved when dealing with a request coming from one of the clients. 
-In table ref? to highlight for each component what requirements it ensures.
+Table ref? has been added to highlight for each component what requirements it ensures.
 \begin{table}[H]  
   \centering
   \begin{tabular}{|c|c|}
@@ -264,16 +297,16 @@ In table ref? to highlight for each component what requirements it ensures.
     \end{large}&\begin{large}
     \textbf{Requirements} 
     \end{large}\\  \hline
-    User Mobile App &  R1, R4, R5, R6, R7, R8, R9, R10, R28, R29, R30, R33, R34, R35 \\ \hline
-    MunicipalityAgent Web App & R20, R24, R26 \\ \hline
-    MunicipalitySupervisor Web App & R36, R37, R38, R39 \\ \hline
-    AccessManager & R1, R2, R3, R25, R26, R38, R39 \\ \hline
-    ReportManager & R11, R12, R13, R14, R15, R16, R18, R19, \\ \hline
+    User Mobile App &  R1,R3, R4, R5, R6, R7, R8, R9, R10, R28, R29, R30, R33, R34,R35\\ \hline
+    MunicipalityAgent Web App & R19,R20,R21,R22,R23, R24, R26 TODO \\ \hline
+    MunicipalitySupervisor Web App & R36, R37, R38, R40 TODO \\ \hline
+    AccessManager & R1, R2, R3, R25, R26, R38, R39 TODO \\ \hline
+    ReportManager & R11, R12, R13, R14, R15, R16, R18, R19 TODO \\ \hline
     SuggestionManager & R42 \\ \hline
     StatisticsManager & R30, R32, R36 \\ \hline
-    NotifcationManager & R19, R42 \\ \hline
+    NotificationManager & R18, R43 \\ \hline
     DataCollectionManager & R31 \\ \hline
-    DataWareHouse & R27, R31, R32, R36, R40, R41, R42 \\ \hline
+    DataWareHouse & R27, R31, R32, R36, R41, R42, R43 \\ \hline
     
   \end{tabular}
   \caption{Correspondence between goals and world and shared phenoma}
@@ -282,8 +315,8 @@ In the following lines is explained how the requirements are provided by the com
 \begin{enumerate}[start=1,label={[R\arabic*]}]
 \item The system must allow people to register to it providing personal data (name, surname, birthdate, identity card number, fiscal code) and selecting a username and a password: This requirement is provided by the \textbf{AccessManager} and the \textbf{User Mobile App} components. The \textbf{User Mobile App} allows the user to fill blank spaces with username and password and the \textbf{AccessManager} handles requests of registration from the client.
 \item The system must verify the correctness of the provided personal data of a registered user checking them from the identity card number, blocking the registration if they are not correct: the \textbf{AccessManager} checks the received data from the Client and checks them calling the \textbf{munipality API services} that actually possesses sensible data of the users. 
-\item The system must allow registered users to login through their username and password: this requirement is provided by the AccessManager (AuthoritiesLogin and CitizenLogin components) that handles the requests of login from the user. 
-\item The system must allow logged user to fill a report violation form: this requirement is fulfilled by the User Mobile App comonent that allows user to choose the "Report a violation" feature.
+\item The system must allow registered users to login through their username and password,if they provide them correctly: this requirement is provided by the AccessManager and the User Mobile App. The Mobile app allows registered users to insert username and password while the AccessManager handles the requests of login from the user and blocks them  if, checking from the DataBase, the data inserted is not correct. 
+\item The system must allow logged user to fill a report violation form: this requirement is fulfilled by the User Mobile App comonent that allows logged user to choose the "Report a violation" feature.
 \item The system must let the user select the type of violation detected: the requirement is fulfilled by the User Mobile App component, showing an empty space to fill with the type of violation detected in the report a violation process.
 \item The system must allow the user to insert the license plate in a violation report:  the requirement is fulfilled by the User Mobile App component, showing an empty space to fill with the license plate of the car that committed the violation in the report a violation process.
 \item While reporting the violation, the system must allow users to take one or more pictures of the potential violation: the requirement is fulfilled by the User Mobile App component, allowing user to click on the "Take a picture" button.
@@ -296,32 +329,33 @@ In the following lines is explained how the requirements are provided by the com
 \item The system must try to find, according to the GPS position of the user and the pictures sent, if the position is fake or not: the ReportManager ensures this requirement by running an algorithm to define if the position is correct or not. 
 \item The system must discard the report if it has been recognized as fake according to the previous requirements (R13-R14): the ReportManager is in charge of this, deleting the report if recognized as fake.
 \item The system must try to automatically recognize the license plate in the photo, possibly with the help of the value inserted by the user: the ReportManager is in charge of this , running an algorithm for text recognition in the picture(s).
-\item ????? The system must store into stable memory the reported violation if correct (i.e. not recognized as fake). ??????
 \item The involved municipality must be calculated considering in which city the reported violation has been found, based on the GPS position of the user that has sent the report: the reportManager provides this requirement by asking the Maps Service the municipality associated to the position of the user.
 \item The system must send the reported violations to the involved municipality: the ReportManager and the the NotificationManager are responsible for this. After having saved it, the ReportManager sends the report to the NotificationManager that forwards it to the involved municipality.
 \item The system must allow an agent to see the reports for its municipality, checking them in order of arrival: The MunicipalityAgent Web app component is responsible for this, showing on screen the reports in order of arrival.
-\item The system must allow an agent to issue a traffic ticket to a certain person (i.e. license plate) through the correspondent municipality service:
+\item The system must allow an agent to issue a traffic ticket to a certain person (i.e. license plate) through the correspondent municipality service: the MunicipalityAgent Web App allows agents to issue traffic tickets through the specific button in the Web App, calling the MunicipalityAPI to issue the traffic ticket.
 \item The system must allow an agent to put on hold a violation report if it needs to be checked in person: The MunicipalityAgent Web App ensures this by shwoing the possibility of putting a report on hold while checking it.
-\item The system must allow an agent to discard a violation if it has been verified as fake or it cannot be verified (the vehicle is not there anymore) or it is a duplicated report.??
+\item The system must allow an agent to discard a violation if it has been verified as fake or it cannot be verified (the vehicle is not there anymore) or it is a duplicated report: the MunicipalityAgent Web App ensures this requirement by allowing the Agents to discard a report if needed.
 \item The system must allow an agent to retrieve the data of the author of a violation report: the MunicipalityAgent Web App asks to the Municipality API data about the author of the report. 
-\item The system must allow an agent to create an account, asking the municipality services to verify its identity: the AccessManager is responsible for this, asking the Municipality API to check the identity of the agent.
-\item The system must allow an agent to login, inserting its username and password: Municipality Web App and AccessManager are responsible for this. The MunicipalityAgent Web App allows agents to insert data, while AccessManager checks if they are correct.
-\item The system must mine this information from the reported violations: the DataWareHouse is responsible for this, performing datamining on reports stored in the DataBase of the application.
+\item The system must allow an agent to create an accoun,providing personal data(name, surname, birthdate, rank, badge number): this requirement is ensured by  the MunicipalityAgent Web App that allows agents to insert their data to register to the application.
+\item The system must verify the correctness of the provided personal data of a registering agent checking them through the Municipality Services, blocking the registration if they are not correct: the AccessManager is responsible for this, asking the Municipality API to check the identity of the agent.
+\item The system must allow an agent to login, inserting its ID and password, blocking the registration if the data inserted is not correct: Municipality Web App and AccessManager are responsible for this. The MunicipalityAgent Web App allows agents to insert data, while AccessManager checks if they are correct.
+\item The system must mine information about streets or area from the reported violations: the DataWareHouse is responsible for this, performing datamining on reports stored in the DataBase of the application.
 \item The system must allow the users (even if not authenticated) to select the see information for a city. The user can choose either the city where he is, using the GPS position, or an arbitrary selected location. The User Mobile App component ensures this requirement by allowing user to choose the city he wants.
-\item The system must allow the user to select information about streets or areas in the city selected and to specify if he wants information for a specific street or area or a classification of streets or areas. The Mobile Web App is responsible for this requirement by allowing user to choose the area or street he wants.
-\item The system must show the the data corresponding to the selection of [R29]: the User Mobile App and Statisticsmanager components are responsible for this requirement; the StatisticsManager contacts the MapAPI to provide an image for the city/area/street selected. This image is then shown by the Mobile App component to the user.
+\item The system must allow the user to select information about streets or areas in the city selected and to specify if he wants information for a specific street or area or a classification of streets or areas. The User Mobile App is responsible for this requirement by allowing user to choose the area or street he wants.
+\item The system must show the the data corresponding to the selection of [R29]: the User Mobile App and Statisticsmanager components are responsible for this requirement; the StatisticsManager contacts the MapAPI to provide an image for the city/area/street selected. This image is then shown by the User Mobile App component to the user.
 \item The system must take information about accidents and tickets from the municipality: this requirement is ensured by the DataCollectionManager that periodically queries the Municipality API to retrieve new informations and saves them on the DataWareHouse.
-\item The system must use this information to build statistics, crossing them with reported violations: the StatisticsManager and the DataWareHouse component ensure this requirement; the DataWareHouse components build statistics exploiting dataMining techniques
+\item The system must use information  about accidents and tickets to build statistics, crossing them with reported violations: the StatisticsManager and the DataWareHouse component ensure this requirement; the DataWareHouse components build statistics exploiting dataMining techniques
 \item The system must not allow common users to see confidential data about other people: The User Mobile App component is in charge for this requirement by showing only data that does not violate privacy.This requirement is also guaranteed by a subcomponent in the Router (i.e. AuthChecker) to check if a request made by a specific client is valid or not.
 \item The system must allow the user to choose a topic: areas or streets with most accidents, areas or streets with the highest number of traffic tickets issued, areas or streets where there have been the best improvements, information for a specific area or street. The User Mobile App iprovides this requirement by allowing user to choose the topic is interested into.
 \item The system must show to the user the information about the topic selected according to [R34]: The User Mobile App component ensures this requirement by showing as an image the topic requested to the user.
-\item The system must allow authenticated supervisors to retrieve information about the vehicles with the highest number of violations in a selected area or street: the MunicipalitySupervisor Web App allows supervisors to select the statistics they want; the Statistics;anager asks the the DataWareHouse the type of Data requested by the User.
+\item The system must allow authenticated supervisors to retrieve information about the vehicles with the highest number of violations in a selected area or street: the MunicipalitySupervisor Web App allows supervisors to select the statistics they want; the StatisticsManager asks the the DataWareHouse the type of Data requested by the User.
 %\item {[R37]}	\label{R37}The system must allow supervisors to see what areas or streets has seen the best improvements in the ticket emissions.
 \item The system must allow supervisors to access only information about their own municipality: the MunicipalitySupervisor Web App  is responsible for this, allowing supervisor to only check Statistics and suggestions about his city. This requirement is also guaranteed by a subcomponent in the Router (i.e. AuthChecker) to check if a request made by a specific client is valid or not.
-\item The system must allow a supervisor to create an account, asking the municipality services to verify its identity: the AccessManager and the MunicipalitySupervisor Web App are responsible for this requirement. the accessManager receives the request and ask the MunicipalityAPI to check if the inserted identity is correct.
-\item The system must allow a supervisor to login, inserting its username and password: The MunicipalitySupervisor Web App and the AccessManager are responsible for the requirement. The MunicipalitySupervisor WebApp allows supervisor to enter his username and password and forwards the request to the AccessManager that handles it asking the DataServer if the data inserted is correct.
-\item The system must take information about accidents, tickets and street networks (bike lanes, sidewalks, parking areas,…) from the municipality, exploiting the municipality services: the DataWareHouse component. ??'
-\item The system must elaborate this information, combined with reports information, and try to find possible solutions for problems: the DataWareHouse component is responsible for this requirement trying to aggregate data coming from the Databases concerning reports, issued traffic tickets and accidents.
+\item The system must allow a supervisor to create an account, providing personal data(name, surname, birthdate, rank,     badge number): this requirement is ensured by  the MunicipalitySupervisor Web App that allows supervisors to insert their data to register to the application
+\item The system must verify the correctness of the provided personal data of a registering supervisor, checking them thorugh the municipality services, blocking the registration if they are not correct : the AccessManager is responsible for this requirement, it receives the request and ask the MunicipalityAPI to check if the inserted identity is correct.
+\item The system must allow a supervisor to login, inserting its ID and password,blocking the registration if the data inserted is not correct: the MunicipalitySupervisor Web App and the AccessManager are responsible for the requirement. The MunicipalitySupervisor WebApp allows supervisor to enter his Id and password, while the AccessManager checks in the databases if the data inserted is correct.
+\item The system must take information about accidents, tickets and street networks (bike lanes, sidewalks, parking areas,. . . ) from the municipality, exploiting the municipality services: the DataCollectionManager is responsible for this requirement periodically asking data to the Municipallity API and saves it in the DataWareHouse.
+\item The system must elaborate information about accidents, tickets and streets, combined with reports information, and try to find possible solutions for problems: the DataWareHouse component is responsible for this requirement trying to aggregate data coming from the Databases concerning reports, issued traffic tickets and accidents.
 \item The system must notify the municipality about new possible interventions: the NotificationManager the DataWareHouse and SuggestionManager components are responsible for this requirement: the DataWareHouse component forwards the new intervention to the SuggestionManager that forwards it to NotificationManager that sends it to  the involved municipality.
 
 \end{enumerate}
