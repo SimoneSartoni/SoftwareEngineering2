@@ -90,7 +90,12 @@ Different levels are identified through the document; here they are just mention
 \end{itemize}
 
 \section{Scope}
-
+Here the scope of the system is briefly summarized.\\
+\textit{SafeStreets} is an application system with them aim to support municipalities in recording parking violations, providing also additional functions for traffic tickets emission, statistics and suggestions.\\
+The citizen can use the mobile app to send reports about parking violations, after having been registered, and to consult statistics about violations and accidents.\\
+Municipality agents can use the web application to receive the reports by the users, analyze them and possibly emit traffic tickets. They can also consult the previously mentioned statistics.\\
+Municipality supervisors can also receive the \textit{suggestions} elaborated by the system to improve the safety on the streets and can also consult reserved statistics, containing personal data about the most egregious offenders.\\
+The system is supported by APIs provided by the municipalities and by APIs provided by a map service, as explained in the RASD and in the following sections of this document.
 \section{Definitions,Acronyms,Abbreviations}
 \begin{itemize}
 \item \textit{GPS}: Global Positioning System
@@ -108,7 +113,7 @@ The document is divided into 6 chapters:
 \item \textit{Chapter 2}: in this chapter are presented all the design choices made the develop the application: the design choices are presented at different levels of abstraction, from the more general and abstract one concerning tiers and system architecture, to the more technical one, concerning the protocol and technologies chosen to deploy the system.
 \item \textit{Chapter 3}: in this chapter are presented the user interfaces using mockups to represent how they should actually be once implemented: different mockups are presented to cover all possible situation worth to be shown.
 \item \textit{Chapter 4}: in this chapter the requirements traceability is done. Each requirement described in the RASD is provided by one or more component presented in Chapter 2; in this chapter it's described which components provide what requirements and how this requirement are actually provided.
-\item \textit{Chapter 5}: this capter takes into account how the system is going to be implemented, how the components will be integrated and what strategies of testing is going to be used.
+\item \textit{Chapter 5}: this chapter takes into account how the system is going to be implemented, how the components will be integrated and what strategies of testing is going to be used.
 \item \textit{Chapter 6}: this chapter is only meant to show for each component of the group the effort spent, with associated date and hours.
 \item \textit{Chapter 7}: in this last chapter are mentioned the references to documents or sites about techologies, pattern and architectures used in this document.
 
@@ -120,7 +125,7 @@ The Application tier takes care of the application layer encapsulating all is ne
 The \textbf{Application} tier communicates with the \textbf{Data} tier, responsible for the Data Access layer, that is the tier responsible for accessing the DataBases and performing queries on them.\\
 To provide the required functionalities the system exploits also datawarehousing. The DataWarehouse is a component in the Data tier able to deal with historical data and aggregate data taken from the operational databases in a more efficient way than a traditional dbms.
 \section{Component view}
-In the figure \ref{fig:component-diagram} is reported the \textit{Component Diagram} for the SafeStreet system. This is a high level view in which the main components are shown, then some components will be better detailed.
+In the figure \ref{fig:component-diagram} is reported the \textit{Component Diagram} for the \textit{SafeStreets} system. This is a high level view in which the main components are shown, then some components will be better detailed.
 
 \afterpage{
 \newgeometry{bottom=2cm}
@@ -220,7 +225,7 @@ All application logic components (orange in the \textit{Component Diagram}) are 
 In the \textit{Mobile App} case the client contains all the \textit{presentation layer} while in the \textit{WebApp} case the layer is splitted between the \textit{MobileApp} and the \textit{WebServer}; the \textit{WebServer} is responsible for contacting the application server and forward the client requests and responses.\\
 All the servers are multiplied, cooperating together to improve performance, scalability, fault tolerance and availability. An elastic component (i.e. load balancer) is used to rule the accesses to different Application, dinamically balancing the load among all the Servers. The same is for the data servers.
 Each data server is associated with a single replica of the data and exploits the DBMS technology to access the \textit{Database}. The \textit{Database} is fully replicated in different nodes. Techniques and protocols are used to ensure consistency among replicas: they will be full explained in \textit{Other design decisions} section.\\
-To ensure and improve security firewalls are installed before and after the application servers to filter accesses from external and unsafe networks. By the creation of a \textit{DMZ} (demilitarized zone) external entities can only have access to the exposed services. Security is crucial because the application works mainly with sensible information.
+To ensure and improve security firewalls are installed before and after the application servers to filter accesses from external and unsafe networks. By the creation of a \textit{DMZ} (demilitarized zone) external entities can only have access to the exposed services. They will be properly configurated to allow only legit requests coming from the Application Servers to reach the Data Servers. All the communications will exploit the HTTPS protocol, unsafe communications will be refused by the firewalls. Security is crucial because the application works mainly with sensible information. 
 \section{Runtime view}
 In the figures \ref{fig:seq-sendReport}, \ref{fig:seq-userLogin}, \ref{fig:seq-checkReport}, \ref{fig:seq-checkStats}, \ref{fig:seq-register} and \ref{fig:seq-suggestions} some architectural sequence diagrams are provided, showing the interactions among the different components in the execution of various functions of the systems. \\
 The only methods present here and not mentioned in the \textit{Component Intefaces} section are internal method of a single component.
@@ -272,13 +277,19 @@ A similar assumption has been made for the municipality answer to the ticket emi
 \end{figure}
 \end{landscape}
 }
-\newgeometry{left=0.5cm,right=0.5cm,bottom=3cm}
+\\\\
+In the sequence diagram of figure \ref{fig:seq-checkStats} are described the interactions concerning the \textit{Statistics}. Initially is shown how the \textbf{\textit{DataCollectionManager}} component periodically collect data from the \textit{\textbf{MunicipalityAPI}} and stores them. \\
+Then is shown the request of \textit{ReservedStatistics} by a \textit{\textbf{Supervisor WebApp}}, with the \textbf{\textit{Router}} which forwards the request to the \textit{\textbf{StatisticsManager}} and this last component that builds the statistics consulting the \textbf{\textit{DataWarehouse}} and the \textit{\textbf{MapsAPI}} to retrieve a map of the interested area.
+\afterpage{\newgeometry{left=0.5cm,right=0.5cm,bottom=3cm}
 \begin{figure}[hp]
 \includegraphics[scale=0.7]{ArchSequenceRegistration}
 \caption{UML Architectural Sequence Diagram for \textit{User Registration}}
 \label{fig:seq-register}
 \end{figure}
 \restoregeometry
+}\\\\
+In the sequence diagram of figure \ref{fig:seq-register} is shown the \textit{Registration} process for a \textit{User}. He compiles the form on the app, which already verifies that all fields have been properly filled, and the app sends the data to the \textbf{\textit{Router}} which forwards the request to the \textbf{\textit{AccessManager}} component (in particular the \textbf{\textit{CitizenRegistration}} subcomponent). This component verifies the correctness of the provided data through the \textbf{\textit{MunicipalityAPI}} and in case of a positive answer store the registration on the \textbf{\textit{Database}}, otherwise it returns an error message.
+\afterpage{
 \newgeometry{left=1cm,right=1cm, bottom=2cm}
 \begin{landscape}
 \begin{figure}[hp]
@@ -288,6 +299,10 @@ A similar assumption has been made for the municipality answer to the ticket emi
 \end{figure}
 \end{landscape}
 \restoregeometry
+}
+\\\\
+In the sequence diagram of figure \ref{fig:seq-suggestions} are shown the interactions involved by the \textit{Suggestions} function. For first is shown how the \textbf{\textit{SuggestionManager}} periodically retrieve data from the \textbf{\textit{DataWarehouse}} and from the \textbf{\textit{DBMS}} and tries to elaborate new suggestions. If it succeeds in this it stores the new \textit{Suggestion} and sends a notification to the \textbf{\textit{MunicipalitySupervisor WebApps}} through the \textbf{\textit{NotificationManager}}.\\
+Then is shown how when a \textit{Supervisor} wants to check the last suggestions, in any moment, he can access them by the corresponding page of his application.
 \section{Component interfaces}
 
 
