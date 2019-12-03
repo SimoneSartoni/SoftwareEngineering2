@@ -394,6 +394,30 @@ In the following lines is explained how the requirements are provided by the com
 \chapter{Implementation, integration and test plan}
 \section{Implementation and unit testing}
 To define the implementation and test plan is useful to identify the level of importance for the customer of the various components and also their difficulty of implementation. They are summarized in table ??. The external components (\textit{MunicipalityAPI} and \textit{MapsAPI}) are considered to be ready from the beginning and they will not be further mentioned in this section.\\
+\begin{table}[H]  
+  \centering
+  \bgroup
+  \def\arraystretch{1.5}%  for cell padding, 1 is the default
+  \begin{tabular}{|c|c|c|}
+    \cline{1-3}
+    \textbf{Component} & \textbf{Customer importance} & \textbf{Implementation difficulty} \\ \hline
+    MobileApp & Medium & Low   \\ \hline
+    AgentWebApp & Medium & Low   \\ \hline
+    SupervisorWebApp & Medium & Low   \\ \hline
+    Router & Medium & Medium   \\ \hline
+    SuggestionManager & Low & High   \\ \hline
+    AccessManager & Medium & Low   \\ \hline
+    ReportManager & High & Medium   \\ \hline
+    StatisticsManager & Low & Medium   \\ \hline
+    NotificationManager & Medium & Low   \\ \hline
+    DataCollectionManager & Low & Medium   \\ \hline
+    DBMS & High & Medium   \\ \hline
+    DW & Low & Medium   \\ \hline
+    
+  \end{tabular}
+  \egroup
+  \caption{Classification of components based on customer importance and implementation difficulty}
+\end{table}
 The implementation plan depends heavily from the dimension and the composition of the development team, which define the level of parallelism.
 We assume to have 1 programmer expert in data field, 1 for the for the front end and 2 for the back end components.
 The front-end developer will develop in order the \textbf{\textit{User App}}, the \textbf{\textit{MunicipalityAgent WebApp}} and the \textbf{\textit{MunicipalitySupervisor WebApp}}.\\
