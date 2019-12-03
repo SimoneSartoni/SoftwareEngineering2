@@ -15,6 +15,7 @@
 \usepackage{geometry}
 \usepackage{pdflscape}
 \usepackage{caption}
+\usepackage{afterpage}
 \graphicspath{{./img/}}
 
 \begin{document}
@@ -89,31 +90,44 @@ Different levels are identified through the document; here they are just mention
 \end{itemize}
 
 \section{Scope}
-
+Here the scope of the system is briefly summarized.\\
+\textit{SafeStreets} is an application system with them aim to support municipalities in recording parking violations, providing also additional functions for traffic tickets emission, statistics and suggestions.\\
+The citizen can use the mobile app to send reports about parking violations, after having been registered, and to consult statistics about violations and accidents.\\
+Municipality agents can use the web application to receive the reports by the users, analyze them and possibly emit traffic tickets. They can also consult the previously mentioned statistics.\\
+Municipality supervisors can also receive the \textit{suggestions} elaborated by the system to improve the safety on the streets and can also consult reserved statistics, containing personal data about the most egregious offenders.\\
+The system is supported by APIs provided by the municipalities and by APIs provided by a map service, as explained in the RASD and in the following sections of this document.
 \section{Definitions,Acronyms,Abbreviations}
-
-
-\section{Revision History}
+\begin{itemize}
+\item \textit{GPS}: Global Positioning System
+\item \textit{HTTPS}: HyperText Transmission Protocol over SSL
+\end{itemize}
+%\section{Revision History}
 \section{Reference Documents}
+\begin{itemize}
+\item Assignment Document "SafeStreets Mandatory Project Assignment.pdf"
+\item RASD Document "RASD1.1.pdf"
+\end{itemize}
 \section{Document Structure}
 The document is divided into 6 chapters:
 \begin{itemize}
 \item \textit{Chapter 2}: in this chapter are presented all the design choices made the develop the application: the design choices are presented at different levels of abstraction, from the more general and abstract one concerning tiers and system architecture, to the more technical one, concerning the protocol and technologies chosen to deploy the system.
 \item \textit{Chapter 3}: in this chapter are presented the user interfaces using mockups to represent how they should actually be once implemented: different mockups are presented to cover all possible situation worth to be shown.
 \item \textit{Chapter 4}: in this chapter the requirements traceability is done. Each requirement described in the RASD is provided by one or more component presented in Chapter 2; in this chapter it's described which components provide what requirements and how this requirement are actually provided.
-\item \textit{Chapter 5}: this capter takes into account how the system is going to be implemented, how the components will be integrated and what strategies of testing is going to be used.
+\item \textit{Chapter 5}: this chapter takes into account how the system is going to be implemented, how the components will be integrated and what strategies of testing is going to be used.
 \item \textit{Chapter 6}: this chapter is only meant to show for each component of the group the effort spent, with associated date and hours.
 \item \textit{Chapter 7}: in this last chapter are mentioned the references to documents or sites about techologies, pattern and architectures used in this document.
 
 \end{itemize}
 \chapter{Architectural Design}
-\section{Overview: High­‐level components and their	interaction}
-The application will be developed using the client-server paradigm on a three-tiered architecture. The three layers of the application (Presentation, Application and Data) are divided into clusters of machines (i.e. tiers) that actually cooperate to provide a specific functionality. In this case we have three tiers  and each tier is responsible for one of the three layers. The client tier is responsible (only) for the presentation layer; therefore, in this architecture, the thin-client has been adopted considering the fact that the required functionalities client-side are limited. The UIs provided are just meant to show results and to allow clients to choose what they want. /* In the App case, the client contains all the presentation layer while in the WebApp case the layer is splitted between the client and WebServer; the WebServer is responsible for contacting the application server and forward the client requests to it */. The Application tier takes care of the application layer encapsulating all is needed concerning the application logic. It receives the requests from the clients and handles them. It's also responsible for sending asynchronous notifications to the presentation layer when certain conditions are met. It can also filter requests from the clients, deleting invalid ones. /* Here we have multiple Servers cooperating together to improve performance, scalability, fault tolerance and availability. An elastic component (i.e. load balancer) is used to rule the accesses to different Application Servers, dinamically balancing the load among all the Servers.*/ The Application tier communicates with the Data tier, responsible for the Data Access layer, that is the tier responsible for accessing the DataBases and performing queries on them. . /*This tier is composed by several DataServers: each one is associated with a single replica of the data and exploits the DBMS technology to access the DataBase. The Database is fully replicated in different nodes. Techniques and protocols are used to ensure consistency among replicas: they will be full explained in "Other design decisions" section. Again a load balancer is used to dinamically share the load among different machines. */
-To ensure and improve security firewalls are installed before and after the application servers to filter accesses from external and unsafe networks. By the creation of a DMZ (demilitarized zone) external entities can only have access to the exposed services. Security is crucial because the application works mainly with sensible information.
-To provide the required functionalities the system exploits datawarehousing. The datawarehouse is a component in the Data tier able to deal with historical data and aggregate data taken from the Databases exploiting data mining technologies to answer complex queries: used techniques are clustering, associative rules and classification. This component periodically queries one dataServer to retrieve new information and updates on the data since its last update. 
+\section{Overview: High­‐level components and their interaction}
+The application will be developed using the client-server paradigm on a three-tiered architecture. The three layers of the application (Presentation, Application and Data) are divided into clusters of machines (i.e. tiers) that actually cooperate to provide a specific functionality. In this case we have three tiers  and each tier is responsible for one of the three layers. The client tier is responsible (only) for the \textbf{Presentation} layer; therefore, in this architecture, the thin-client has been adopted considering the fact that the required functionalities client-side are limited. The UIs provided are just meant to show results and to allow clients to choose what they want. In particular there are two types of clients: a \textbf{mobile app} for the citizen which use SafeStreets to report violations and check statistics information and a \textbf{web app} for the police agents and supervisors. \\
+The Application tier takes care of the application layer encapsulating all is needed concerning the application logic. It receives the requests from the clients and handles them. It's also responsible for sending asynchronous notifications to the presentation layer when certain conditions are met. It can also filter requests from the clients, deleting invalid ones.\\
+The \textbf{Application} tier communicates with the \textbf{Data} tier, responsible for the Data Access layer, that is the tier responsible for accessing the DataBases and performing queries on them.\\
+To provide the required functionalities the system exploits also datawarehousing. The DataWarehouse is a component in the Data tier able to deal with historical data and aggregate data taken from the operational databases in a more efficient way than a traditional dbms.
 \section{Component view}
-In the figure \ref{fig:component-diagram} is reported the \textit{Component Diagram} for the SafeStreet system. This is a high level view in which the main components are shown, then some components will be better detailed.
+In the figure \ref{fig:component-diagram} is reported the \textit{Component Diagram} for the \textit{SafeStreets} system. This is a high level view in which the main components are shown, then some components will be better detailed.
 
+\afterpage{
 \newgeometry{bottom=2cm}
 \begin{landscape}
 
@@ -125,6 +139,7 @@ In the figure \ref{fig:component-diagram} is reported the \textit{Component Diag
 
 \end{landscape}
 \restoregeometry
+}
 In this diagram when two components can communicate using different interfaces a single interface link is 
 reported, for the sake of readability. The various components are now described and detailed:
 \begin{itemize}
@@ -173,7 +188,7 @@ reported, for the sake of readability. The various components are now described 
 
 \item \textbf{DataWarehouse}: this component manages the datawarehouse, the secondary database for the system, used to answer aggregate queries for statistics and suggestions. It is periodically alimented with the dbms data and with the already aggregated data coming from the municipality through the \textit{DataCollectionManager} component.
 
-\item \textbf{MunicipalityAPI}: this is an external component, managed by the municipalities (an instance for each of them which supports the system), whose interface is standardized as described in the \textit{Components Interfaces} section. It is necessary to retrieve the data for building statistics and suggestions and to have the possibility of traffic ticket emission through SafeStreets.
+\item \textbf{MunicipalityAPI}: this is an external component, managed by the municipalities (an instance for each of them which supports the system), whose interface is standardized as described in the \textit{Components Interfaces} section. It is necessary to retrieve the data for building statistics and suggestions, to verify the users identity and to have the possibility of traffic ticket emission through SafeStreets.
 
 \item \textbf{MapsAPI}: this is an external component which is exploited to show maps with the statistics data.
 
@@ -190,21 +205,33 @@ reported, for the sake of readability. The various components are now described 
 \section{Deployment view}
 
 So far, only an abstract and general view of the system has been provided. In this section a better detailed view of the system shows how the component previously described are actually deployed in different machines and how each tier is organized.
+Here in figures \ref{fig:deployment-diagram} and \ref{fig:architecture-diagram} follow two diagrams, the first one is an UML Deployment Diagram which shows the allocation of the software components in the physical tiers of the system, while the second one is an informal diagram which shows more in detailed the network configuration of the system, with hardware devices such as firewalls and load balancers which are not related to the general architecture but are involved in assuring the proper working of the system. 
 
+\begin{figure}[htp]
+\includegraphics[scale=0.3]{DeploymentDiagram}
+\caption{UML Deployment Diagram}
+\label{fig:deployment-diagram}
+\end{figure}
 
-(here needs to be modified, i just cut all the sentences that were on the first part and paste them here)
- /* In the App case, the client contains all the presentation layer while in the WebApp case the layer is splitted between the client and WebServer; the WebServer is responsible for contacting the application server and forward the client requests to it */
- /* Here we have multiple Servers cooperating together to improve performance, scalability, fault tolerance and availability. An elastic component (i.e. load balancer) is used to rule the accesses to different Application Servers, dinamically balancing the load among all the Servers.*/
- /*This tier is composed by several DataServers: each one is associated with a single replica of the data and exploits the DBMS technology to access the DataBase. The Database is fully replicated in different nodes. Techniques and protocols are used to ensure consistency among replicas: they will be full explained in "Other design decisions" section. Again a load balancer is used to dinamically share the load among different machines. */
-/*To ensure and improve security firewalls are installed before and after the application servers to filter accesses from external and unsafe networks. By the creation of a DMZ (demilitarized zone) external entities can only have access to the exposed services. Security is crucial because the application works mainly with sensible information.
-To provide the required functionalities the system exploits datawarehousing. The datawarehouse is a component in the Data tier able to deal with historical data and aggregate data taken from the Databases exploiting data mining technologies to answer complex queries: used techniques are clustering, associative rules and classification. This component periodically queries one dataServer to retrieve new information and updates on the data since its last update. */
+W.r.t to the component diagram (figure \ref{fig:component-diagram}), the different colors indicate the allocation of components.
+For the presentation tier clearly the \textit{smartphones} contain the \textit{UserMobileApp} while the \textit{personal computers} and the \textit{web server} contain the \textit{Municipality Agent WebApp} and the \textit{Municipality Supervisor Web App}.\\
+All application logic components (orange in the \textit{Component Diagram}) are deployed on the \textit{Application Server}, while the \textit{DBMS} component is deployed on the \textit{DataBase server} and the \textit{DataWarehouse} component is deployed on the \textit{DataWarehouse server}.
+
+\begin{figure}[htp]
+\includegraphics[scale=0.55]{SystemArchitecture}
+\caption{Informal architectural view of the system}
+\label{fig:architecture-diagram}
+\end{figure}
+In the \textit{Mobile App} case the client contains all the \textit{presentation layer} while in the \textit{WebApp} case the layer is splitted between the \textit{MobileApp} and the \textit{WebServer}; the \textit{WebServer} is responsible for contacting the application server and forward the client requests and responses.\\
+All the servers are multiplied, cooperating together to improve performance, scalability, fault tolerance and availability. An elastic component (i.e. load balancer) is used to rule the accesses to different Application, dinamically balancing the load among all the Servers. The same is for the data servers.
+Each data server is associated with a single replica of the data and exploits the DBMS technology to access the \textit{Database}. The \textit{Database} is fully replicated in different nodes. Techniques and protocols are used to ensure consistency among replicas: they will be full explained in \textit{Other design decisions} section.\\
+To ensure and improve security firewalls are installed before and after the application servers to filter accesses from external and unsafe networks. By the creation of a \textit{DMZ} (demilitarized zone) external entities can only have access to the exposed services. They will be properly configurated to allow only legit requests coming from the Application Servers to reach the Data Servers. All the communications will exploit the HTTPS protocol, unsafe communications will be refused by the firewalls. Security is crucial because the application works mainly with sensible information. 
 \section{Runtime view}
 In the figures \ref{fig:seq-sendReport}, \ref{fig:seq-userLogin}, \ref{fig:seq-checkReport}, \ref{fig:seq-checkStats}, \ref{fig:seq-register} and \ref{fig:seq-suggestions} some architectural sequence diagrams are provided, showing the interactions among the different components in the execution of various functions of the systems. \\
 The only methods present here and not mentioned in the \textit{Component Intefaces} section are internal method of a single component.
-\subsection{User sends a Report}
+\afterpage{
 \newgeometry{left=0.5cm, bottom=2cm}
 \begin{landscape}
-
 \begin{figure}[hp]
 \includegraphics[angle=0, scale=0.70]{ArchSequenceSendReport}
 \caption{UML Architectural Sequence Diagram for \textit{SendReport} use case}
@@ -213,20 +240,20 @@ The only methods present here and not mentioned in the \textit{Component Intefac
 
 \end{landscape}
 \restoregeometry
-
-In this sequence diagram is shown what messages are actually exchanged among components to process correctly a report send by a User. The User, through the Mobile App, fills the report form and sends it to the server for a confirm. The report is handled at first by the Router that checks if the User can actually send reports (i.e. verifies if the corresponding token has the rights needed). if the check is negative, then the request is discarded. Otherwise the ReportManager contacts the MapsAPI to retrieve the municipality in charge for a specific report. After this, the ReportManager checks internally if the pictures in the report have been modified or not. If so, the report is stored as "Refused" and sent to the Notification Manager, that will send a notification about the refused report to the involved MunicipalityAgent Web App. If the pictures are not fake then the report is stored as New report and the NotificationManager will be in charge of notifying the Municipality Web App about the new pending report.
-  
-\subsection{User Logs in}
+}\\\\
+In the sequence diagram of figure \ref{fig:seq-sendReport} is shown what messages are actually exchanged among components to process correctly a report send by a User. The User, through the \textit{\textbf{Mobile App}}, fills the report form and sends it to the server for a confirm. The report is handled at first by the \textit{\textbf{Router}} that checks if the User can actually send reports (i.e. verifies if the corresponding token has the rights needed). if the check is negative, then the request is discarded. Otherwise the \textit{\textbf{ReportManager}} contacts the \textit{\textbf{MapsAPI}} to retrieve the municipality in charge for a specific report. After this, the \textit{\textbf{ReportManager}} checks internally if the pictures in the report have been modified or not. If so, the report is stored as \textit{Refused} and sent to the \textit{\textbf{Notification Manager}}, that will send a notification about the refused report to the involved \textit{\textbf{MunicipalityAgent Web App}}. If the pictures are not fake then the report is stored as \textit{New report} and the \textit{\textbf{NotificationManager}} will be in charge of notifying the \textit{\textbf{Municipality Web App}} about the new pending report.\\
+It has been assumed that the \textit{getCity} request to the \textbf{\textit{municipality API}} returns a city for which the \textit{SafeStreets service} is active. In effect the mobile app should not allow the user to send a report for a city in which the system is not active.
+\afterpage{
 \begin{landscape}
-
 \begin{figure}[hp]
 \includegraphics[angle=0, scale=0.70]{ArchSequenceUserLogin}
 \caption{UML Architectural Sequence Diagram for \textit{UserLogin} use case}
 \label{fig:seq-userLogin}
 \end{figure}
-
 \end{landscape}
-\subsection{Agent Checks Report}
+}\\\\
+In the sequence diagram of figure \ref{fig:seq-userLogin} are described the components involved in the user login and their interaction. The User fills the spaces in the \textbf{\textit{Mobile App}} inserting his username and password. The login request is then sent to the \textbf{\textit{Router}} that forwards the message to the \textbf{\textit{AccessManager}}. In particular the subcomponent \textbf{\textit{CitizenLogin}}  handles the login, asking the \textbf{\textit{DB}} the password corresponding to the specified username. After having received the password, it internally checks if  the two passwords (the one coming from the user and the one stored)coincide: if so, the user is successfully logged in and this is notified back to the client, showing him the main page of the App; if not, a notification is sent back to the client, showing him an error message and asking him to insert again username and password. Notice that everytime a new login is performed a new token is generated associated to the specific logged client.
+\afterpage{
 \newgeometry{left=0.5cm,right=0.5cm,bottom=3cm}
 \begin{figure}[hp]
 \includegraphics[width=\textwidth]{ArchSequenceAgentCheckReport}
@@ -234,10 +261,13 @@ In this sequence diagram is shown what messages are actually exchanged among com
 \label{fig:seq-checkReport}
 \end{figure}
 \restoregeometry
-
-In this sequence diagram are described the components involved i nthe user login and their interaction. The User fills the spaces in the Mobile App inserting his username and password. The login request is then sent to the Router that forwards the message to the AccessManager. In particular the subcomponent \textbf{CitizenLogin}  handles the login, asking the DB the password corresponding to the specified username. After having received the password, it internally checks if  the two passwords (the one coming from the user and the one stored)coincide: if so, the user is successfully logged in and this is notified back to the client, showing him the main page of the App; if not, a notification is sent back to the client, showing him an error message and asking him to insert again username and password. Notice that everytime a new login is performed a new token is generated associated to the specific logged client.
-
-\subsection{Supervisor Checks Statistics}
+}\\\\
+In the sequence diagram of figure \ref{fig:seq-checkReport} is shown the managing of a \textit{Report} by an \textit{Agent}. The request of showing the first report to be analyzed comes from the \textit{\textbf{Agent WebApp}} and is received by the \textit{\textbf{Router}} component, which verifies the authentication and forwards it to the \textit{\textbf{ReportManager}} (in particular the \textit{\textbf{Manual Report Analyzer}} subcomponent). The latter returns the report data to the \textit{\textbf{WebApp}} and then the \textit{Agent} decides what to do. If he wants to issue a ticket the request is sent to the \textit{\textbf{MunicipalityAPI}} and consequently the information is recorded by the \textit{\textbf{DBMS}}.\\
+If he decides to put the report on hold, this is simply recorded in the database.
+Otherwise if he discards the report this is recorded in the database and he also has the possibility to see the report author's data, always stored in the database.\\
+The control for the user authentication is shown for every request, but only the first one presents the \textit{Alternative} choice, for the others, marked with *, it has been assumed a positive answer, for the sake of readability, avoiding to repeat the \textit{Alt} with the error message returned in case of authentication failure. \\
+A similar assumption has been made for the municipality answer to the ticket emission request, it has been avoided to report the negative answer, for which the agent would be required to retry the request.
+\afterpage{
 \begin{landscape}
 
 \begin{figure}[hp]
@@ -245,37 +275,48 @@ In this sequence diagram are described the components involved i nthe user login
 \caption{UML Architectural Sequence Diagram for the \textit{CheckStatistics} use case}
 \label{fig:seq-checkStats}
 \end{figure}
-
 \end{landscape}
-
-\newgeometry{left=0.5cm,right=0.5cm,bottom=3cm}
+}
+\\\\
+In the sequence diagram of figure \ref{fig:seq-checkStats} are described the interactions concerning the \textit{Statistics}. Initially is shown how the \textbf{\textit{DataCollectionManager}} component periodically collect data from the \textit{\textbf{MunicipalityAPI}} and stores them. \\
+Then is shown the request of \textit{ReservedStatistics} by a \textit{\textbf{Supervisor WebApp}}, with the \textbf{\textit{Router}} which forwards the request to the \textit{\textbf{StatisticsManager}} and this last component that builds the statistics consulting the \textbf{\textit{DataWarehouse}} and the \textit{\textbf{MapsAPI}} to retrieve a map of the interested area.
+\afterpage{\newgeometry{left=0.5cm,right=0.5cm,bottom=3cm}
 \begin{figure}[hp]
 \includegraphics[scale=0.7]{ArchSequenceRegistration}
 \caption{UML Architectural Sequence Diagram for \textit{User Registration}}
 \label{fig:seq-register}
 \end{figure}
 \restoregeometry
-
+}\\\\
+In the sequence diagram of figure \ref{fig:seq-register} is shown the \textit{Registration} process for a \textit{User}. He compiles the form on the app, which already verifies that all fields have been properly filled, and the app sends the data to the \textbf{\textit{Router}} which forwards the request to the \textbf{\textit{AccessManager}} component (in particular the \textbf{\textit{CitizenRegistration}} subcomponent). This component verifies the correctness of the provided data through the \textbf{\textit{MunicipalityAPI}} and in case of a positive answer store the registration on the \textbf{\textit{Database}}, otherwise it returns an error message.
+\afterpage{
 \newgeometry{left=1cm,right=1cm, bottom=2cm}
 \begin{landscape}
-
 \begin{figure}[hp]
 \includegraphics[angle=0, scale=0.65]{ArchSequenceSuggestions}
 \caption{UML Architectural Sequence Diagram for the \textit{Suggestions}}
 \label{fig:seq-suggestions}
 \end{figure}
-
 \end{landscape}
 \restoregeometry
-
-In the sequence diagram of figure \ref{fig:seq-sendReport} it has assumed that the \textit{getCity} request to the municipality API returns a city for which the \textit{SafeStreets service} is active. In effect the mobile app should not allow the user to send a report for a city in which the system is not active.\\
-In the sequence diagram of figure \ref{fig:seq-checkReport} the control for the user authentication is shown for every request, but only the first one presents the \textit{Alternative} choice, for the others, marked with *, it has been assumed a positive answer, for the sake of readability, avoiding to repeat the \textit{Alt} with the error message returned in case of authentication failure. 
-A similar assumption has been made for the municipality answer to the ticket emission request, it has been avoided to report the negative answer, for which the agent would be required to retry the request.
-
+}
+\\\\
+In the sequence diagram of figure \ref{fig:seq-suggestions} are shown the interactions involved by the \textit{Suggestions} function. For first is shown how the \textbf{\textit{SuggestionManager}} periodically retrieve data from the \textbf{\textit{DataWarehouse}} and from the \textbf{\textit{DBMS}} and tries to elaborate new suggestions. If it succeeds in this it stores the new \textit{Suggestion} and sends a notification to the \textbf{\textit{MunicipalitySupervisor WebApps}} through the \textbf{\textit{NotificationManager}}.\\
+Then is shown how when a \textit{Supervisor} wants to check the last suggestions, in any moment, he can access them by the corresponding page of his application.
 \section{Component interfaces}
 
-
+Simo?
 \section{Selected architectural	styles and patterns}
+\subsection{Model-View-Controller Pattern}
+The (distributed) Model-View-Controller pattern has been exploited to develop the entire application.  This choice has been made to allow fast development, where multiple developers can work together at different levels, and easy debug and update of the application. In section 2.2 the component diagram shows all the high level components that are part of the application. Colors have been used to underline different tiers and so different functionalities: yellow components are View components, orange ones are Controller components and red components are Model Components. For more infos about MVC pattern, see \hyperref[use:MVC-pattern]{\textit{[MVC-PATTERN]}}.
+\subsection{Facade Pattern}
+The facade pattern has been exploited in our application: to hide the complexity of the application only one component can be seen by the client as a "facade". This component shows an interface that masks all the complexity of the Application and Data Server to the User Interfaces. The "facade" component is the router. For more infos about facade pattern, see \hyperref[ref:facade-pattern]{\textit{[FACADE-PATTERN]}}.
+\subsection{Thin client}
+Our application is based on a three-tier architecture where client is thin. Thin, in this case, means that client as all (or partial) and only functionalities of the Presentation layer. In particular in this application, client doesn't need to cache anything, and doesn't need to know anything about the application logic. No need to store locally statistics, considering that data (and so statistics) can change among two different requests. The client just needs to show the operation that a user can perform and the result of the requests. This is meaningful both for the WebApp and for the Mobile App. 
+\subsection{RESTful architecture}
+In the system, the REST paradygm has been followed. This choice has been made mainly for the sake of scalability and independent development of different components. This goal has been achieved with uniformity of interfaces , client-server stateless interactions and cacheability of data (meaningful only for Server). For more infos about RESTful architecture, see \hyperref[use:RESTful-architecture]{\textit{[RESTFUL-ARCHITECTURE]}}. \\
+\\
+Note: here interfaces refers to network interfaces in middleware layer, not to be confused with the component interfaces shown before.
 \section{Other design decisions}
 \subsection{Consistency and update strategies among replicas}
 In this application,  we need a client-centric consistency among replicas because end users (and therefore application servers that act as clients towards the DataServers) don't always connect to the same DataServer, due to the presence of the load balancer. Every DataServer can respond to a request to read or write data so we use an active replication protocol. In particular we exploit leaderless replication in which the decision on the value to read and the write to perform is decided by all the replicas or at least a quorum of them. The type of chosen consistency model  is the "read your writes": the effect of a write operation by a process on a data item x will always be seen by a successive read operation on x by the same process. 
@@ -298,8 +339,8 @@ Table ref? has been added to highlight for each component what requirements it e
     \textbf{Requirements} 
     \end{large}\\  \hline
     User Mobile App &  R1,R3, R4, R5, R6, R7, R8, R9, R10, R28, R29, R30, R33, R34,R35\\ \hline
-    MunicipalityAgent Web App & R19,R20,R21,R22,R23, R24, R26 TODO \\ \hline
-    MunicipalitySupervisor Web App & R36, R37, R38, R40 TODO \\ \hline
+    MunicipalityAgent Web App & R19,R20,R21,R22,R23, R24, R26,R28,R29,R30,R33,R34,R35 \\ \hline
+    MunicipalitySupervisor Web App & R28,R29,R30,R34,R35,R36,R37,R38, R40 \\ \hline
     AccessManager & R1, R2, R3, R25, R26, R38, R39 TODO \\ \hline
     ReportManager & R11, R12, R13, R14, R15, R16, R18, R19 TODO \\ \hline
     SuggestionManager & R42 \\ \hline
@@ -313,8 +354,8 @@ Table ref? has been added to highlight for each component what requirements it e
 \end{table}
 In the following lines is explained how the requirements are provided by the components:
 \begin{enumerate}[start=1,label={[R\arabic*]}]
-\item The system must allow people to register to it providing personal data (name, surname, birthdate, identity card number, fiscal code) and selecting a username and a password: This requirement is provided by the \textbf{AccessManager} and the \textbf{User Mobile App} components. The \textbf{User Mobile App} allows the user to fill blank spaces with username and password and the \textbf{AccessManager} handles requests of registration from the client.
-\item The system must verify the correctness of the provided personal data of a registered user checking them from the identity card number, blocking the registration if they are not correct: the \textbf{AccessManager} checks the received data from the Client and checks them calling the \textbf{munipality API services} that actually possesses sensible data of the users. 
+\item The system must allow people to register to it providing personal data (name, surname, birthdate, identity card number, fiscal code) and selecting a username and a password: This requirement is provided by the \textit{AccessManager} and the \textit{User Mobile App} components. The \textit{User Mobile App} allows the user to fill blank spaces with username and password and the \textit{AccessManager} handles requests of registration from the client.
+\item The system must verify the correctness of the provided personal data of a registered user checking them from the identity card number, blocking the registration if they are not correct: the \textit{AccessManager} checks the received data from the Client and checks them calling the \textit{munipality API services} that actually possesses sensible data of the users. 
 \item The system must allow registered users to login through their username and password,if they provide them correctly: this requirement is provided by the AccessManager and the User Mobile App. The Mobile app allows registered users to insert username and password while the AccessManager handles the requests of login from the user and blocks them  if, checking from the DataBase, the data inserted is not correct. 
 \item The system must allow logged user to fill a report violation form: this requirement is fulfilled by the User Mobile App comonent that allows logged user to choose the "Report a violation" feature.
 \item The system must let the user select the type of violation detected: the requirement is fulfilled by the User Mobile App component, showing an empty space to fill with the type of violation detected in the report a violation process.
@@ -340,14 +381,14 @@ In the following lines is explained how the requirements are provided by the com
 \item The system must verify the correctness of the provided personal data of a registering agent checking them through the Municipality Services, blocking the registration if they are not correct: the AccessManager is responsible for this, asking the Municipality API to check the identity of the agent.
 \item The system must allow an agent to login, inserting its ID and password, blocking the registration if the data inserted is not correct: Municipality Web App and AccessManager are responsible for this. The MunicipalityAgent Web App allows agents to insert data, while AccessManager checks if they are correct.
 \item The system must mine information about streets or area from the reported violations: the DataWareHouse is responsible for this, performing datamining on reports stored in the DataBase of the application.
-\item The system must allow the users (even if not authenticated) to select the see information for a city. The user can choose either the city where he is, using the GPS position, or an arbitrary selected location. The User Mobile App component ensures this requirement by allowing user to choose the city he wants.
-\item The system must allow the user to select information about streets or areas in the city selected and to specify if he wants information for a specific street or area or a classification of streets or areas. The User Mobile App is responsible for this requirement by allowing user to choose the area or street he wants.
-\item The system must show the the data corresponding to the selection of [R29]: the User Mobile App and Statisticsmanager components are responsible for this requirement; the StatisticsManager contacts the MapAPI to provide an image for the city/area/street selected. This image is then shown by the User Mobile App component to the user.
+\item The system must allow all type of users (even if not authenticated) to select the see information for a city. The user can choose either the city where he is, using the GPS position, or an arbitrary selected location. The User Mobile App component, the MunicipalityAgent Web App and the MunicipalitySupervisor Web App ensure this requirement by allowing users to choose the city they want.
+\item The system must allow all type of users (even if not aunthenticated) to select information about streets or areas in the city selected and to specify if he wants information for a specific street or area or a classification of streets or areas. The User Mobile App component, the MunicipalityAgent Web App component, the MunicipalitySupervisor component are responsible for this requirement by allowing users to choose the area or street they want.
+\item The system must show the the data corresponding to the selection of [R29]: the User Mobile App, MunicipalityAgent Web App, MunicipalitySupervisor Web App and Statisticsmanager components are responsible for this requirement; the StatisticsManager contacts the MapAPI to provide an image for the city/area/street selected. This image is then shown by the User Mobile App component to the user.
 \item The system must take information about accidents and tickets from the municipality: this requirement is ensured by the DataCollectionManager that periodically queries the Municipality API to retrieve new informations and saves them on the DataWareHouse.
 \item The system must use information  about accidents and tickets to build statistics, crossing them with reported violations: the StatisticsManager and the DataWareHouse component ensure this requirement; the DataWareHouse components build statistics exploiting dataMining techniques
-\item The system must not allow common users to see confidential data about other people: The User Mobile App component is in charge for this requirement by showing only data that does not violate privacy.This requirement is also guaranteed by a subcomponent in the Router (i.e. AuthChecker) to check if a request made by a specific client is valid or not.
-\item The system must allow the user to choose a topic: areas or streets with most accidents, areas or streets with the highest number of traffic tickets issued, areas or streets where there have been the best improvements, information for a specific area or street. The User Mobile App iprovides this requirement by allowing user to choose the topic is interested into.
-\item The system must show to the user the information about the topic selected according to [R34]: The User Mobile App component ensures this requirement by showing as an image the topic requested to the user.
+\item The system must not allow common users to see confidential data about other people: The User Mobile App component and MunicipalityAgent Web App is in charge for this requirement by showing only data that does not violate privacy.This requirement is also guaranteed by a subcomponent in the Router (i.e. AuthChecker) to check if a request made by a specific client is valid or not.
+\item The system must allow tall type of users (even if not authenticated) to choose a topic: areas or streets with most accidents, areas or streets with the highest number of traffic tickets issued, areas or streets where there have been the best improvements, information for a specific area or street. The User Mobile App component, the MunicipalityAgent Web App component, the MunicipalitySupervisor component provide this requirement by allowing users to choose the topic they're interested into.
+\item The system must show to the user the information about the topic selected according to [R34]:The User Mobile App component, the MunicipalityAgent Web App component, the MunicipalitySupervisor component ensure this requirement by showing as an image the topic requested to the user.
 \item The system must allow authenticated supervisors to retrieve information about the vehicles with the highest number of violations in a selected area or street: the MunicipalitySupervisor Web App allows supervisors to select the statistics they want; the StatisticsManager asks the the DataWareHouse the type of Data requested by the User.
 %\item {[R37]}	\label{R37}The system must allow supervisors to see what areas or streets has seen the best improvements in the ticket emissions.
 \item The system must allow supervisors to access only information about their own municipality: the MunicipalitySupervisor Web App  is responsible for this, allowing supervisor to only check Statistics and suggestions about his city. This requirement is also guaranteed by a subcomponent in the Router (i.e. AuthChecker) to check if a request made by a specific client is valid or not.
@@ -418,5 +459,9 @@ Vittorio Torri \\
 
 \chapter{References}
 
-
+\begin{itemize}
+\item \label{ref:facade-pattern} \hyperref[use:facade-pattern]{\textit{[FACADE-PATTERN]}}\href{https://en.wikipedia.org/wiki/Facade\_pattern}{\textit{https://en.wikipedia.org/wiki/Facade\_pattern}} - definition of facade pattern
+\item \label{ref:MVC-pattern} \hyperref[use:MVC-pattern]{\textit{[MVC-PATTERN]}}\href{https://en.wikipedia.org/wiki/Model\%E2\%80\%93view\%E2\%80\%93controller}{\textit{https://en.wikipedia.org/wiki/Model\%E2\%80\%93view\%E2\%80\%93controller}} - definition of MVC pattern
+\item \label{ref:RESTful-architecture} \hyperref[use:RESTful-architecture]{\textit{[RESTFUL-ARCHITECTURE]}}\href{https://restfulapi.net/rest-architectural-constraints/}{\textit{https://restfulapi.net/rest-architectural-constraints/}}- definition and characteristics of RESTful architecture
+\end{itemize}
 \end{document}
