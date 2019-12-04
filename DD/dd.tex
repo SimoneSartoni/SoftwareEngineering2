@@ -323,7 +323,19 @@ In this application,  we need a client-centric consistency among replicas becaus
 Concerning the update propagation we opted for propagating a notification of the operation, assuming that there will be more writes than reads.  The propagation strategy chosen is the Gossiping strategy: when a replica is updated then it just propagates that update to all the nodes that it knows; if a replica receives an update that it has already received then the probability of propagating that information is decreased on that replica. 
 
 \chapter{User interface design}
+In this chapter are presented again mockups shown in the RASD with a few more additions  mainly concerning the Web App. \\
+//TODO put the mockups here (including new ones) \\
+In the following figures are shown activity diagrams that describe how a user (citizen or agent) can navigate in the UIs offered by the application. The pages described are the ones presented in the mockup section before.
+\afterpage{
+\begin{landscape}
 
+\begin{figure}[hp]
+\includegraphics[angle=0, scale=0.60]{Activity_diagram_UI}
+\caption{UML Activity Diagram for the User Mobile App navigation}
+\label{fig:MobileApp-activity}
+\end{figure}
+\end{landscape}
+}
 \chapter{Requirements Traceability}
 
 In this section is shown how the requirements are actually ensured and what components actually ensure them. It's worth to notice that for the sake of simplicity the Router has been ignored but it's always involved when dealing with a request coming from one of the clients. 
@@ -402,6 +414,70 @@ In the following lines is explained how the requirements are provided by the com
 \end{enumerate}
 
 \chapter{Implementation, integration and test plan}
+\section{Implementation and unit testing}
+To define the implementation and test plan is useful to identify the level of importance for the customer of the various components and also their difficulty of implementation. They are summarized in table ??. The external components (\textit{MunicipalityAPI} and \textit{MapsAPI}) are considered to be ready from the beginning and they will not be further mentioned in this section.\\
+\begin{table}[H]  
+  \centering
+  \bgroup
+  \def\arraystretch{1.5}%  for cell padding, 1 is the default
+  \begin{tabular}{|c|c|c|}
+    \cline{1-3}
+    \textbf{Component} & \textbf{Customer importance} & \textbf{Implementation difficulty} \\ \hline
+    MobileApp & Medium & Low   \\ \hline
+    AgentWebApp & Medium & Low   \\ \hline
+    SupervisorWebApp & Medium & Low   \\ \hline
+    Router & Medium & Medium   \\ \hline
+    SuggestionManager & Low & High   \\ \hline
+    AccessManager & Medium & Low   \\ \hline
+    ReportManager & High & Medium   \\ \hline
+    StatisticsManager & Low & Medium   \\ \hline
+    NotificationManager & Medium & Low   \\ \hline
+    DataCollectionManager & Low & Medium   \\ \hline
+    DBMS & High & Medium   \\ \hline
+    DW & Low & Medium   \\ \hline
+    
+  \end{tabular}
+  \egroup
+  \caption{Classification of components based on customer importance and implementation difficulty}
+\end{table}
+The implementation plan depends heavily from the dimension and the composition of the development team, which define the level of parallelism.
+We assume to have 1 programmer expert in data field, 1 for the for the front end and 2 for the back end components.
+The front-end developer will develop in order the \textbf{\textit{User App}}, the \textbf{\textit{MunicipalityAgent WebApp}} and the \textbf{\textit{MunicipalitySupervisor WebApp}}.\\
+The data developer will develop in order the \textbf{\textit{DBMS}}, the \textbf{\textit{DataWarehouse}} and finally the \textbf{\textit{DataCollectionManager}}, considering the lower importance that this last two components have and considering useful to have already the \textbf{\textit{DataWarehouse}} when implementing the \textit{\textbf{DataCollectionManager}}.\\
+The two back-end developers will develop the remaining modules in the following order, considering once again their priority for the customer and their dependencies:
+\begin{enumerate}[label=\arabic*)]
+\item \textbf{AccessManager} => \textbf{Router} => \textbf{StatisticsManager} => \textbf{SuggestionManager}
+\item \textbf{ReportManager} => \textbf{NotificationManager}  => \textbf{SuggestionManager}
+\end{enumerate}
+The \textbf{\textit{SuggestionManager}} component is the most difficult to be implemented, considering the necessity to elaborate an algorithm for the suggestions generation, therefore it will require the two developers to work together.\\
+All modules need to be tested individually, reaching the 80\% of code coverage. The white testing technique will be adopted for the unit tests and various components will require stubs:
+\begin{itemize}
+\item \textit{AccessManager}, \textit{ReportManager}, \textit{NotificationManager} will require a stub for the \textit{DBMS}
+\item \textit{ReportManager}, \textit{SuggestionManager} will require a stub for the \textit{NotificationManager}
+\item \textit{NotificationManager} will require stubs for \textit{UserMobileApp}, \textit{AgentWebApp} and \textit{SupervisorWebApp}
+\item \textit{Router} will require stubs for \textit{ReportManager}, \textit{StatisticsManager}, \textit{SuggestionManager}, \textit{AccessManager} and \textit{DBMS}
+\end{itemize}
+For the \textbf{\textit{AutomaticReportAnalyzer}} subcomponent of the \textit{ReportManager} it will be particularly important to have a large number of tests to ensure to have a discrete level of performance in the identification of fakes.\\
+For the MobileApp it will be important to test it on various types of mobile devices (smartphones and tablets), with different versions of Android and iOS. The same holds for the WebApps, they will need tests on various browsers (\textit{Google Chrome, Mozilla Firefox, Microsoft Edge}), versions and operating systems.
+\section{Integration testing}
+Once that some modules are completed and tested alone they can be integrated, following a thread-oriented buttom-up order:
+\begin{itemize}
+\item Once the \textit{DataWarehouse}, the \textit{DataCollectionManager} and the part of \textit{DBMS} related to \textit{streets} are ready they can be integrated (\textit{data collection thread})
+\item Once the \textit{ReportManager} the part of \textit{DBMS} related to \textit{reports}, \textit{tickets}, \textit{streets} and \textit{users} and the necessary function of \textit{NotificationManager} are ready they can be integrated  (\textit{report management thread})
+\item Once the \textit{AccessManager} and the part of \textit{DBMS} related to \textit{users} are ready, they can be integrated (\textit{access thread})
+\item Once the \textit{data collection thread} has been integrated and the \textit{StatisticsManager} is ready, they can be integrated  (\textit{statistics thread})
+\item Once the \textit{data collection thread} has been integrated and the \textit{SuggestionsManager} and the necessary function of the \textit{NotificationManager} are ready, they can be integrated (\textit{suggestions thread})
+\item Once the \textit{ReportManager}, the \textit{StatisticsManager}, the \textit{AccessManager}, the \textit{SuggestionManager}, the \textit{Router} and the part of \textit{DBMS} related to \textit{users} and \textit{accesses} are ready, they can be integrated (\textit{facade thread})
+\item Once the \textit{UserMobileApp}, the \textit{MunicipalityAgentWebApp}, the \textit{SupervisorWebApp} and the \textit{Router} are ready, they can be integrated (\textit{presentation thread})
+\item Once the \textit{UserMobileApp}, the \textit{MunicipalityWebApp}, the \textit{SupervisorWebApp} and the \textit{NotificationManager} are ready they can be integrated (\textit{notification thread})
+\end{itemize}
+\section{System testing}
+After the integration testing the system must be subjected to system tests.\\
+First of all the system will be subjected to an \textit{\textbf{alpha test}}, executed by the \textit{SafeStreets} developers in their production environment, checking all functions with a good numbers of test cases (they should cover at least 80\% of the code).\\
+After the check of the \textbf{functional} requirements this test will also verify the \textbf{non-functional} requirements, in particular the performances under an heavy load: the database and the datawarehouse will be charged with a big quantity of data (similar to the expected data for tens of municipality in a decade) and all functions will be tested, checking their elaboration and response times.\\
+The second and most important system test is the \textit{\textbf{beta test}}, which will be executed in a real production environment, with the support of a municipality: a group of voluntary citizens will install and try the mobile app, while a selected group of agents and supervisors will use web apps.\\
+This is particular important to verify another time the correct behavior of the system (i.e. the absence of bugs), in a real distributed environment, but also to verify the \textbf{usability} of the system and the correctness w.r.t to the needs of the various types of users (\textbf{acceptance test}).
+
 
 \chapter{Effort spent}
 
@@ -451,6 +527,8 @@ Vittorio Torri \\
 27-11-2019 & 1 h & Sequence diagrams \\ \midrule
 28-11-2019 & 1 h* & RASD Update \\ \midrule
 28-11-2019 & 1 h & Sequence Diagram \\ \midrule
+30-11-2019 & 2 h & Mockup \\ \midrule
+01-12-2019 & 2 h & Deployment and Runtime View, Scope \\ \midrule
 \bottomrule
 \end{tabular}
 \caption[Vittorio Torri's effort table]{}
