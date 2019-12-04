@@ -305,14 +305,43 @@ In the sequence diagram of figure \ref{fig:seq-suggestions} are shown the intera
 Then is shown how when a \textit{Supervisor} wants to check the last suggestions, in any moment, he can access them by the corresponding page of his application.
 \section{Component interfaces}
 
-
+Simo?
 \section{Selected architectural	styles and patterns}
+\subsection{Model-View-Controller Pattern}
+The (distributed) Model-View-Controller pattern has been exploited to develop the entire application.  This choice has been made to allow fast development, where multiple developers can work together at different levels, and easy debug and update of the application. In section 2.2 the component diagram shows all the high level components that are part of the application. Colors have been used to underline different tiers and so different functionalities: yellow components are View components, orange ones are Controller components and red components are Model Components. For more infos about MVC pattern, see \hyperref[use:MVC-pattern]{\textit{[MVC-PATTERN]}}.
+\subsection{Facade Pattern}
+The facade pattern has been exploited in our application: to hide the complexity of the application only one component can be seen by the client as a "facade". This component shows an interface that masks all the complexity of the Application and Data Server to the User Interfaces. The "facade" component is the router. For more infos about facade pattern, see \hyperref[ref:facade-pattern]{\textit{[FACADE-PATTERN]}}.
+\subsection{Thin client}
+Our application is based on a three-tier architecture where client is thin. Thin, in this case, means that client as all (or partial) and only functionalities of the Presentation layer. In particular in this application, client doesn't need to cache anything, and doesn't need to know anything about the application logic. No need to store locally statistics, considering that data (and so statistics) can change among two different requests. The client just needs to show the operation that a user can perform and the result of the requests. This is meaningful both for the WebApp and for the Mobile App. 
+\subsection{RESTful architecture}
+In the system, the REST paradygm has been followed. This choice has been made mainly for the sake of scalability and independent development of different components. This goal has been achieved with uniformity of interfaces , client-server stateless interactions and cacheability of data (meaningful only for Server). For more infos about RESTful architecture, see \hyperref[use:RESTful-architecture]{\textit{[RESTFUL-ARCHITECTURE]}}. \\
+\\
+Note: here interfaces refers to network interfaces in middleware layer, not to be confused with the component interfaces shown before.
 \section{Other design decisions}
 \subsection{Consistency and update strategies among replicas}
 In this application,  we need a client-centric consistency among replicas because end users (and therefore application servers that act as clients towards the DataServers) don't always connect to the same DataServer, due to the presence of the load balancer. Every DataServer can respond to a request to read or write data so we use an active replication protocol. In particular we exploit leaderless replication in which the decision on the value to read and the write to perform is decided by all the replicas or at least a quorum of them. The type of chosen consistency model  is the "read your writes": the effect of a write operation by a process on a data item x will always be seen by a successive read operation on x by the same process. 
 Concerning the update propagation we opted for propagating a notification of the operation, assuming that there will be more writes than reads.  The propagation strategy chosen is the Gossiping strategy: when a replica is updated then it just propagates that update to all the nodes that it knows; if a replica receives an update that it has already received then the probability of propagating that information is decreased on that replica. 
 
 \chapter{User interface design}
+In this chapter are presented again mockups shown in the RASD with a few more additions  mainly concerning the Web App. \\
+//TODO put the mockups here (including new ones) \\
+In the following figures are shown activity diagrams that describe how a user (citizen or agent) can navigate in the UIs offered by the application. The pages described are the ones presented in the mockup section before.
+\afterpage{
+\begin{landscape}
+
+\begin{figure}[hp]
+\includegraphics[angle=0, scale=0.60]{Activity_diagram_UI}
+\caption{UML Activity Diagram for the User Mobile App navigation}
+\label{fig:MobileApp-activity}
+\end{figure}
+
+\begin{figure}[hp]
+\includegraphics[angle=0, scale=0.50]{Activity_diagram_WebApp}
+\caption{UML Activity Diagram for the MunicipalityAgent Web App navigation}
+\label{fig:AgentWebApp-activity}
+\end{figure}
+\end{landscape}
+}
 
 \chapter{Requirements Traceability}
 
@@ -329,8 +358,8 @@ Table ref? has been added to highlight for each component what requirements it e
     \textbf{Requirements} 
     \end{large}\\  \hline
     User Mobile App &  R1,R3, R4, R5, R6, R7, R8, R9, R10, R28, R29, R30, R33, R34,R35\\ \hline
-    MunicipalityAgent Web App & R19,R20,R21,R22,R23, R24, R26 TODO \\ \hline
-    MunicipalitySupervisor Web App & R36, R37, R38, R40 TODO \\ \hline
+    MunicipalityAgent Web App & R19,R20,R21,R22,R23, R24, R26,R28,R29,R30,R33,R34,R35 \\ \hline
+    MunicipalitySupervisor Web App & R28,R29,R30,R34,R35,R36,R37,R38, R40 \\ \hline
     AccessManager & R1, R2, R3, R25, R26, R38, R39 TODO \\ \hline
     ReportManager & R11, R12, R13, R14, R15, R16, R18, R19 TODO \\ \hline
     SuggestionManager & R42 \\ \hline
@@ -344,8 +373,8 @@ Table ref? has been added to highlight for each component what requirements it e
 \end{table}
 In the following lines is explained how the requirements are provided by the components:
 \begin{enumerate}[start=1,label={[R\arabic*]}]
-\item The system must allow people to register to it providing personal data (name, surname, birthdate, identity card number, fiscal code) and selecting a username and a password: This requirement is provided by the \textbf{AccessManager} and the \textbf{User Mobile App} components. The \textbf{User Mobile App} allows the user to fill blank spaces with username and password and the \textbf{AccessManager} handles requests of registration from the client.
-\item The system must verify the correctness of the provided personal data of a registered user checking them from the identity card number, blocking the registration if they are not correct: the \textbf{AccessManager} checks the received data from the Client and checks them calling the \textbf{munipality API services} that actually possesses sensible data of the users. 
+\item The system must allow people to register to it providing personal data (name, surname, birthdate, identity card number, fiscal code) and selecting a username and a password: This requirement is provided by the \textit{AccessManager} and the \textit{User Mobile App} components. The \textit{User Mobile App} allows the user to fill blank spaces with username and password and the \textit{AccessManager} handles requests of registration from the client.
+\item The system must verify the correctness of the provided personal data of a registered user checking them from the identity card number, blocking the registration if they are not correct: the \textit{AccessManager} checks the received data from the Client and checks them calling the \textit{munipality API services} that actually possesses sensible data of the users. 
 \item The system must allow registered users to login through their username and password,if they provide them correctly: this requirement is provided by the AccessManager and the User Mobile App. The Mobile app allows registered users to insert username and password while the AccessManager handles the requests of login from the user and blocks them  if, checking from the DataBase, the data inserted is not correct. 
 \item The system must allow logged user to fill a report violation form: this requirement is fulfilled by the User Mobile App comonent that allows logged user to choose the "Report a violation" feature.
 \item The system must let the user select the type of violation detected: the requirement is fulfilled by the User Mobile App component, showing an empty space to fill with the type of violation detected in the report a violation process.
@@ -371,14 +400,14 @@ In the following lines is explained how the requirements are provided by the com
 \item The system must verify the correctness of the provided personal data of a registering agent checking them through the Municipality Services, blocking the registration if they are not correct: the AccessManager is responsible for this, asking the Municipality API to check the identity of the agent.
 \item The system must allow an agent to login, inserting its ID and password, blocking the registration if the data inserted is not correct: Municipality Web App and AccessManager are responsible for this. The MunicipalityAgent Web App allows agents to insert data, while AccessManager checks if they are correct.
 \item The system must mine information about streets or area from the reported violations: the DataWareHouse is responsible for this, performing datamining on reports stored in the DataBase of the application.
-\item The system must allow the users (even if not authenticated) to select the see information for a city. The user can choose either the city where he is, using the GPS position, or an arbitrary selected location. The User Mobile App component ensures this requirement by allowing user to choose the city he wants.
-\item The system must allow the user to select information about streets or areas in the city selected and to specify if he wants information for a specific street or area or a classification of streets or areas. The User Mobile App is responsible for this requirement by allowing user to choose the area or street he wants.
-\item The system must show the the data corresponding to the selection of [R29]: the User Mobile App and Statisticsmanager components are responsible for this requirement; the StatisticsManager contacts the MapAPI to provide an image for the city/area/street selected. This image is then shown by the User Mobile App component to the user.
+\item The system must allow all type of users (even if not authenticated) to select the see information for a city. The user can choose either the city where he is, using the GPS position, or an arbitrary selected location. The User Mobile App component, the MunicipalityAgent Web App and the MunicipalitySupervisor Web App ensure this requirement by allowing users to choose the city they want.
+\item The system must allow all type of users (even if not aunthenticated) to select information about streets or areas in the city selected and to specify if he wants information for a specific street or area or a classification of streets or areas. The User Mobile App component, the MunicipalityAgent Web App component, the MunicipalitySupervisor component are responsible for this requirement by allowing users to choose the area or street they want.
+\item The system must show the the data corresponding to the selection of [R29]: the User Mobile App, MunicipalityAgent Web App, MunicipalitySupervisor Web App and Statisticsmanager components are responsible for this requirement; the StatisticsManager contacts the MapAPI to provide an image for the city/area/street selected. This image is then shown by the User Mobile App component to the user.
 \item The system must take information about accidents and tickets from the municipality: this requirement is ensured by the DataCollectionManager that periodically queries the Municipality API to retrieve new informations and saves them on the DataWareHouse.
 \item The system must use information  about accidents and tickets to build statistics, crossing them with reported violations: the StatisticsManager and the DataWareHouse component ensure this requirement; the DataWareHouse components build statistics exploiting dataMining techniques
-\item The system must not allow common users to see confidential data about other people: The User Mobile App component is in charge for this requirement by showing only data that does not violate privacy.This requirement is also guaranteed by a subcomponent in the Router (i.e. AuthChecker) to check if a request made by a specific client is valid or not.
-\item The system must allow the user to choose a topic: areas or streets with most accidents, areas or streets with the highest number of traffic tickets issued, areas or streets where there have been the best improvements, information for a specific area or street. The User Mobile App iprovides this requirement by allowing user to choose the topic is interested into.
-\item The system must show to the user the information about the topic selected according to [R34]: The User Mobile App component ensures this requirement by showing as an image the topic requested to the user.
+\item The system must not allow common users to see confidential data about other people: The User Mobile App component and MunicipalityAgent Web App is in charge for this requirement by showing only data that does not violate privacy.This requirement is also guaranteed by a subcomponent in the Router (i.e. AuthChecker) to check if a request made by a specific client is valid or not.
+\item The system must allow tall type of users (even if not authenticated) to choose a topic: areas or streets with most accidents, areas or streets with the highest number of traffic tickets issued, areas or streets where there have been the best improvements, information for a specific area or street. The User Mobile App component, the MunicipalityAgent Web App component, the MunicipalitySupervisor component provide this requirement by allowing users to choose the topic they're interested into.
+\item The system must show to the user the information about the topic selected according to [R34]:The User Mobile App component, the MunicipalityAgent Web App component, the MunicipalitySupervisor component ensure this requirement by showing as an image the topic requested to the user.
 \item The system must allow authenticated supervisors to retrieve information about the vehicles with the highest number of violations in a selected area or street: the MunicipalitySupervisor Web App allows supervisors to select the statistics they want; the StatisticsManager asks the the DataWareHouse the type of Data requested by the User.
 %\item {[R37]}	\label{R37}The system must allow supervisors to see what areas or streets has seen the best improvements in the ticket emissions.
 \item The system must allow supervisors to access only information about their own municipality: the MunicipalitySupervisor Web App  is responsible for this, allowing supervisor to only check Statistics and suggestions about his city. This requirement is also guaranteed by a subcomponent in the Router (i.e. AuthChecker) to check if a request made by a specific client is valid or not.
@@ -555,5 +584,9 @@ Vittorio Torri \\
 
 \chapter{References}
 
-
+\begin{itemize}
+\item \label{ref:facade-pattern} \hyperref[use:facade-pattern]{\textit{[FACADE-PATTERN]}}\href{https://en.wikipedia.org/wiki/Facade\_pattern}{\textit{https://en.wikipedia.org/wiki/Facade\_pattern}} - definition of facade pattern
+\item \label{ref:MVC-pattern} \hyperref[use:MVC-pattern]{\textit{[MVC-PATTERN]}}\href{https://en.wikipedia.org/wiki/Model\%E2\%80\%93view\%E2\%80\%93controller}{\textit{https://en.wikipedia.org/wiki/Model\%E2\%80\%93view\%E2\%80\%93controller}} - definition of MVC pattern
+\item \label{ref:RESTful-architecture} \hyperref[use:RESTful-architecture]{\textit{[RESTFUL-ARCHITECTURE]}}\href{https://restfulapi.net/rest-architectural-constraints/}{\textit{https://restfulapi.net/rest-architectural-constraints/}}- definition and characteristics of RESTful architecture
+\end{itemize}
 \end{document}
