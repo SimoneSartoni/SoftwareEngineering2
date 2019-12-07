@@ -91,7 +91,7 @@ Different levels are identified through the document; here they are just mention
 
 \section{Scope}
 Here the scope of the system is briefly summarized.\\
-\textit{SafeStreets} is an application system with them aim to support municipalities in recording parking violations, providing also additional functions for traffic tickets emission, statistics and suggestions.\\
+\textit{SafeStreets} is an application system with the aim to support municipalities in recording parking violations, providing also additional functions for traffic tickets emission, statistics and suggestions.\\
 The citizen can use the mobile app to send reports about parking violations, after having been registered, and to consult statistics about violations and accidents.\\
 Municipality agents can use the web application to receive the reports by the users, analyze them and possibly emit traffic tickets. They can also consult the previously mentioned statistics.\\
 Municipality supervisors can also receive the \textit{suggestions} elaborated by the system to improve the safety on the streets and can also consult reserved statistics, containing personal data about the most egregious offenders.\\
@@ -339,7 +339,7 @@ Each time a method is invoked, the Router checks the authentication of the reque
 \item Data Warehouse provides methods to obtain aggregated data about accidents, reports and tickets, invoked by the StatisticsManager; at the same time data are updated by the DataCollectionManager.
 \item DBMS provides methods to manage reports and accounts and to store data about roads from the DataCollectionManager. "GetPeriodicUpdate" method is invoked by the DataWarehouse to obtain updated data from DBMS.
 \item MunicipalityAPI provides methods to emit tickets, to identify both the registrating agent from its badge number and the registrating user from his Identity Card number and to obtain information about statistics and road networks.
-\item MapsAPI provides maps according to the filters given as parameter.
+\item MapsAPI provides maps according to the filters given as parameter; return value of the API method is "Map" class, which generically denotes the class type for maps and depends on which API has been choosen.
 \end{itemize}
 In figure \ref{fig:class-diagram} is reported a \textit{Class diagram} which is derived from the class diagram already reported in the RASD with some small modifications. It's still an high level diagram, not necessarily exactly corresponding to the implementation, but it can be a good starting point for the classes to be implemented.
 \newgeometry{top=1cm}
@@ -363,11 +363,12 @@ In the system, the REST paradigm has been followed. This choice has been made ma
 \\
 Note: here interfaces refers to network interfaces in middleware layer, not to be confused with the component interfaces shown before.
 \subsection{Databases}
-The operational database of \textit{SafeStreets} is a relational database, considering the structured data it has to manage, regarding users, reports, municipalities. For the statistics and the suggestions elaboration, which require the analysis of a big amount of aggregated historical data, a multidimensional model is used, with a \textit{DataWarehouse}, obtaining its data both from the relational database and directly from the municipality (through the \textit{DataCollectionManager} component.
+The operational database of \textit{SafeStreets} is a relational database, considering the structured data it has to manage, regarding users, reports, municipalities. For the statistics and the suggestions elaboration, which require the analysis of a big amount of aggregated historical data, a multidimensional model is used, with a \textit{DataWarehouse}, obtaining its data both from the relational database and directly from the municipality (through the \textit{DataCollectionManager} component). A conceptual description of the databases is present in the \hyperref[sec:db-design]{\textit{Database design}} subsection.
  
 
 \section{Other design decisions}
 \subsection{Database design}
+\label{sec:db-design}
 In figure \ref{fig:er} is shown the \textbf{Entity-Relationship} diagram for the operational database. It is worth to remark that the data coming from the municipality about tickets and accidents are directly stored in the datawarehouse, while here only data about tickets emitted through the SafeStreet system are stored.\\
 In figure \ref{fig:dfm} is shown the \textbf{Data Fact Model} for the datawarehouse. The tree facts of interest are Report, Tickets and Accidents. The diagram highlight the dimension of analysis which can be useful for the Statistics and Suggestions functions.
 \begin{figure}[htp]
@@ -704,6 +705,10 @@ Simone Sartoni \\
 24-11-2019 & 4 h &  System architecture diagram and deployment diagram\\ \midrule
 27-11-2019 & 1.5 h & Update deployment diagram, requirements traceability revision and Requirements Traceability Matrix creation \\ \midrule
 28-11-2019 & 3 h & Requirements Traceability Matrix update and Interface Diagram \\ \midrule
+29-11-2019 & 1.5 h & Components Interface Diagram \\ \midrule
+03-11-2019 & 3 h & Components Interface Diagram update \\ \midrule
+04-11-2019 & 1.5 h & Components Interface Diagram description \\ \midrule
+07-11-2019 & 1.5 h & Components Interface Diagram update \\ \midrule
 
 \bottomrule
 \end{tabular}
@@ -733,6 +738,7 @@ Vittorio Torri \\
 05-12-2019 & 1 h & Minor changes and fixes \\ \midrule
 06-12-2019 & 1.5 h & E/R and DFM diagrams \\ \midrule
 07-12-2019 & 2 h & Web Registration mockup, gantt chart \\ \midrule
+07-12-2019 & 1 h & Class diagram update and minor fixes \\ \midrule
 \bottomrule
 \end{tabular}
 \caption[Vittorio Torri's effort table]{}
