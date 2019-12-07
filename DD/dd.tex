@@ -185,7 +185,7 @@ reported, for the sake of readability. The various components are now described 
 \begin{figure}[htp]
 \includegraphics[width=\textwidth]{DataCollectionManager2}
 \caption{UML Component Diagram for \textit{DataCollectionManager} component}
-\label{fig:statisticsmgr-component}
+\label{fig:datacollectionmgr-component}
 \end{figure}
 
 \item \textbf{DBMS}: this component manages the operational database, the main base for the functions of SafeStreets, being in charge of reports, users and streets data.
@@ -307,9 +307,40 @@ In the sequence diagram of figure \ref{fig:seq-register} is shown the \textit{Re
 \\\\
 In the sequence diagram of figure \ref{fig:seq-suggestions} are shown the interactions involved by the \textit{Suggestions} function. For first is shown how the \textbf{\textit{SuggestionManager}} periodically retrieve data from the \textbf{\textit{DataWarehouse}} and from the \textbf{\textit{DBMS}} and tries to elaborate new suggestions. If it succeeds in this it stores the new \textit{Suggestion} and sends a notification to the \textbf{\textit{MunicipalitySupervisor WebApps}} through the \textbf{\textit{NotificationManager}}.\\
 Then is shown how when a \textit{Supervisor} wants to check the last suggestions, in any moment, he can access them by the corresponding page of his application.
-\section{Component interfaces}
 
-Simo?
+
+\section{Component interfaces}
+\afterpage{
+\newgeometry{bottom=2cm}
+\begin{landscape}
+
+\begin{figure}[hp]
+\includegraphics[angle=0, scale=0.25]{Component_Interfaces_Diagram}
+\caption{UML Interfaces Diagram}
+\label{fig:Interfaces-Diagram}
+\end{figure}
+
+\end{landscape}
+\restoregeometry
+}
+
+
+In the above figure the component interfaces, with reference to what was shown in the Component diagram, are represented. The arrows represent a dependency relation. Each component is described by its invocable methods:
+\begin{itemize}
+\item Each of invocable methods of the Router are responsable of forwarding a certain request to the associated component; for example ForwardCitizenRegistrationData has one single parameter of User type, which must be forwarded to the AccessManagerComponent, invoking its "CitizenRegistration" method.
+Each time a method is invoked, the Router checks the authentication of the request with the AuthCheck component, but those methods are not described in the Diagram because they are internal methods.
+\item ReportManager methods can be invoked by the Router when a new Report is sent ("SendReport" method) or an already existing Report must be managed by the responsable agent (ManageReport). In the first case the component will invoke the NotificationManager "PushReports" method, while in the second one it will invoke different MunicipalityAPI methods.
+\item The methods of the Access Manager are invoked by the Router when it receives a Registration or Login request for a citizen or an Authority. As the previous component, other methods will be invoked, belonging to the NotificationManager or the MunicipalityAPI.
+\item The methods of the Statistics Manager are invoked by the Router when a request of public or reserverved statistics is asked through the associated method of the Router. The StatisticsManager asks to the Data Warehouse component for tickets, accidents and reports and uses the MapsAPI to provide a map of the interested area.
+\item SuggestionManager is only invoked by the Router through its method "getSuggestions", which can return zero, one or more suggestions.
+\item NotificationManager provides methods for the AccessManager and the Router and does not invoke any other methods from other components.
+\item DataCollectionManager is never invoked by any other component, so its interface does not require any method, infact it is only periodically executed to update data. It obtains data to through the MunicipalityAPI with the methods "StatisticsInformation" and "RoadNetworkInformation" and saves them both in the DataWarehouse, invoking methods "StoreTicketsData" and "StoreAccidentsData", and in the Database, calling "StoreRoadsInformation" method of the DBMS.
+\item Data Warehouse provides methods to obtain aggregated data about accidents, reports and tickets, invoked by the StatisticsManager; at the same time data are updated by the DataCollectionManager.
+\item DBMS provides methods to manage reports and accounts and to store data about roads from the DataCollectionManager. "GetPeriodicUpdate" method is invoked by the DataWarehouse to obtain updated data from DBMS.
+\item MunicipalityAPI provides methods to emit tickets, to identify both the registrating agent from its badge number and the registrating user from his Identity Card number and to obtain information about statistics and road networks.
+\item MapsAPI provides maps according to the filters given as parameter.
+\end{itemize}
+
 \section{Selected architectural	styles and patterns}
 \subsection{Model-View-Controller Pattern}
 The (distributed) Model-View-Controller pattern has been exploited to develop the entire application.  This choice has been made to allow fast development, where multiple developers can work together at different levels, and easy debug and update of the application. In section 2.2 the component diagram shows all the high level components that are part of the application. Colors have been used to underline different tiers and so different functionalities: yellow components are View components, orange ones are Controller components and red components are Model Components. For more infos about MVC pattern, see \hyperref[use:MVC-pattern]{\textit{[MVC-PATTERN]}}.
@@ -328,7 +359,7 @@ Concerning the update propagation we opted for propagating a notification of the
 
 \chapter{User interface design}
 In this chapter are presented again mockups shown in the RASD with a few more additions  mainly concerning the Web App. \\
-//TODO put the mockups here (including new ones) \\
+\
 In the following figures are shown activity diagrams that describe how a user (citizen or agent) can navigate in the UIs offered by the application. The pages described are the ones presented in the mockup section before.
 Notice that  Users and Municipality Workers can quit the application from any state to reach the end state of the diagrams. No end state is represented and so are all the arrows that lead to them; this has been done for the sake of readability of the diagrams.
 \afterpage{
@@ -338,6 +369,12 @@ Notice that  Users and Municipality Workers can quit the application from any st
 \includegraphics[angle=0, scale=0.50]{Activity_diagram_UI}
 \caption{UML Activity Diagram for the User Mobile App navigation}
 \label{fig:MobileApp-activity}
+\end{figure}
+
+\begin{figure}[hp]
+\includegraphics[angle=0, scale=0.50]{Activity_diagram_Supervisor_WebApp}
+\caption{UML Activity Diagram for the MunicpalitySupervisor Web App navigation}
+\label{fig:SupWebApp-activity}
 \end{figure}
 
 \begin{figure}[hp]
