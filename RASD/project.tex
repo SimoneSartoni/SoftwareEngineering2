@@ -163,6 +163,10 @@ In the following table is shown which world and shared phenoma are involved for 
 	\begin{itemize}
 	\item update ambiguous requirements R28,R29,R34
 	\end{itemize}
+\item 09-12-2019 Version 1.4:
+	\begin{itemize}
+	\item update Use Cases incoherency with Mockups
+	\end{itemize}
 \end{itemize}
 \section{Reference documents}
 \begin{itemize}
@@ -469,16 +473,14 @@ Entry condition:
 \end{itemize}
 Flow of events:
 \begin{itemize}
-\item The user clicks on the Checking statistics button in the main page
+\item The user clicks on the "Checking statistics" (or "Statistics") button in the main page
 \item The user chooses to get statistics either from his city or from another one
 \item The user selects the type of statistics: data about a specific street or area, or a classification of streets or area on the base of the number of reports,tickets,accidents or increase/reduction in these values.
 \item After checking, user presses the Back button to return to the home page
-\item The system asks the user if he is sure to exit with a “Yes” or “No” choice
-\item The user presses the button he wants, confirming his choice
 \end{itemize}
 Exit conditions:
 \begin{itemize}
-\item User is successfully brought back to the home page
+\item User is successfully brought back to the main page
 \end{itemize}
 Exceptions: \\There are no exception in this case
 \\ \\
@@ -492,7 +494,7 @@ Entry condition:
 \end{itemize}
 Flow of events:
 \begin{itemize}
-\item The supervisor clicks on the “Recent Suggestions” button or clicks on the new suggestion notification.
+\item The supervisor clicks on the “Suggestions” button or clicks on the new suggestion notification.
 \item The system redirects the supervisor to a page where he can see the list of suggestions from the most recent to the oldest
 \item The supervisor chooses a suggestion.
 \item The system shows the supervisor the whole text of the suggestion.
@@ -500,7 +502,7 @@ Flow of events:
 \end{itemize}
 Exit conditions:
 \begin{itemize}
-\item The supervisor is successfully brought back to his personal home page.
+\item The supervisor is successfully brought back tothe suggestions page.
 \end{itemize}
 Exceptions:
 \begin{itemize}
@@ -522,7 +524,7 @@ Flow of events:
 \item Clicking on it, or entering in the Reports section, the system shows him the first report in the queue.
 \item If the pictures are not clear enough, the agent contacts the supervisor to send an agent in the street to check and in the meanwhile he can put the report on hold by clicking on the button "On Hold".
 \item If he is sure that what is reported is not a violation or if he recognize it as a duplicate he can discard the report with the button "Discard". Before doing this he can possibly retrieve data about the author of the report, clicking on the button "Author".
-\item Otherwise the agent clicks the "Send ticket" button to file the report and send a ticket to the recognized owner of the vehicle. The system allows him to specify the amount of the ticket and a description.
+\item Otherwise the agent clicks the "Issue" button to file the report and send a ticket to the recognized owner of the vehicle. The system allows him to specify the amount of the ticket and a description.
 \end{itemize}
 Exit conditions:
 \begin{itemize}
@@ -542,10 +544,11 @@ Entry condition:
 \end{itemize}
 Flow of events:
 \begin{itemize}
-\item User clicks on the “sign in” button.
+\item User clicks on the “Login or register” button;
+\item User clicks on the "Register" button;
 \item User provides the required information: fiscal code, identity card number, name, surname and birthdate;
 \item User provides a Username and a password;
-\item User clicks on “Confirm” button
+\item User clicks on “Confirm” button.
 \end{itemize}
 Exit conditions: 
 \begin{itemize}
