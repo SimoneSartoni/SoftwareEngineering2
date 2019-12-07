@@ -341,18 +341,25 @@ Each time a method is invoked, the Router checks the authentication of the reque
 \item MunicipalityAPI provides methods to emit tickets, to identify both the registrating agent from its badge number and the registrating user from his Identity Card number and to obtain information about statistics and road networks.
 \item MapsAPI provides maps according to the filters given as parameter.
 \end{itemize}
-
+In figure \ref{fig:class-diagram} is reported a \textit{Class diagram} which is derived from the class diagram already reported in the RASD with some small modifications. It's still an high level diagram, not necessarily exactly corresponding to the implementation, but it can be a good starting point for the classes to be implemented.
+\newgeometry{top=1cm}
+\begin{figure}[htp]
+\includegraphics[width=\textwidth]{ClassDiagramDD}
+\caption{UML Class Diagram}
+\label{fig:class-diagram}
+\end{figure}
+\restoregeometry
 \section{Selected architectural	styles and patterns}
 \subsection{Model-View-Controller Pattern}
-The (distributed) Model-View-Controller pattern has been exploited to develop the entire application.  This choice has been made to allow fast development, where multiple developers can work together at different levels, and easy debug and update of the application. In section 2.2 the component diagram shows all the high level components that are part of the application. Colors have been used to underline different tiers and so different functionalities: yellow components are View components, orange ones are Controller components and red components are Model Components. For more infos about MVC pattern, see \hyperref[ref:MVC-pattern]{\textit{[MVC-PATTERN]}}.
+The (distributed) Model-View-Controller pattern has been exploited to develop the entire application.  This choice has been made to allow fast development, where multiple developers can work together at different levels, and easy debug and update of the application. In section 2.2 the component diagram shows all the high level components that are part of the application. Colors have been used to underline different tiers and so different functionalities: yellow components are View components, orange ones are Controller components and red components are Model Components. For more infos about MVC pattern, see 	\\label{use:MVC-pattern} \hyperref[ref:MVC-pattern]{\textit{[MVC-PATTERN]}}.\label{use:MVC-pattern}
 \subsection{Facade Pattern}
-The facade pattern has been exploited in our application: to hide the complexity of the application only one component can be seen by the client as a "facade". This component shows an interface that masks all the complexity of the Application and Data Server to the User Interfaces. The "facade" component is the router. For more infos about facade pattern, see \hyperref[ref:facade-pattern]{\textit{[FACADE-PATTERN]}}.
+The facade pattern has been exploited in our application: to hide the complexity of the application only one component can be seen by the client as a "facade". This component shows an interface that masks all the complexity of the Application and Data Server to the User Interfaces. The "facade" component is the router. For more infos about facade pattern, see \hyperref[ref:facade-pattern]{\textit{[FACADE-PATTERN]}} \label{use:facade-pattern}.
 \subsection{Publish-Subscribe Pattern}
 The publish-subscribe pattern is used for the notification mechanism implemented by the \textit{NotificationManager} component to send notifications to the user applications (both mobile and web) about reports and suggestions. It is based on the functionalities offered by Google and Apple for Android/Chrome and iOS respectively, namely \textit{Google Firebase Cloud Messaging} and \textit{Apple Push Notification Service}. \label{use:pubsub-pattern} See \hyperref[ref:pubsub-pattern]{\textit{[PUBSUB-PATTERN]}} for more information.
 \subsection{Thin client}
 Our application is based on a three-tier architecture where client is thin. Thin, in this case, means that client as all (or partial) and only functionalities of the Presentation layer. In particular in this application, client doesn't need to cache anything, and doesn't need to know anything about the application logic. No need to store locally statistics, considering that data (and so statistics) can change among two different requests. The client just needs to show the operation that a user can perform and the result of the requests. This is meaningful both for the WebApp and for the Mobile App. 
 \subsection{RESTful architecture}
-In the system, the REST paradigm has been followed. This choice has been made mainly for the sake of scalability and independent development of different components. This goal has been achieved with uniformity of interfaces , client-server stateless interactions and cacheability of data (meaningful only for Server). For more infos about RESTful architecture, see \hyperref[ref:RESTful-architecture]{\textit{[RESTFUL-ARCHITECTURE]}}. \\
+In the system, the REST paradigm has been followed. This choice has been made mainly for the sake of scalability and independent development of different components. This goal has been achieved with uniformity of interfaces , client-server stateless interactions and cacheability of data (meaningful only for Server). For more infos about RESTful architecture, see \hyperref[ref:RESTful-architecture]{\textit{[RESTFUL-ARCHITECTURE]}}. \label{use:RESTful-architecture} \\
 \\
 Note: here interfaces refers to network interfaces in middleware layer, not to be confused with the component interfaces shown before.
 \subsection{Databases}
