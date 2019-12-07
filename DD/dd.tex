@@ -228,7 +228,8 @@ Each data server is associated with a single replica of the data and exploits th
 To ensure and improve security firewalls are installed before and after the application servers to filter accesses from external and unsafe networks. By the creation of a \textit{DMZ} (demilitarized zone) external entities can only have access to the exposed services. They will be properly configurated to allow only legit requests coming from the Application Servers to reach the Data Servers. All the communications will exploit the HTTPS protocol, unsafe communications will be refused by the firewalls. Security is crucial because the application works mainly with sensible information. 
 \section{Runtime view}
 In the figures \ref{fig:seq-sendReport}, \ref{fig:seq-userLogin}, \ref{fig:seq-checkReport}, \ref{fig:seq-checkStats}, \ref{fig:seq-register} and \ref{fig:seq-suggestions} some architectural sequence diagrams are provided, showing the interactions among the different components in the execution of various functions of the systems. \\
-The only methods present here and not mentioned in the \textit{Component Intefaces} section are internal method of a single component.
+The only methods present here and not mentioned in the \textit{Component Intefaces} section are internal method of a single component.\\
+The \textit{NotificationManager} always requires an interaction with an external server (\textit{Google Firebase Cloud Manager} for Android and Chrome, \textit{Apple Push Notification Service} for iOS), but in the following diagrams it will never be represented, assuming it as internal to the component, for the sake of simplicity and readability. 
 \afterpage{
 \newgeometry{left=0.5cm, bottom=2cm}
 \begin{landscape}
@@ -308,33 +309,128 @@ Then is shown how when a \textit{Supervisor} wants to check the last suggestions
 Simo?
 \section{Selected architectural	styles and patterns}
 \subsection{Model-View-Controller Pattern}
-The (distributed) Model-View-Controller pattern has been exploited to develop the entire application.  This choice has been made to allow fast development, where multiple developers can work together at different levels, and easy debug and update of the application. In section 2.2 the component diagram shows all the high level components that are part of the application. Colors have been used to underline different tiers and so different functionalities: yellow components are View components, orange ones are Controller components and red components are Model Components. For more infos about MVC pattern, see \hyperref[use:MVC-pattern]{\textit{[MVC-PATTERN]}}.
+The (distributed) Model-View-Controller pattern has been exploited to develop the entire application.  This choice has been made to allow fast development, where multiple developers can work together at different levels, and easy debug and update of the application. In section 2.2 the component diagram shows all the high level components that are part of the application. Colors have been used to underline different tiers and so different functionalities: yellow components are View components, orange ones are Controller components and red components are Model Components. For more infos about MVC pattern, see \hyperref[ref:MVC-pattern]{\textit{[MVC-PATTERN]}}.
 \subsection{Facade Pattern}
 The facade pattern has been exploited in our application: to hide the complexity of the application only one component can be seen by the client as a "facade". This component shows an interface that masks all the complexity of the Application and Data Server to the User Interfaces. The "facade" component is the router. For more infos about facade pattern, see \hyperref[ref:facade-pattern]{\textit{[FACADE-PATTERN]}}.
+\subsection{Publish-Subscribe Pattern}
+The publish-subscribe pattern is used for the notification mechanism implemented by the \textit{NotificationManager} component to send notifications to the user applications (both mobile and web) about reports and suggestions. It is based on the functionalities offered by Google and Apple for Android/Chrome and iOS respectively, namely \textit{Google Firebase Cloud Messaging} and \textit{Apple Push Notification Service}. \label{use:pubsub-pattern} See \hyperref[ref:pubsub-pattern]{\textit{[PUBSUB-PATTERN]}} for more information.
 \subsection{Thin client}
 Our application is based on a three-tier architecture where client is thin. Thin, in this case, means that client as all (or partial) and only functionalities of the Presentation layer. In particular in this application, client doesn't need to cache anything, and doesn't need to know anything about the application logic. No need to store locally statistics, considering that data (and so statistics) can change among two different requests. The client just needs to show the operation that a user can perform and the result of the requests. This is meaningful both for the WebApp and for the Mobile App. 
 \subsection{RESTful architecture}
-In the system, the REST paradygm has been followed. This choice has been made mainly for the sake of scalability and independent development of different components. This goal has been achieved with uniformity of interfaces , client-server stateless interactions and cacheability of data (meaningful only for Server). For more infos about RESTful architecture, see \hyperref[use:RESTful-architecture]{\textit{[RESTFUL-ARCHITECTURE]}}. \\
+In the system, the REST paradigm has been followed. This choice has been made mainly for the sake of scalability and independent development of different components. This goal has been achieved with uniformity of interfaces , client-server stateless interactions and cacheability of data (meaningful only for Server). For more infos about RESTful architecture, see \hyperref[ref:RESTful-architecture]{\textit{[RESTFUL-ARCHITECTURE]}}. \\
 \\
 Note: here interfaces refers to network interfaces in middleware layer, not to be confused with the component interfaces shown before.
+\subsection{Databases}
+The operational database of \textit{SafeStreets} is a relational database, considering the structured data it has to manage, regarding users, reports, municipalities. For the statistics and the suggestions elaboration, which require the analysis of a big amount of aggregated historical data, a multidimensional model is used, with a \textit{DataWarehouse}, obtaining its data both from the relational database and directly from the municipality (through the \textit{DataCollectionManager} component.
+ 
+
 \section{Other design decisions}
+\subsection{Database design}
+In figure \ref{fig:er} is shown the \textbf{Entity-Relationship} diagram for the operational database. It is worth to remark that the data coming from the municipality about tickets and accidents are directly stored in the datawarehouse, while here only data about tickets emitted through the SafeStreet system are stored.\\
+In figure \ref{fig:dfm} is shown the \textbf{Data Fact Model} for the datawarehouse. The tree facts of interest are Report, Tickets and Accidents. The diagram highlight the dimension of analysis which can be useful for the Statistics and Suggestions functions.
+\begin{figure}[htp]
+\includegraphics[width=\textwidth]{ER}
+\caption{Entity-Relationship diagram for the operational database}
+\label{fig:er}
+\end{figure}
+\begin{figure}[htp]
+\includegraphics[width=\textwidth]{DFM}
+\caption{Dimensional Fact Model diagram for the data warehouse}
+\label{fig:dfm}
+\end{figure}
+
 \subsection{Consistency and update strategies among replicas}
 In this application,  we need a client-centric consistency among replicas because end users (and therefore application servers that act as clients towards the DataServers) don't always connect to the same DataServer, due to the presence of the load balancer. Every DataServer can respond to a request to read or write data so we use an active replication protocol. In particular we exploit leaderless replication in which the decision on the value to read and the write to perform is decided by all the replicas or at least a quorum of them. The type of chosen consistency model  is the "read your writes": the effect of a write operation by a process on a data item x will always be seen by a successive read operation on x by the same process. 
 Concerning the update propagation we opted for propagating a notification of the operation, assuming that there will be more writes than reads.  The propagation strategy chosen is the Gossiping strategy: when a replica is updated then it just propagates that update to all the nodes that it knows; if a replica receives an update that it has already received then the probability of propagating that information is decreased on that replica. 
 
 \chapter{User interface design}
-In this chapter are presented again mockups shown in the RASD with a few more additions  mainly concerning the Web App. \\
-//TODO put the mockups here (including new ones) \\
-In the following figures are shown activity diagrams that describe how a user (citizen or agent) can navigate in the UIs offered by the application. The pages described are the ones presented in the mockup section before.
+In this chapter are presented again mockups shown in the RASD with a few additions (figure from \ref{fig:initial-page} to \ref{fig:mock-webregister} ).\\
 \afterpage{
+\begin{figure}
+\begin{minipage}{.45\textwidth}
+\centering
+\includegraphics[width=.7\linewidth]{../RASD/img/mockups/phoneschermatainiziale.png}
+\caption[Mobile App mockup for initial page]{Mobile App mockup for the starting page after having opened the app for a User}
+\label{fig:initial-page}
+\end{minipage}\hfill
+\begin{minipage}{.45\textwidth}
+\centering
+\includegraphics[width=.7\linewidth]{../RASD/img/mockups/Schermata_principale.png}
+\caption[Mobile App mockup for main page]{Mobile App mockup for the main page of the application after a User has logged in }
+\label{fig:main-screen}
+\end{minipage}\hfill
+\end{figure}
+\begin{figure}
+\begin{minipage}{.45\textwidth}
+\centering
+\includegraphics[width=.7\linewidth]{../RASD/img/mockups/Register.png}
+\caption[Mobile App mockup for the registration]{Mobile App mockup for a User when he wants to register}
+\label{fig:register-page}
+\end{minipage}\hfill
+\begin{minipage}{.45\textwidth}
+\centering
+\includegraphics[width=.7\linewidth]{mockups/RegistrationConfirm.png}
+\caption[Mobile App mockup for the registration confirm]{Mobile App mockup for the registration confirm popup}
+\label{fig:register-confirm}
+\end{minipage}\hfill
+\end{figure}
+\begin{figure}
+\begin{minipage}{.45\textwidth}
+\centering
+\includegraphics[width=.7\linewidth]{../RASD/img/mockups/loginscreen.png}
+\caption[Mobile App mockup for the login screen]{Mobile App mockup interface for the login of a registered User}
+\label{fig:login-page}
+\end{minipage}\hfill
+\begin{minipage}{.45\textwidth}
+\centering
+\includegraphics[width=.7\linewidth]{../RASD/img/mockups/Report.png}
+\caption[Mobile App mockup for the report page]{Mobile App interface mockup for the reporting of a violation for registered Users}
+\label{fig:report-page}
+\end{minipage}\hfill
+\end{figure}
+\begin{figure}
+\centering
+\includegraphics[width=.32\textwidth]{../RASD/img/mockups/Checkstatistics.png}
+\caption[Mobile App mockup for statistics]{Mobile App interface mockup for the statistics for Users}
+\label{fig:check-statistics}
+\end{figure}
+\begin{figure}[htp]
+\centering
+\includegraphics[width= \textwidth]{../RASD/img/mockups/homeReport.png}
+\caption[Web mockup for reports page]{Web interface mockup for the report list for a logged Municipality Agent }
+\label{fig:mock-webreports}
+\end{figure}
+\begin{figure}[htp]
+\centering
+\includegraphics[width= \textwidth]{../RASD/img/mockups/homeSuggestions.png}
+\caption[Web mockup for suggestions page]{Web interface mockup for the suggestions list for a logged Municipality Supervisor}
+\label{fig:mock-suggestions}
+\end{figure}
+\begin{figure}[htp]
+\centering
+\includegraphics[width= \textwidth]{mockups/reportAnalysis.png}
+\caption[Web mockup for the report analysis page]{Web interface mockup for the report analysis page used by Municipality Agents}
+\label{fig:mock-reportanalysis}
+\end{figure}
+\begin{figure}[htp]
+\centering
+\includegraphics[width= \textwidth]{mockups/municipalityRegistrationMockup.png}
+\caption[Web mockup for registration page]{Web interface mockup for the registration page for a municipality user}
+\label{fig:mock-webregister}
+\end{figure}
+}
+In the figures \ref{fig:MobileApp-activity}, \ref{fig:AgentWebApp-activity} are shown activity diagrams that describe how a user (citizen or agent) can navigate in the UIs offered by the application. The choice of activity diagrams has been made following the suggestions of this paper \label{use:UML-Activity} \hyperref[ref:UML-Activity]{\textit{[UML-ACTIVITY]}}. The pages described are the ones presented in the mockup section before.
+\afterpage{
+\newgeometry{bottom=4cm}
 \begin{landscape}
-
 \begin{figure}[hp]
 \includegraphics[angle=0, scale=0.60]{Activity_diagram_UI}
 \caption{UML Activity Diagram for the User Mobile App navigation}
 \label{fig:MobileApp-activity}
 \end{figure}
-
+\end{landscape}
+\restoregeometry
+\begin{landscape}
 \begin{figure}[hp]
 \includegraphics[angle=0, scale=0.50]{Activity_diagram_WebApp}
 \caption{UML Activity Diagram for the MunicipalityAgent Web App navigation}
@@ -458,6 +554,12 @@ The two back-end developers will develop the remaining modules in the following 
 \item \textbf{ReportManager} => \textbf{NotificationManager}  => \textbf{SuggestionManager}
 \end{enumerate}
 The \textbf{\textit{SuggestionManager}} component is the most difficult to be implemented, considering the necessity to elaborate an algorithm for the suggestions generation, therefore it will require the two developers to work together.\\
+Figure \ref{fig:gantt} shows a \textit{Gantt chart} for the implementation process.\\
+\begin{figure}[htp]
+\includegraphics[width=\textwidth]{Gantt}
+\caption{Gantt chart for the implementation process}
+\label{fig:gantt}
+\end{figure}
 All modules need to be tested individually, reaching the 80\% of code coverage. The white testing technique will be adopted for the unit tests and various components will require stubs:
 \begin{itemize}
 \item \textit{AccessManager}, \textit{ReportManager}, \textit{NotificationManager} will require a stub for the \textit{DBMS}
@@ -576,6 +678,12 @@ Vittorio Torri \\
 28-11-2019 & 1 h & Sequence Diagram \\ \midrule
 30-11-2019 & 2 h & Mockup \\ \midrule
 01-12-2019 & 2 h & Deployment and Runtime View, Scope \\ \midrule
+02-12-2019 & 1 h & Implementation and testing \\ \midrule
+03-12-2019 & 2 h & Implementation and testing \\ \midrule
+04-12-2019 & 1 h & Integration diagrams \\ \midrule
+05-12-2019 & 1 h & Minor changes and fixes \\ \midrule
+06-12-2019 & 1.5 h & E/R and DFM diagrams \\ \midrule
+07-12-2019 & 2 h & Web Registration mockup, gantt chart \\ \midrule
 \bottomrule
 \end{tabular}
 \caption[Vittorio Torri's effort table]{}
@@ -588,5 +696,7 @@ Vittorio Torri \\
 \item \label{ref:facade-pattern} \hyperref[use:facade-pattern]{\textit{[FACADE-PATTERN]}}\href{https://en.wikipedia.org/wiki/Facade\_pattern}{\textit{https://en.wikipedia.org/wiki/Facade\_pattern}} - definition of facade pattern
 \item \label{ref:MVC-pattern} \hyperref[use:MVC-pattern]{\textit{[MVC-PATTERN]}}\href{https://en.wikipedia.org/wiki/Model\%E2\%80\%93view\%E2\%80\%93controller}{\textit{https://en.wikipedia.org/wiki/Model\%E2\%80\%93view\%E2\%80\%93controller}} - definition of MVC pattern
 \item \label{ref:RESTful-architecture} \hyperref[use:RESTful-architecture]{\textit{[RESTFUL-ARCHITECTURE]}}\href{https://restfulapi.net/rest-architectural-constraints/}{\textit{https://restfulapi.net/rest-architectural-constraints/}}- definition and characteristics of RESTful architecture
+\item \label{ref:UML-Activity} \hyperref[use:UML-Activity]{\textit{[UML-ACTIVITY]}}\href{https://www.academia.edu/5041934/User\_Interface\_Modelling\_with\_UML}{\textit{https://www.academia.edu/5041934/User\_Interface\_Modelling\_with\_UML}}- User Interfaces Modelling using UML, Pinheiro Paulo, Paton Norman, 2002/11/23
+\item \label{ref:pubsub-pattern} \hyperref[use:pubsub-pattern]{\textit{[PUBSUB-PATTERN]}}\href{https://en.wikipedia.org/wiki/Publish\%E2\%80\%93subscribe\_pattern}{\textit{https://en.wikipedia.org/wiki/Publish\%E2\%80\%93subscribe\_pattern}}- Wikipedia page for publish - subscribe pattern
 \end{itemize}
 \end{document}
