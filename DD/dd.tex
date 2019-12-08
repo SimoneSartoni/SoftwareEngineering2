@@ -238,7 +238,7 @@ The \textit{NotificationManager} always requires an interaction with an external
 \newgeometry{left=0.5cm, bottom=2cm}
 \begin{landscape}
 \begin{figure}[hp]
-\includegraphics[angle=0, scale=0.70]{ArchSequenceSendReport}
+\includegraphics[angle=0, scale=0.70]{ArchSequenceSendReport2}
 \caption{UML Architectural Sequence Diagram for \textit{SendReport} use case}
 \label{fig:seq-sendReport}
 \end{figure}
@@ -246,8 +246,8 @@ The \textit{NotificationManager} always requires an interaction with an external
 \end{landscape}
 \restoregeometry
 }\\\\
-In the sequence diagram of figure \ref{fig:seq-sendReport} is shown what messages are actually exchanged among components to process correctly a report send by a User. The User, through the \textit{\textbf{Mobile App}}, fills the report form and sends it to the server for a confirm. The report is handled at first by the \textit{\textbf{Router}} that checks if the User can actually send reports (i.e. verifies if the corresponding token has the rights needed). if the check is negative, then the request is discarded. Otherwise the \textit{\textbf{ReportManager}} contacts the \textit{\textbf{MapsAPI}} to retrieve the municipality in charge for a specific report. After this, the \textit{\textbf{ReportManager}} checks internally if the pictures in the report have been modified or not. If so, the report is stored as \textit{Refused} and sent to the \textit{\textbf{Notification Manager}}, that will send a notification about the refused report to the involved \textit{\textbf{MunicipalityAgent Web App}}. If the pictures are not fake then the report is stored as \textit{New report} and the \textit{\textbf{NotificationManager}} will be in charge of notifying the \textit{\textbf{Municipality Web App}} about the new pending report.\\
-It has been assumed that the \textit{getCity} request to the \textbf{\textit{municipality API}} returns a city for which the \textit{SafeStreets service} is active. In effect the mobile app should not allow the user to send a report for a city in which the system is not active.
+In the sequence diagram of figure \ref{fig:seq-sendReport} is shown what messages are actually exchanged among components to process correctly a report send by a User. The User, through the \textit{\textbf{Mobile App}}, fills the report form and sends it to the server for a confirm. The request is handled at first by the \textit{\textbf{Router}} that checks if the User is correctly authorized (i.e. verifies if the corresponding token has the rights needed): if the check is negative, then the request is discarded, otherwise the \textit{\textbf{ReportManager}} calculate the municipality in charge for a specific report comparing the GPS position of the report with the ones associated to municipalities borders in the database. After this, the \textit{\textbf{ReportManager}} checks internally if the pictures in the report have been modified or not. If so, the report is stored as \textit{Refused} and the \textit{\textbf{Notification Manager}} will send a notification about the refused report to the involved \textit{\textbf{MunicipalityAgent Web App}}. If the pictures are not fake then the report is stored as \textit{New report} and the \textit{\textbf{NotificationManager}} will be in charge of notifying the \textit{\textbf{Municipality Web App}} about the new pending report.\\
+It has been assumed that the \textit{getCityByPos} request to the \textbf{\textit{DBMS}} returns a city for which the \textit{SafeStreets service} is active. In effect the mobile app should not allow the user to send a report for a city in which the system is not active.
 \afterpage{
 \begin{landscape}
 \begin{figure}[hp]
