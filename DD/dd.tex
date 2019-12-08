@@ -112,10 +112,10 @@ The system is supported by APIs provided by the municipalities and by APIs provi
 \item RASD Document "RASD1.1.pdf"
 \end{itemize}
 \section{Document Structure}
-The document is divided into 6 chapters:
+The succesive part of th document is divided into 6 chapters:
 \begin{itemize}
-\item \textit{Chapter 2}: in this chapter are presented all the design choices made the develop the application: the design choices are presented at different levels of abstraction, from the more general and abstract one concerning tiers and system architecture, to the more technical one, concerning the protocol and technologies chosen to deploy the system.
-\item \textit{Chapter 3}: in this chapter are presented the user interfaces using mockups to represent how they should actually be once implemented: different mockups are presented to cover all possible situation worth to be shown.
+\item \textit{Chapter 2}: in this chapter all the design choices made during the developmenr of the application presented at different levels of abstraction: from the more general and abstract one concerning tiers and system architecture, to the more technical one, concerning protocols and technologies chosen to deploy the system.
+\item \textit{Chapter 3}: in this chapter the user interfaces are presented, using mockups to represent how they should actually be once implemented: different mockups are presented to cover all possible situations worth to be shown.
 \item \textit{Chapter 4}: in this chapter the requirements traceability is done. Each requirement described in the RASD is provided by one or more component presented in Chapter 2; in this chapter it's described which components provide what requirements and how this requirement are actually provided.
 \item \textit{Chapter 5}: this chapter takes into account how the system is going to be implemented, how the components will be integrated and what strategies of testing is going to be used.
 \item \textit{Chapter 6}: this chapter is only meant to show for each component of the group the effort spent, with associated date and hours.
@@ -129,7 +129,7 @@ The Application tier takes care of the application layer encapsulating all is ne
 The \textbf{Application} tier communicates with the \textbf{Data} tier, responsible for the Data Access layer, that is the tier responsible for accessing the DataBases and performing queries on them.\\
 To provide the required functionalities the system exploits also datawarehousing. The DataWarehouse is a component in the Data tier able to deal with historical data and aggregate data taken from the operational databases in a more efficient way than a traditional dbms.
 \section{Component view}
-In the figure \ref{fig:component-diagram} is reported the \textit{Component Diagram} for the \textit{SafeStreets} system. This is a high level view in which the main components are shown, then some components will be better detailed.
+In the figure \ref{fig:component-diagram} the \textit{Component Diagram} for the \textit{SafeStreets} system is reported. This is a high level view in which only the main components are immediately shown, while some components will be better detailed afterwards.
 
 \afterpage{
 \newgeometry{bottom=2cm}
@@ -143,17 +143,18 @@ In the figure \ref{fig:component-diagram} is reported the \textit{Component Diag
 
 \end{landscape}
 \restoregeometry
-}
-In this diagram when two components can communicate using different interfaces a single interface link is 
-reported, for the sake of readability. The various components are now described and detailed:
-\begin{itemize}
-\item \textbf{Router}: it has the role of dispatching the requests coming from the users applications. Before doing this it has also the important role of verifying the user authentication, checking the token which is sent with all requests performed by an authenticated user. In figure \ref{fig:router-component} a more detailed view is provided, putting in evidence the various interfaces for the mobile and for the web app.
 \begin{figure}[hp]
 \includegraphics[width=\textwidth]{Router}
 \caption{UML Component Diagram for \textit{Router} component}
 \label{fig:router-component}
 \end{figure}
-\item \textbf{SuggestionsManager} this components is the one which elaborates and provides the \textit{Suggestions} for the municipalities. It analyzes the data exploiting the \textit{DataWarehouse} component for the aggregated queries about reports, accidents and tickets and the \textit{DBMS Component} to retrieve non-aggregated information about the streets. It can provide the actual available suggestions for a municipality as an answer to a request coming from the \textit{Router}, but it also notify the \textit{Municipality Supervisor web app} through the \textit{NotificationManager} component when it discovers a new suggestion (the suggestion discover task is periodically executed, once a month).
+}
+In this diagram when two components can communicate using different interfaces a single interface link is 
+reported, for the sake of readability. The various components are now described and detailed:
+\begin{itemize}
+\item \textbf{Router}: it has the role of dispatching the requests coming from the users applications. Before doing this it has also the important role of verifying the user authentication, checking the token which is sent with all requests performed by an authenticated user. In figure \ref{fig:router-component} a more detailed view is provided, putting in evidence the various interfaces for the mobile and for the web app.
+
+\item \textbf{SuggestionsManager}: this components is the one which elaborates and provides the \textit{Suggestions} for the municipalities. It analyzes the data exploiting the \textit{DataWarehouse} component for the aggregated queries about reports, accidents and tickets and the \textit{DBMS Component}: to retrieve non-aggregated information about the streets. It can provide the actual available suggestions for a municipality as an answer to a request coming from the \textit{Router}, but it also notifies the \textit{Municipality Supervisor web app} through the \textit{NotificationManager}: component when it discovers a new suggestion (the suggestion discover task is periodically executed, once a month).
 \item \textbf{ReportManager}: this component is in charge of all concern the management of the reports sent by the users. It receives them by the mobile application and execute the automatic analysis to identify possible fake reports, it stores them through the \textit{DBMS Component} and it provides the reports to the the \textit{Municipality Agents web app}, answering to their requests of confirm/enqueue/discard and allowing them to emit a ticket, exploiting the \textit{Municipality APIs} which provide an interface for this service. Its detailed diagram is shown in figure \ref{fig:reportmgr-component}.
 
 \begin{figure}[htp]
@@ -162,7 +163,7 @@ reported, for the sake of readability. The various components are now described 
 \label{fig:reportmgr-component}
 \end{figure}
 
-\item \textbf{AccessManager}: it manages everything about registration and login of the users. For the citizens registration it calls the municipality service for the verification of identity cards, while for the agents and supervisors registration it calls the municipality service for their identity verification. He stores the accounts data through the \textit{DBMS} component and it calls it also to verify the correctness of the login credentials. Once a login has been correctly performed it generates a token, stored in the database and sent back to the user, necessary to perform authenticated requests. This component is detailed in figure \ref{fig:accessmgr-component}.
+\item \textbf{AccessManager}: it manages everything about registration and login of the users. For the citizens registration it calls the municipality service for the verification of identity cards, while for the agents and supervisors registration it calls the municipality service for their identity verification. He stores the accounts data through the \textit{DBMS} component and calls it also to verify the correctness of the login credentials. Once a login has been correctly performed it generates a token, stored in the database and sent back to the user, necessary to perform authenticated requests. This component is detailed in figure \ref{fig:accessmgr-component}.
 
 \begin{figure}[htp]
 \includegraphics[width=\textwidth]{AccessManager}
@@ -180,7 +181,7 @@ reported, for the sake of readability. The various components are now described 
 
 \item \textbf{NotificationManager}: this component is the one able to send push notifications to the user clients, both mobile apps and web apps. It is exploited by the \textit{SuggestionManager} and by the \textit{ReportManager}.
 
-\item \textbf{DataCollectionManager}: this component periodically retrieves the data made available by the municipality about accidents, tickets and street characteristics. These latter are store in the operational database, while the others are retrieved as aggregated data and so are directly stored in the datawarehouse.
+\item \textbf{DataCollectionManager}: this component periodically retrieves the data made available by the municipality about accidents, tickets and street characteristics. These latter are stored in the operational database, while the others are retrieved as aggregated data and so are directly stored in the datawarehouse.
 
 \begin{figure}[htp]
 \includegraphics[width=\textwidth]{DataCollectionManager2}
@@ -194,7 +195,7 @@ reported, for the sake of readability. The various components are now described 
 
 \item \textbf{MunicipalityAPI}: this is an external component, managed by the municipalities (an instance for each of them which supports the system), whose interface is standardized as described in the \textit{Components Interfaces} section. It is necessary to retrieve the data for building statistics and suggestions, to verify the users identity and to have the possibility of traffic ticket emission through SafeStreets.
 
-\item \textbf{MapsAPI}: this is an external component which is exploited to show maps with the statistics data.
+\item \textbf{MapsAPI}: this is an external component which is exploited to obtain maps, which will be shown with the associated statistics data.
 
 \item \textbf{UserMobileApp}: this component entirely resides in the \textit{Presentation layer} and it's just an interface to allow the users to use SafeStreets on their mobile devices, sending reports and retrieving statistics information. It performs only minimal controls on the forms before sending them (ex: they are not missing mandatory field) and attaches the user GPS positon.
 
@@ -209,7 +210,7 @@ reported, for the sake of readability. The various components are now described 
 \section{Deployment view}
 
 So far, only an abstract and general view of the system has been provided. In this section a better detailed view of the system shows how the component previously described are actually deployed in different machines and how each tier is organized.
-Here in figures \ref{fig:deployment-diagram} and \ref{fig:architecture-diagram} follow two diagrams, the first one is an UML Deployment Diagram which shows the allocation of the software components in the physical tiers of the system, while the second one is an informal diagram which shows more in detailed the network configuration of the system, with hardware devices such as firewalls and load balancers which are not related to the general architecture but are involved in assuring the proper working of the system. 
+Here in figures \ref{fig:deployment-diagram} and \ref{fig:architecture-diagram} follow two diagrams: the first one is an UML Deployment Diagram which shows the allocation of the software components in the physical tiers of the system, while the second one is an informal diagram which shows more in detailed the network configuration of the system, with hardware devices such as firewalls and load balancers which are not related to the general architecture but are involved in assuring the proper working of the system. 
 
 \begin{figure}[htp]
 \includegraphics[scale=0.3]{DeploymentDiagram}
@@ -226,7 +227,7 @@ All application logic components (orange in the \textit{Component Diagram}) are 
 \caption{Informal architectural view of the system}
 \label{fig:architecture-diagram}
 \end{figure}
-In the \textit{Mobile App} case the client contains all the \textit{presentation layer} while in the \textit{WebApp} case the layer is splitted between the \textit{MobileApp} and the \textit{WebServer}; the \textit{WebServer} is responsible for contacting the application server and forward the client requests and responses.\\
+In the \textit{Mobile App} case the client contains all the \textit{presentation layer} while in the \textit{WebApp} case the layer is splitted between the \textit{Web App} and the \textit{WebServer}; the \textit{WebServer} is responsible for contacting the application server and forward the client requests and responses.\\
 All the servers are multiplied, cooperating together to improve performance, scalability, fault tolerance and availability. An elastic component (i.e. load balancer) is used to rule the accesses to different Application, dinamically balancing the load among all the Servers. The same is for the data servers.
 Each data server is associated with a single replica of the data and exploits the DBMS technology to access the \textit{Database}. The \textit{Database} is fully replicated in different nodes. Techniques and protocols are used to ensure consistency among replicas: they will be full explained in \textit{Other design decisions} section.\\
 To ensure and improve security firewalls are installed before and after the application servers to filter accesses from external and unsafe networks. By the creation of a \textit{DMZ} (demilitarized zone) external entities can only have access to the exposed services. They will be properly configurated to allow only legit requests coming from the Application Servers to reach the Data Servers. All the communications will exploit the HTTPS protocol, unsafe communications will be refused by the firewalls. Security is crucial because the application works mainly with sensible information. 
@@ -754,6 +755,7 @@ Vittorio Torri \\
 06-12-2019 & 1.5 h & E/R and DFM diagrams \\ \midrule
 07-12-2019 & 2 h & Web Registration mockup, gantt chart \\ \midrule
 07-12-2019 & 1 h & Class diagram update and minor fixes \\ \midrule
+08-12-2019 & 1 h & Minor fixes \\
 \bottomrule
 \end{tabular}
 \caption[Vittorio Torri's effort table]{}
