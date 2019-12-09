@@ -12,6 +12,7 @@
 \usepackage[dvipsnames]{xcolor}
 \usepackage{listings}
 \usepackage{alloy-style}
+\usepackage[shortlabels]{enumitem}
 \usepackage{geometry}
 \usepackage{pdflscape}
 \usepackage{caption}
@@ -80,21 +81,21 @@ SafeStreets is an application meant to provide a mechanism to more efficiently d
 The application domain concerns different types of world phenomena, shared phenomena and machine phenomena. \\
 We can identify the following world phenomena:
 \begin{itemize}
-\item {[W1]} \label{W1}A car is illegally parked 
-\item {[W2]} \label{W2}An accident occurs
-\item {[W3]} \label{W3}An intervention is performed to make the roads safer
+\item {[W1]} \label{W1}A car is illegally parked .
+\item {[W2]} \label{W2}An accident occurs.
+\item {[W3]} \label{W3}An intervention is performed to make the roads safer.
 \end{itemize} 
 the following shared phenomena controlled by the world and observed by the machine:
 \begin{itemize}
-\item {[S1]} A violation report is sent by a user
-\item {[S2]} An accident report is provided by the municipality system
-\item {[S3]} New information about issued tickets are provided by the municipality system
+\item {[S1]} A violation report is sent by a user.
+\item {[S2]} An accident report is provided by the municipality system.
+\item {[S3]} New information about issued tickets are provided by the municipality system.
 \end{itemize}
 and the following shared phenomena controlled by the machine and observed by the world:
 \begin{itemize}
-\item {[S4]} A traffic ticket is emitted by an agent, exploiting the municipality system, after a report analysis
-\item {[S5]} An agent is sent to verify the correctness of a violation report
-\item {[S6]} A suggestion for a safety improvement on streets is made available
+\item {[S4]} A traffic ticket is emitted by an agent, exploiting the municipality system, after a report analysis.
+\item {[S5]} An agent is sent to verify the correctness of a violation report.
+\item {[S6]} A suggestion for a safety improvement on streets is made available.
 \end{itemize}
 
 \section{Purpose}
@@ -140,51 +141,52 @@ In the following table is shown which world and shared phenoma are involved for 
 
 \section{Definitions, acronyms and abbreviations}
 \begin{itemize}
-\item \textit{GPS}: Global Positioning System
-\item \textit{HTTPS}: HyperText Transmission Protocol over SSL
-\item \textit{IDS}: Intrusion Detection System
+\item \textit{GPS}: Global Positioning System.
+\item \textit{HTTPS}: HyperText Transmission Protocol over SSL.
+\item \textit{IDS}: Intrusion Detection System.
 \end{itemize}
 \section{Revision history}
 \begin{itemize}
-\item 10-11-2019 Version 1.0
+\item 10-11-2019 Version 1.0.
 \item 09-12-2019 Version 1.1:
 	\begin{itemize} 
-	\item Update R3, R25, R38, R39 to better clarify registration process
-	\item Add R25b, R38b to better clarify registration process
-	\item Delete R17 (duplicated)
+	\item Update R3, R25, R38, R39 to better clarify registration process.
+	\item Add R25b, R38b to better clarify registration process.
+	\item Delete R17 (duplicated).
 	\item In the section \ref{SS-Dep&Const} added a reference to maps API.
-	\item Update R27, R32, R42 to make them more readable 
+	\item Update R27, R32, R42 to make them more readable.
 	\end{itemize}
 \item 09-12-2019 Version 1.2:
 	\begin{itemize}
-	\item Update MainScreen Mockup
+	\item Update MainScreen Mockup.
 	\end{itemize}	
 \item 09-12-2019 Version 1.3:
 	\begin{itemize}
-	\item update ambiguous requirements R28,R29,R34
+	\item Update ambiguous requirements R28,R29,R34.
 	\end{itemize}
 \item 09-12-2019 Version 1.4:
 	\begin{itemize}
-	\item update Use Cases incoherency with Mockups
+	\item Update Use Cases and Scenarios incoherency with Mockups.
+	\item Update functions for Supervisor.
 	\end{itemize}
 \end{itemize}
 \section{Reference documents}
 \begin{itemize}
-\item Assignment Document "SafeStreets Mandatory Project Assignment.pdf"
+\item Assignment Document "SafeStreets Mandatory Project Assignment.pdf".
 \end{itemize}
 \section{Document structure}
 
 The document consists of 4 chapters:
 \\ 
 \\
-\textbf{Chapter 1}: In this chapter is presented basically the domain of the application, taking into consideration all the world and shared phenomena that the application observes and/or controls. The scope of the application is specified, listing all the goals.
+\textbf{Chapter 1}: In this chapter, basically, the domain of the application is presented, taking into consideration all the world and shared phenomena that the application observes and/or controls. The scope of the application is specified, listing all the goals.
 It also contains additional information to make the reading of the document more understandable.\\ \\
 \textbf{Chapter 2}: In this chapter the application itself is taken into consideration, concerning its functions and the potential stakeholders that actually will use it. Considering users and the world in which they act, all the assumptions made on the domain are listed. A series of UML diagrams (Class and State diagrams) are then presented to help understanding how the application should work in terms of entities involved and functionalities.\\ \\
 \textbf{Chapter 3}: 
 In this chapter the application behavior is described: at first some scenarios are identified and then some UML diagrams (sequence and use cases diagrams) are provided, with a detailed analysis of the use cases; at last by specifying requirements in terms of :
 \begin{itemize}
-\item functional requirements;
-\item non-functional requirements;
+\item functional requirements.
+\item non-functional requirements.
 \item interface requirements.\\ \\
 \end{itemize}
 \textbf{Chapter 4}: In the last chapter a brief but concise and effective formal analysis of the problem is presented using alloys. Some requirements and domain assumptions are formally specified and their consistency is verified, with the help of the Alloy tool.
@@ -225,7 +227,7 @@ In this part are underlined the main functions offered by SafeStreets, divided b
 
 The system offers the possibility to Visitors to register and actually become users of the application. When registering the visitor needs to provide his name, surname, birthdate, fiscal code and identity card number. They are mandatory so if some of them is not provided then the registration process fails.
  
-\subsection{AuthenticatedUser}
+\subsection{Authenticated User}
 
 \subsubsection{Reporting a violation}
 This is the most important function offered by SafeStreets. This function allows Users, when logged in, to report a potential violation that has occured in the streets. 
@@ -239,7 +241,10 @@ After logging in as a municipality agent, the system notifies the agent about al
 Additionally, when he is logged, the agent is notified of new incoming reports.\\
 Reports which are automatically rejected by the system controls are shown to the agents as rejected and they can check them and obtain the author's data.
 
+
 \subsection{Municipality supervisor}
+
+Eventually, if no agent is available, the supervisor can check the reports and emit tickets. For the sake of simplicity, in this document the report checking has been only considered for agents, considering this other case as an emergency measure.
 
 \subsubsection{Suggesting possible solutions} 
 This function consists of a task periodically executed by the system (once a month) which tries to analyze reported violations, issued tickets, accidents information and data about the streets network coming from the municipality to suggest possible interventions to increase the safety (e.g. add barriers, create new park spots, increase the allowed parking time, send more agents in a certain area in certain hours...). When the system finds new suggestions for certain streets it sends them to the municipality supervisors.
@@ -261,9 +266,9 @@ This function allows visitors, users, municipality agents or supervisors to retr
 \section{User characteristics}
 The users of the service are the following:
 \begin{itemize}
-\item \textit{Visitor}: a non-logged user which can only consult statistics about areas with the highest frequency of violations, highest rate of accidents related to the violations, traffic tickets issued and safety improvements. 
+\item \textit{Visitor}: a non-logged user which can only consult statistics about areas with the highest frequency of violations, highest rate of accidents related to the violations, traffic tickets issued and safety improvements.
 \item \textit{Authenticated User}: an identified user which, in addition to the \textit{visitor}, can report a parking violation, sending the details to the municipality authorities.
-\item \textit{Municipality agent}: an agent of the local police which is notified about the violation reports for his municipality and can manage them as described in \hyperref[sub-agentfun]{\textit{Violation checking} function.}
+\item \textit{Municipality agent}: an agent of the local police which is notified about the violation reports for his municipality and can manage them as described in \hyperref[sub-agentfun]{\textit{Violation checking} function}.
 \item \textit{Municipality supervisor}: he has a full access to the application data, including all statistics and the suggestions to improve safety in the most dangerous areas.
 \end{itemize}
 \section{Assumptions, dependencies and constraints}
@@ -274,7 +279,7 @@ The presence of some services provided by the municipalities is necessary to mak
 \item \textit{Identity Card Check}: allows to retrieve data of a person given its identity card number.  It's request for a strong user authentication.
 \item \textit{Statistics Information}: return information about the accidents occurred in the municipality streets and about the parking violations traffic tickets issued outside the SafeStreets system, with position and causes.
 \item \textit{Road Network Information}: allows to retrieve information about the streets characteristics, such as park slots, park time, sidewalks, barriers.
-\item \textit{Traffic Ticket Issue}: allows to send traffic tickets to a certain person by a certain agent
+\item \textit{Traffic Ticket Issue}: allows to send traffic tickets to a certain person by a certain agent.
 \item \textit{Agents Identity Check}: allows to check the identity of a registering agent given his personal data, including his badge number. 
 \end{itemize}
 The system requires also a Map service to obtain the map for a given area and to obtain the municipality name for a given GPS position (see \hyperref[ref:maps-api]{\textit{[MAPS-API]}}). 
@@ -283,9 +288,9 @@ The system requires also a Map service to obtain the map for a given area and to
 Here are shown the domain assumptions:
 \begin{itemize}
 \item{[D1]} \label{D1} GPS is always precise, giving the position with an error of maximum 5 meters.
-\item{[D2]} \label{D2}Smartphone cameras have enough resolution to enable recognizing algorithms
-\item{[D3]} \label{D3}Every municipality which exploits the SafeStreets services has defined some areas in which the city is divided, eventually overlapped, and every street of the city is at least in one area (in the worst case the entire city is a single area)
-\item{[D4]} \label{D41}The identity card is unique for each person.
+\item{[D2]} \label{D2}Smartphone cameras have enough resolution to enable recognizing algorithms.
+\item{[D3]} \label{D3}Every municipality which exploits the SafeStreets services has defined some areas in which the city is divided, eventually overlapped, and every street of the city is at least in one area (in the worst case the entire city is a single area).
+\item{[D4]} \label{D4}The identity card is unique for each person.
 \item{[D5]} \label{D5}Each person has only one identity card.
 \item{[D6]} \label{D6}The \textit{Traffic Tickets Issue} service of the municipalities always issue traffic tickets if it receives the correct information and if it is available (i.e. it is not in a downtime moment).
 \item{[D7]} \label{D7}Every registered municipality agent has a unique ID (badge number) inside its municipality.
@@ -314,12 +319,12 @@ Laura is a municipality agent that has just started her new day at work. She wor
 \textbf{Scenario 4. A user checks for unsafe streets in his zone}\\
 \\
 Bob is a curious user that has the SafeStreets application installed in his iPhone 8 but is not registered in the SafeStreets database. One day, he witnesses an accident in the streets while driving his car, where a car hits a biker during a parking manoeuvre on a runs over a biker correctly biking in his bike lane.
-As he goes home, he’s curious about the most dangerous and unsafe areas and streets in his city and he wants to see if the street where he saw the accident is one of them. He opens the SafeStreets application and clicks the button “Check statistics in a city”. After this, a new page opens in which Bob clicks on the “Check for most dangerous areas/streets”. The last click he does is on the “Search for a city using your GPS position” button. Now the screen shows a map with highlighted the most unsafe areas (with most accidents) in his city. Bob selects then the area in which he is interested in and he sees which are the most dangerous streets in the area. Bob discovers that the street he was searching for is the most dangerous one. Finally, Bob closes the application.
+As he goes home, he’s curious about the most dangerous and unsafe areas and streets in his city and he wants to see if the street where he saw the accident is one of them. He opens the SafeStreets application and clicks the button “Check statistics”. After this, a new page opens in which Bob clicks on the “Most accidents” button. He selects the “City taken by GPS” alternative. Now the screen shows a map with highlighted the most unsafe areas (with most accidents) in his city. Finally, Bob selects  the area of interest and he sees which are the most dangerous streets in the area. Bob discovers that the street he was searching for is the most dangerous one. Finally, Bob closes the application.
 \\
 \\
 \textbf{Scenario 5. Needs to travel and searches for safe places for a car}\\
 \\
-Marie is a woman who often travels for work. She typically travels by car. She lives in Milan and this week she needs to go to Turin. He wants to know where she can safely park the car and take an hotel reservation. Before searching for an hotel, she takes out her Huawei and opens the SafeStreets application. She clicks the button “Check statistics in a city”. After this, a new page opens in which Bob clicks on the “Check for most dangerous areas/streets”. The last click he does is on the “Select a city you want” button. She chooses “Turin” among all the possible ones. Now she can use found information to look for safe zones near her workplace.
+Marie is a woman who often travels for work. She typically travels by car. She lives in Milan and this week she needs to go to Turin. He wants to know where she can safely park the car and take an hotel reservation. Before searching for an hotel, she takes out her Huawei and opens the SafeStreets application. She clicks the button “Check statistics”. After this, a new page opens in which Marie clicks on the “Most accidents” alternative. The last click he does is on the “City  chosen by the user” choice. She chooses “Turin” among all the possible ones. Now she can use found information to look for safe zones near her workplace.
 \\ 
 \\
 \textbf{Scenario 6. New intervention suggestion for an unsafe street}\\
@@ -329,7 +334,7 @@ Marco is a local police supervisor in the municipality of Varese. He logins in t
 \\
 \textbf{Scenario 7. The user registers to the application}\\
 \\
-Luke and Walter are two close friends. Luke doesn’t know about SafeStreets application while Walter is a regular registered user of it. One day, Walter and Luke are walking down a road. Walter notices a potential violation and stops. He takes out his phone and opens the SafeStreets application. Luke asks Walter what he’s doing and Walter explains what SafeStreets is. Walter is pretty convincing and makes Luke install the application. Luke learns that to report violations he needs to register. So, he starts the process of registration providing his name, surname, birthdate, fiscal code and number of the identity card. After this, he creates his own unique username and the password. On screen, Luke sees that the registration has been successful. 
+Luke and Walter are two close friends. Luke doesn’t know about SafeStreets application while Walter is a regular registered user of it. One day, Walter and Luke are walking down a road. Walter notices a potential violation and stops. He takes out his phone and opens the SafeStreets application. Luke asks Walter what he’s doing and Walter explains what SafeStreets is. Walter is pretty convincing and makes Luke install the application. Luke learns that to report violations he needs to register. So, he starts the process of registration providing his name, surname, birthdate, fiscal code and number of the identity card. After this, he selects his own unique username and the password. On screen, Luke sees that the registration has been successful. 
 \\
 \\
 \textbf{Scenario 8. A supervisor wants to check see what areas are registering improvements since the municipality has started to use SafeStreets}\\
@@ -396,7 +401,7 @@ Flow of events:
  \begin{itemize}
 \item The user input clicks on the “Report violation” button.
 \item The user sets the “type of violation” button to a desired value, chosen from a choice list.
-\item The user clicks on the “take photos” button and complete the operation.
+\item The user clicks on the “take a picture” button and complete the operation.
 \item The user eventually fills the form “license plate”.
 \item The user clicks on the “confirm” button and is redirected to his personal home page.
 \end{itemize}
@@ -423,8 +428,8 @@ Flow of events:
 \item The agent/supervisor opens the application and arrives at the homepage.
 \item The agent/supervisor clicks on the "Register" button.
 \item The agent/supervisor input his name, surname, birthdate, rank and badge number.
-\item The agent/supervisor input his choosen password.
-\item The agent/supervisor clicks on the "Complete Registration" button.
+\item The agent/supervisor input his chosen password.
+\item The agent/supervisor clicks on the "Confirm" button.
 \item The system processes the registration and send information to the Municipality Service.
 \item The system notify the agent/supervisor about his new Unique Identifier (ID) and suggest to remember it. 
 \item The agent/supervisor clicks on the "Understood" button.
@@ -680,74 +685,80 @@ The \textit{municipality supervisors} can be notified about suggestions for inte
 \section{Functional requirements}
 \label{sec:fun-requirements} 
 For each goal we describe here the necessary functional requirements, which guarantee its satisfaction together with the domain assumptions:
-\begin{itemize}
-\item \hyperref[G1]{[G1]} People must be allow to report parking violations (missing parking disk, not paid parking meter, illegally parked vehicles).
-\begin{itemize}
-\item {[R1]}	\label{R1}The system must allow people to register to it providing personal data (name, surname, birthdate, identity card number, fiscal code) and selecting a username and a password.
-\phantomsection
-\item {[R2]}	\label{R2}The system must verify the correctness of the provided personal data of a registered user checking them from the identity card number, blocking the registration if they are not correct.
-\item {[R3]}	\label{R3}The system must allow registered users to login through their username and password, if they provide them correctly. 
-\item {[R4]}	\label{R4}The system must allow logged user to fill a report violation form.
-\item {[R5]}	\label{R5}The system must let the user select the type of violation detected.
-\item {[R6]}	\label{R6}The system must allow the user to insert the license plate in a violation report.
-\item {[R7]}	\label{R7}While reporting the violation, the system must allow users to take one or more pictures of the potential violation.
-\item {[R8]}	\label{R8}The system must not allow users to choose pictures not taken in the moment of the report.
-\item {[R9]}	\label{R9}The system must collect the current position of the user, using GPS.
-\item {[R10]}	\label{R10}The system must allow user to confirm or delete the current report.
-\item {[R11]}	\label{R11}After confirmation, the system must add the current date and time to the report.
-\item {[R12]}	\label{R12}The system must store confirmed report.
-\end{itemize}
-\item \hyperref[G2]{[G2]} Municipality agents must be notified about reports of potential violations in their area of interest, which can be possibly used to generate traffic tickets.	
-\begin{itemize}
-\item {[R13]}	\label{R13}The system must check reports to try to find if the pictures of the violations have been modified.
-\item {[R14]}	\label{R14}The system must try to find, according to the GPS position of the user and the pictures sent, if the position is fake or not.
-\item {[R15]}	\label{R15}The system must discard the report if it has been recognized as fake according to the previous requirements (R13-R14).
-\item {[R16]}	\label{R16}The system must try to automatically recognize the license plate in the photo, possibly with the help of the value inserted by the user.
-\item {[R17]}	\st{The system must store into stable memory the reported violation if correct (i.e. not recognized as fake). }
-\item {[R18]}	\label{R18}The involved municipality must be calculated considering in which city the reported violation has been found, based on the GPS position of the user that has sent the report.
-\item {[R19]}	\label{R19}The system must send the reported violations to the involved municipality.
-\item {[R20]}   \label{R20}The system must allow an agent to see the reports for its municipality, checking them in order of arrival
-\item {[R21]}	\label{R21}The system must allow an agent to issue a traffic ticket to a certain person (i.e. license plate) through the correspondent municipality service.
-\item {[R22]}	\label{R22}The system must allow an agent to put on hold a violation report if it needs to be checked in person.
-\item {[R23]}	\label{R23}\label{R20}The system must allow an agent to discard a violation if it has been verified as fake or it cannot be verified (the vehicle is not there anymore) or it is a duplicated report.
-\item {[R24]}	\label{R24}The system must allow an agent to retrieve the data of the author of a violation report.
-\phantomsection
-\item {[R25]}	\label{R25}The system must allow an agent to create an account,providing personal data(name, surname, birthdate, rank, badge number).
-\item {[R25b]} \label{R25b}The system must verify the correctness of the provided personal data of a registered agent checking them through the municipality services, blocking the registration if they are not correct.
-\item {[R26]}	\label{R26}The system must allow an agent to login, inserting its ID and password, blocking the registration if the data inserted is not correct.
-\end{itemize}
-\item  \hyperref[G3]{[G3]} People must be allowed to retrieve information about streets or areas with the highest frequency of violations.
-\begin{itemize}
-\item {[R27]}	\label{R27}The system must mine information about streets or areas from the reported violations.
-\item {[R28]}	\label{R28}The system must allow all type of users (even if not authenticated) to select the see information for a city. The user can choose either the city where he is, using the GPS position, or an arbitrary selected location.
-\item {[R29]}	\label{R29}The system must allow all type of users (even if not authenticated) to select information about streets or areas in the city selected and to specify if they want information for a specific street or area or a classification of streets or areas.
-\item {[R30]}	\label{R30}The system must show the the data corresponding to the selection of [R29]
-\end{itemize}
-\item  \hyperref[G4]{[G4]} People must be able to retrieve statistics and trends about the accidents correlated to the parking violations, the effectiveness of SafeStreets initiatives and the issuing of traffic tickets.
-\begin{itemize}
-\item {[R31]}	\label{R31}The system must take information about accidents and tickets from the municipality.
-\item {[R32]}	\label{R32}The system must use information about accidents and tickets to build statistics, crossing them with reported violations.
-\item {[R33]}	\label{R33}The system must not allow common users to see confidential data about other people.
-\item {[R34]}	\label{R34}The system must allow all type of users (even if not authenticated) to choose a topic: areas or streets with most accidents, areas or streets with the highest number of traffic tickets issued, areas or streets where there have been the best improvements, information for a specific area or street.
-\item {[R35]}	\label{R35}The system must show to the user the information about the topic selected according to [R34].
-\end{itemize}
-\item  \hyperref[G5]{[G5]} Municipality supervisors must be able to retrieve data about the vehicles with the highest number of violations.
-\begin{itemize}
-\item {[R36]}	\label{R36}The system must allow authenticated supervisors to retrieve information about the vehicles with the highest number of violations in a selected area or street.
+\begin{enumerate}[start=1,label={[G\arabic*]}]
+\item \hyperref[G1]People must be allowed to report parking violations (missing parking disk, not paid parking meter, illegally parked vehicles).
+\begin{enumerate}[start=1,label={[R\arabic*]}]
+\item \label{R1}The system must allow people to register to it providing personal data (name, surname, birthdate, identity card number, fiscal code) and selecting a username and a password.
+\item \label{R2}The system must verify the correctness of the provided personal data of a registered user checking them from the identity card number, blocking the registration if they are not correct.
+\item \label{R3}The system must allow registered users to login through their username and password, if they provide them correctly. 
+\item \label{R4}The system must allow logged user to fill a report violation form.
+\item \label{R5}The system must let the user select the type of violation detected.
+\item \label{R6}The system must allow the user to insert the license plate in a violation report.
+\item \label{R7}While reporting the violation, the system must allow users to take one or more pictures of the potential violation.
+\item \label{R8}The system must not allow users to choose pictures not taken in the moment of the report.
+\item \label{R9}The system must collect the current position of the user, using GPS.
+\item \label{R10}The system must allow user to confirm or delete the current report.
+\item	\label{R11}After confirmation, the system must add the current date and time to the report.
+\item \label{R12}The system must store confirmed report.
+\end{enumerate}
+\item \hyperref[G2] Municipality agents must be notified about reports of potential violations in their area of interest, which can be possibly used to generate traffic tickets.	
+\begin{enumerate}[start=13,label={[R\arabic*]}]
+\item \label{R13}The system must check reports to try to find if the pictures of the violations have been modified.
+\item \label{R14}The system must try to find, according to the GPS position of the user and the pictures sent, if the position is fake or not.
+\item \label{R15}The system must discard the report if it has been recognized as fake according to the previous requirements (R13-R14).
+\item \label{R16}The system must try to automatically recognize the license plate in the photo, possibly with the help of the value inserted by the user.
+\item \st{The system must store into stable memory the reported violation if correct (i.e. not recognized as fake). }
+\item \label{R18}The involved municipality must be calculated considering in which city the reported violation has been found, based on the GPS position of the user that has sent the report.
+\item \label{R19}The system must send the reported violations to the involved municipality.
+\item \label{R20}The system must allow an agent to see the reports for its municipality, checking them in order of arrival.
+\item \label{R21}The system must allow an agent to issue a traffic ticket to a certain person (i.e. license plate) through the correspondent municipality service.
+\item \label{R22}The system must allow an agent to put on hold a violation report if it needs to be checked in person.
+\item \label{R23}The system must allow an agent to discard a violation if it has been verified as fake or it cannot be verified (the vehicle is not there anymore) or it is a duplicated report.
+\item \label{R24}The system must allow an agent to retrieve the data of the author of a violation report.
+\item \label{R25}The system must allow an agent to create an account,providing personal data(name, surname, birthdate, rank, badge number).
+\end{enumerate}
+\begin{enumerate}[start=25,label={[R\arabic*b]}]
+\item \label{R25b}The system must verify the correctness of the provided personal data of a registered agent checking them through the municipality services, blocking the registration if they are not correct.
+\end{enumerate}
+\begin{enumerate}[start=26,label={[R\arabic*]}]
+\item \label{R26}The system must allow an agent to login, inserting its ID and password, blocking the registration if the data inserted is not correct.
+\end{enumerate}
+\item  \hyperref[G3] People must be allowed to retrieve information about streets or areas with the highest frequency of violations.
+\begin{enumerate}[start=27,label={[R\arabic*]}]
+\item \label{R27}The system must mine information about streets or areas from the reported violations.
+\item \label{R28}The system must allow all type of users (even if not authenticated) to select the see information for a city. The user can choose either the city where he is, using the GPS position, or an arbitrary selected location.
+\item \label{R29}The system must allow all type of users (even if not authenticated) to select information about streets or areas in the city selected and to specify if they want information for a specific street or area or a classification of streets or areas.
+\item \label{R30}The system must show the the data corresponding to the selection of [R29].
+\end{enumerate}
+\item  \hyperref[G4] People must be able to retrieve statistics and trends about the accidents correlated to the parking violations, the effectiveness of SafeStreets initiatives and the issuing of traffic tickets.
+\begin{enumerate}[start=31,label={[R\arabic*]}]
+\item \label{R31}The system must take information about accidents and tickets from the municipality.
+\item \label{R32}The system must use information about accidents and tickets to build statistics, crossing them with reported violations.
+\item \label{R33}The system must not allow common users to see confidential data about other people.
+\item \label{R34}The system must allow all type of users (even if not authenticated) to choose a topic: areas or streets with most accidents, areas or streets with the highest number of traffic tickets issued, areas or streets where there have been the best improvements, information for a specific area or street.
+\item \label{R35}The system must show to the user the information about the topic selected according to [R34].
+\end{enumerate}
+\item  \hyperref[G5] Municipality supervisors must be able to retrieve data about the vehicles with the highest number of violations.
+\begin{enumerate}[start=36,label={[R\arabic*]}]
+\item \label{R36}The system must allow authenticated supervisors to retrieve information about the vehicles with the highest number of violations in a selected area or street.
 %\item {[R37]}	\label{R37}The system must allow supervisors to see what areas or streets has seen the best improvements in the ticket emissions.
-\item {[R37]}	\label{R37}The system must allow supervisors to access only information about their own municipality.
-\item {[R38]}	\label{R38}The system must allow a supervisor to create an account, providing personal data (name, surname, birthdate, rank, badge number).
-\item {[R38b]}  \label{R38b}The system must verify the correctness of the provided personal data of a registered supervisor checking them through the municipality services, blocking the registration if they are not correct.
-\item {[R39]}	\label{R39}The system must allow a supervisor to login, inserting its ID and password,blocking the registration if the data inserted is not correct.
-\end{itemize}
-\item  \hyperref[G6]{[G6]} Municipalities must be suggested for possible interventions about the mostly unsafe areas.
-\begin{itemize}
-\item {[R40]}	\label{R40}The system must take information about accidents, tickets and street networks (bike lanes, sidewalks, parking areas,…) from the municipality, exploiting the municipality services.
+\item \label{R37}The system must allow supervisors to access only information about their own municipality.
+\item \label{R38}The system must allow a supervisor to create an account, providing personal data (name, surname, birthdate, rank, badge number).
+\end{enumerate}
+\begin{enumerate}[start=38,label={[R\arabic*b]}]
+\item \label{R38b}The system must verify the correctness of the provided personal data of a registered supervisor checking them through the municipality services, blocking the registration if they are not correct.
+\end{enumerate}
+\begin{enumerate}[start=39,label={[R\arabic*]}]
+\item \label{R39}The system must allow a supervisor to login, inserting its ID and password,blocking the registration if the data inserted is not correct.
+\end{enumerate}
+\item  \hyperref[G6] Municipalities must be suggested for possible interventions about the mostly unsafe areas.
+\begin{enumerate}[start=40,label={[R\arabic*]}]
+\item \label{R40}The system must take information about accidents, tickets and street networks (bike lanes, sidewalks, parking areas,…) from the municipality, exploiting the municipality services.
 \phantomsection
-\item {[R41]}	\label{R41}The system must elaborate information about accidents, tickets and streets, combined with reports information, and try to find possible solutions for problems.
-\item {[R42]}	\label{R42}The system must notify the municipality supervisors about the solutions it has found.
-\end{itemize}
-\end{itemize}
+\item \label{R41}The system must elaborate information about accidents, tickets and streets, combined with reports information, and try to find possible solutions for problems.
+\item \label{R42}The system must notify the municipality supervisors about the solutions it has found.
+\end{enumerate}
+\end{enumerate}
 
 
 \section{Performance requirements}
@@ -761,8 +772,8 @@ In particular the statistical analyses performed will never show publicly any in
 \subsection{Hardware and software limitations}
 The following requirements are necessary to install the mobile application:
 \begin{itemize}
-\item \textit{Operating system}: Android 5+ or iOS 9+
-\item \textit{Hardware}: to allow the access as logged user the smartphone needs to have a camera and a GPS sensor
+\item \textit{Operating system}: Android 5+ or iOS 9+.
+\item \textit{Hardware}: to allow the access as logged user the smartphone needs to have a camera and a GPS sensor.
 \end{itemize}
 The camera is needed to take photos of the violations and the GPS is necessary to automatically record the position. The users have to give the relative permissions to the application. A base necessary requirement to use any functionality is the presence of an internet connection.\\
 This requirements allow the majority of people to use the application \label{use:os-stats}  \mbox{(see \hyperref[ref:os-stats]{\textit{[OS-STAT]}}).}\\
@@ -787,17 +798,17 @@ In this section is shown a formal analysis of some aspects of the system using A
 The signatures defined do not have an exact correspondence with the classes of the Class Diagram (see \ref{fig:class-diagram}), even if there is a good matching. The main differences are the absence of some fields or classes which are not useful for this modeling activity and the presence of some signatures (\textit{StatisticsRequest} and the related \textit{StatisticsLevel} and \textit{RequestStatus}) which do not have correspondent classes in the previously shown uml diagram. This is due to the fact that they are technical classes, not necessary to be shown in the general abstract class diagram, whose purpose is just to show the domain of the application, but it can be useful to have them here as signatures to allow to express a particular constraint (i.e. the privacy levels of statistics data). There are some simplifications, in particular the use of the Alloy built-in type \textit{Time} which easy allows to define time instants and check their order, but clearly does not have the same expressive power of a \textit{DateTime} type of a high-level programming language.\\
 This Alloy model manly consists of signatures and facts. A summary of what is expressed through the facts and a matching with the previously expressed requirements and domain assumptions (see \ref{sec:fun-requirements} and \ref{subsec:domain-ass}) is the following:
 \begin{itemize}
-\item Every area has at least one city and every street can be only in areas of the same municipality \hyperref[D3]{[D3]}
-\item The state evolution of a \textit{Report} is consistent with the StateDiagram (\ref{fig:state-diagram1}), every report is checked by a municipality agent of the same municipality where the violation has occurred \hyperref[R15]{[R15-22]}
-\item Every \textit{StatisticsData} is referred to an area or to a street, but not both \hyperref[R29]{[R29]}
-\item The are no users with the same identity card number, fiscal code or username \hyperref[R2]{[R2]}
-\item Every municipality has at least one street [the concept of Municipality impose this]
-\item Agents must check the reports in the order of emission \hyperref[R20]{[R20]}
-\item An agents cannot issue traffic tickets in another city \hyperref[R19]{[R19, R21]}
-\item For every approved report there is a correspondent ticket \hyperref[R21]{[R21]}
-\item For every street where there have been at least two accidents caused by bad parked cars and two approved reports there must be a suggestion. This is an easy example to answer the requirement \hyperref[R41]{[R41]}
-\item \textit{ReservedStatistics} can be accessed only by Supervisors \hyperref[R33]{[R33]}
-\item Correctness of statistics data \hyperref[R29]{[R29,R30,R34,R35,R36]}
+\item Every area has at least one city and every street can be only in areas of the same municipality \hyperref[D3]{[D3]}.
+\item The state evolution of a \textit{Report} is consistent with the StateDiagram (\ref{fig:state-diagram1}), every report is checked by a municipality agent of the same municipality where the violation has occurred \hyperref[R15]{[R15-22]}.
+\item Every \textit{StatisticsData} is referred to an area or to a street, but not both \hyperref[R29]{[R29]}.
+\item The are no users with the same identity card number, fiscal code or username \hyperref[R2]{[R2]}.
+\item Every municipality has at least one street [the concept of Municipality impose this].
+\item Agents must check the reports in the order of emission \hyperref[R20]{[R20]}.
+\item An agents cannot issue traffic tickets in another city \hyperref[R19]{[R19, R21]}.
+\item For every approved report there is a correspondent ticket \hyperref[R21]{[R21]}.
+\item For every street where there have been at least two accidents caused by bad parked cars and two approved reports there must be a suggestion. This is an easy example to answer the requirement \hyperref[R41]{[R41]}.
+\item \textit{ReservedStatistics} can be accessed only by Supervisors \hyperref[R33]{[R33]}.
+\item Correctness of statistics data \hyperref[R29]{[R29,R30,R34,R35,R36]}.
 \end{itemize}
 This model does not easy allow to express assertions to be checked, because it already covers almost all about the requirements/assumptions which involves and there are no very interesting and non trivial properties which should be implied by it and so should be checked through assertions. The goals of system, which are what is really implicated by the combination of requirements and assumptions, cannot be easily expressed in a "machine" formal way, without falling in a repetition of the requirements. Anyway there are a pair of assertions which state that the number of approved reports must be smaller or equal to the number of the tickets, for all agents and for all streets. This clearly follows by the fact that every approved reports has a consequent ticket and it's not a simple equality because the municipality can issue other tickets, not associated to reports, but still in the application data thanks to the information collected from the municipality for statistics elaboration.\\
 At the end of the Alloy code there are some predicates which are then shown and explained.\\
@@ -940,11 +951,11 @@ Vittorio Torri \\
 \chapter{References}
 \begin{itemize}
 
-\item \label{ref:os-stats} \hyperref[use:os-stats]{\textit{[OS-STAT]}} \href{https://gs.statcounter.com}{\textit{https://gs.statcounter.com}} - statistics on operating systems market share and versions diffusion
+\item \label{ref:os-stats} \hyperref[use:os-stats]{\textit{[OS-STAT]}} \href{https://gs.statcounter.com}{\textit{https://gs.statcounter.com}} - statistics on operating systems market share and versions diffusion.
 
-\item \label{ref:slander} \hyperref[use:slander]{\textit{[SLANDER]}} see art. 368, 370 and 69 c.p.p. (Italian law)
+\item \label{ref:slander} \hyperref[use:slander]{\textit{[SLANDER]}} see art. 368, 370 and 69 c.p.p. (Italian law).
 
-\item \label{ref:maps-api} \hyperref[use:maps-api]{\textit{[MAPS-API]}} \href{https://developers.google.com/maps/documentation/geocoding/start?csw=1\#reverse}{\textit{https://developers.google.com/maps/documentation/geocoding/start?csw=1\#reverse}} - Google Maps API to obtain the address (including city name) from a GPS location
+\item \label{ref:maps-api} \hyperref[use:maps-api]{\textit{[MAPS-API]}} \href{https://developers.google.com/maps/documentation/geocoding/start?csw=1\#reverse}{\textit{https://developers.google.com/maps/documentation/geocoding/start?csw=1\#reverse}} - Google Maps API to obtain the address (including city name) from a GPS location.
 
 \end{itemize}
 
