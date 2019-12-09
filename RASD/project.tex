@@ -232,7 +232,7 @@ The system offers the possibility to Visitors to register and actually become us
 \subsubsection{Reporting a violation}
 This is the most important function offered by SafeStreets. This function allows Users, when logged in, to report a potential violation that has occured in the streets. 
 They can achieve that by inserting some mandatory data. When reporting a violation, a user must insert the type of violation that has been detected ( missing park disk, car illegally parked in the bike lane, car illegally parked in some reserved parking spot, not paid parking disk).
-Subsequently, the user must provide at least one picture of the violation. Through the pictures, the user should provide clear evidence of the violation and the vehicle involved (in particular the license plate) before sending the report for a verification to the server. The user can help recognition providing the license plate of the vehicle as plain text. Before sending the report, the application attaches to it the current position of the User (using GPS position) and date and time of the report.
+Subsequently, the user must provide at least one picture of the violation. Through the pictures, the user should provide clear evidence of the violation and the vehicle involved (in particular the license plate) before sending the report for a verification to the server. The user can help recognition providing the license plate of the vehicle as plain text. Before sending the report, the application attaches to it the current position of the User (using GPS position). The server will then register date and time of the report.
 
 \subsection{Municipality agent}
 \label{sub-agentfun}
@@ -282,7 +282,7 @@ The presence of some services provided by the municipalities is necessary to mak
 \item \textit{Traffic Ticket Issue}: allows to send traffic tickets to a certain person by a certain agent.
 \item \textit{Agents Identity Check}: allows to check the identity of a registering agent given his personal data, including his badge number. 
 \end{itemize}
-The system requires also a Map service to obtain the map for a given area and to obtain the municipality name for a given GPS position (see \hyperref[ref:maps-api]{\textit{[MAPS-API]}}). 
+The system requires also a Map service to obtain the map for a given area. 
 \subsection{Domain Assumptions}
 \label{subsec:domain-ass} 
 Here are shown the domain assumptions:
@@ -339,7 +339,7 @@ Luke and Walter are two close friends. Luke doesn’t know about SafeStreets app
 \\
 \textbf{Scenario 8. A supervisor wants to check see what areas are registering improvements since the municipality has started to use SafeStreets}\\
 \\
-Giulio is a local police supervisor in the municipality of Milan. It’s six months since they have started to use the SafeStreets application to receive report from citizens about parking violations and he want to check what benefits it has brought. He opens the web application, he logins inserting his credentials and he clicks on Improvements under the Statistics section. Here he can see what streets have seen the best reduces in the number of issued tickets. He sees that a lot of central zones have seen reductions from 20 to 50 percent, while in the peripheral areas the numbers are much less substantial. He is happy because of this result, but he wants to improve it and he thinks to start a marketing campaign to encourage more people to use the application, especially in the peripherals. 
+Giulio is a local police supervisor in the municipality of Milan. It’s six months since they have started to use the SafeStreets application to receive report from citizens about parking violations and he wants to check what benefits it has brought. He opens the web application, he logins inserting his credentials and he clicks on Improvements under the Statistics section. Here he can see what streets have seen the best reduces in the number of issued tickets. He sees that a lot of central zones have seen reductions from 20 to 50 percent, while in the peripheral areas the numbers are much less substantial. He is happy because of this result, but he wants to improve it and he thinks to start a marketing campaign to encourage more people to use the application, especially in the peripherals. 
 \\ 
 \\
 \phantomsection %to link back SLANDER note
@@ -352,7 +352,7 @@ Probably he won't do it another time.
 \\
 \textbf{Scenario 10. A municipality agent registers to the application}\\
 \\
-Ben is a new local police agent in the municipality of Bologna hired only two days ago and his supervisor says him that he has to register to the SafeStreets application. So Ben open the already installed application from his Computer and clicks on the "Register" button on the homepage. He inserts his name, surname, birthdate, rank and badge number, then he chooses his password, equal to "LKJVC89", and confirm the inputs. After the registration is processed, Ben receives his unique ID and is returned to the home page. He can now properly work.
+Ben is a new local police agent in the municipality of Bologna hired only two days ago and his supervisor says him that he has to register to the SafeStreets application. So Ben open the web application from his Computer and clicks on the "Register" button on the homepage. He inserts his name, surname, birthdate, rank and badge number, then he chooses his password, equal to "LKJVC89", and confirm the inputs. After the registration is processed, Ben receives his unique ID and is returned to the home page. He can now properly work.
 
 \section{UML diagrams analysis}
 
@@ -562,7 +562,7 @@ Exit conditions:
 Exceptions: 
 \begin{itemize}
 \item The username provided is already in use the system shows an error message to the user; he has to insert a new Username (and password)
-\item The sensitive information inserted are not correct (fiscal code or identity card number). The system shows an error message and the user has to insert again all his information.
+\item The personal information inserted are not correct. The system shows an error message and the user has to insert again all his information.
 \item User doesn't complete the registration process by pressing the "back" button in the page. He's redirected to the main page.
 \end{itemize}
 
@@ -675,7 +675,7 @@ In figures \ref{fig:mock-webreports} and \ref{fig:mock-suggestions} are provided
 No hardware interfaces are provided, being SafeStreets just a software system.
 \subsection{Software Interfaces}
 The system does not provide any software interface, because there are no other application which actually need to retrieve data from it. \\
-The system has to call the municipalities services to retrieve some information (see \ref{SS-Dep&Const} ).
+The system has to call the municipalities services and the maps API to retrieve some information (see \ref{SS-Dep&Const}).
 \subsection{Communication Interfaces}
 The communication between users and SafeStreets servers exploit internal APIs through the \textit{HTTPS} protocol. The same is assumed for the communication with the municipalities systems. \\
 For the \textit{users} the communication is unidirectional, in the sense that they cannot receive requests/notification by the server, all communications start from them. \\
@@ -754,7 +754,6 @@ For each goal we describe here the necessary functional requirements, which guar
 \item  \hyperref[G6] Municipalities must be suggested for possible interventions about the mostly unsafe areas.
 \begin{enumerate}[start=40,label={[R\arabic*]}]
 \item \label{R40}The system must take information about accidents, tickets and street networks (bike lanes, sidewalks, parking areas,…) from the municipality, exploiting the municipality services.
-\phantomsection
 \item \label{R41}The system must elaborate information about accidents, tickets and streets, combined with reports information, and try to find possible solutions for problems.
 \item \label{R42}The system must notify the municipality supervisors about the solutions it has found.
 \end{enumerate}
@@ -778,7 +777,6 @@ The following requirements are necessary to install the mobile application:
 The camera is needed to take photos of the violations and the GPS is necessary to automatically record the position. The users have to give the relative permissions to the application. A base necessary requirement to use any functionality is the presence of an internet connection.\\
 This requirements allow the majority of people to use the application \label{use:os-stats}  \mbox{(see \hyperref[ref:os-stats]{\textit{[OS-STAT]}}).}\\
 The authorities have the possibility to use a web interface, accessible through every modern browser.\\
-Everyone can consult the publicly available statistics also through the \textit{SafeStreets website}, with any modern browser.
 %\subsection{Any other constraints}
 %//PROBABLY NOTHING
 \section{Software system attributes}
@@ -799,7 +797,7 @@ The signatures defined do not have an exact correspondence with the classes of t
 This Alloy model manly consists of signatures and facts. A summary of what is expressed through the facts and a matching with the previously expressed requirements and domain assumptions (see \ref{sec:fun-requirements} and \ref{subsec:domain-ass}) is the following:
 \begin{itemize}
 \item Every area has at least one city and every street can be only in areas of the same municipality \hyperref[D3]{[D3]}.
-\item The state evolution of a \textit{Report} is consistent with the StateDiagram (\ref{fig:state-diagram1}), every report is checked by a municipality agent of the same municipality where the violation has occurred \hyperref[R15]{[R15-22]}.
+\item The state evolution of a \textit{Report} is consistent with the StateDiagram (\ref{fig:state-diagram1}), every report is checked by a municipality agent of the same municipality where the violation has occurred \hyperref[R15]{[R15-23]}.
 \item Every \textit{StatisticsData} is referred to an area or to a street, but not both \hyperref[R29]{[R29]}.
 \item The are no users with the same identity card number, fiscal code or username \hyperref[R2]{[R2]}.
 \item Every municipality has at least one street [the concept of Municipality impose this].
@@ -935,13 +933,15 @@ Vittorio Torri \\
 04-11-2019 & 1 h & Alloy \\ \midrule 
 05-11-2019 & 1.5 h & Alloy \\ \midrule
 06-11-2019 & 1.5 h & Alloy \\ \midrule
-07-11-2019 & 1h & General revision \\ \midrule
-08-11-2019 & 2h & General revision \\ \midrule
-08-11-2019 & 2h & Alloy \\ \midrule
-08-11-2019 & 2h & Web interface mockup (report list) \\ \midrule
-09-11-2019 & 1h & Web interface mockup (suggestion list) \\ \midrule
-09-11-2019 & 2h & General revision, tables 1.1 and 3.1\\ \midrule
-10-11-2019 & 0.5h & Graphic corrections\\
+07-11-2019 & 1 h & General revision \\ \midrule
+08-11-2019 & 2 h & General revision \\ \midrule
+08-11-2019 & 2 h & Alloy \\ \midrule
+08-11-2019 & 2 h & Web interface mockup (report list) \\ \midrule
+09-11-2019 & 1 h & Web interface mockup (suggestion list) \\ \midrule
+09-11-2019 & 2 h & General revision, tables 1.1 and 3.1\\ \midrule
+10-11-2019 & 0.5 h & Graphic corrections\\ \midrule
+28-11-2019 & 1 h* & RASD Update \\ \midrule
+08-12-2019 & 2 h & General revision\\
 \bottomrule
 \end{tabular}
 \caption[Vittorio Torri's effort table]{}
@@ -955,7 +955,11 @@ Vittorio Torri \\
 
 \item \label{ref:slander} \hyperref[use:slander]{\textit{[SLANDER]}} see art. 368, 370 and 69 c.p.p. (Italian law).
 
+<<<<<<< HEAD
 \item \label{ref:maps-api} \hyperref[use:maps-api]{\textit{[MAPS-API]}} \href{https://developers.google.com/maps/documentation/geocoding/start?csw=1\#reverse}{\textit{https://developers.google.com/maps/documentation/geocoding/start?csw=1\#reverse}} - Google Maps API to obtain the address (including city name) from a GPS location.
+=======
+%\item \label{ref:maps-api} \hyperref[use:maps-api]{\textit{[MAPS-API]}} \href{https://developers.google.com/maps/documentation/geocoding/start?csw=1\#reverse}{\textit{https://developers.google.com/maps/documentation/geocoding/start?csw=1\#reverse}} - Google Maps API to obtain the address (including city name) from a GPS location
+>>>>>>> fa6abe9698ea45333d5472ffc9529c10c777caeb
 
 \end{itemize}
 
