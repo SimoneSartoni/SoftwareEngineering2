@@ -109,10 +109,10 @@ The system is supported by APIs provided by the municipalities and by APIs provi
 \section{Reference Documents}
 \begin{itemize}
 \item Assignment Document "SafeStreets Mandatory Project Assignment.pdf"
-\item RASD Document "RASD1.1.pdf"
+\item RASD Document "RASD1.4.pdf"
 \end{itemize}
 \section{Document Structure}
-The succesive part of th document is divided into 6 chapters:
+The successive part of the document is divided into 6 chapters:
 \begin{itemize}
 \item \textit{Chapter 2}: in this chapter all the design choices made during the developmenr of the application presented at different levels of abstraction: from the more general and abstract one concerning tiers and system architecture, to the more technical one, concerning protocols and technologies chosen to deploy the system.
 \item \textit{Chapter 3}: in this chapter the user interfaces are presented, using mockups to represent how they should actually be once implemented: different mockups are presented to cover all possible situations worth to be shown.
@@ -372,7 +372,7 @@ The operational database of \textit{SafeStreets} is a relational database, consi
 In figure \ref{fig:er} is shown the \textbf{Entity-Relationship} diagram for the operational database. It is worth to remark that the data coming from the municipality about tickets and accidents are directly stored in the datawarehouse, while here only data about tickets emitted through the SafeStreet system are stored.\\
 In figure \ref{fig:dfm} is shown the \textbf{Dimensional Fact Model} for the datawarehouse. The tree facts of interest are Report, Tickets and Accidents. The diagram highlight the dimension of analysis which can be useful for the Statistics and Suggestions functions.
 \begin{figure}[htp]
-\includegraphics[width=\textwidth]{ER}
+\includegraphics[scale=2.4]{ER}
 \caption{Entity-Relationship diagram for the operational database}
 \label{fig:er}
 \end{figure}
@@ -488,7 +488,7 @@ In the figures \ref{fig:MobileApp-activity}, \ref{fig:SupWebApp-activity} and \r
 
 \chapter{Requirements Traceability}
 
-In this section is shown how the requirements are actually ensured and which components actually ensure them. It's worth to notice that for the sake of simplicity the Router has been ignored but it's always involved when dealing with a request coming from one of the clients.
+In this section is shown how the requirements are actually ensured and which components actually ensure them. It's worth to notice that for the sake of simplicity the Router has been ignored  but it's always involved when dealing with a request coming from one of the clients. 
 Table \ref{tab:req-trace} has been added to highlight for each component what requirements it ensures.
 \begin{table}[H]  
   \centering
@@ -500,66 +500,68 @@ Table \ref{tab:req-trace} has been added to highlight for each component what re
     \end{large}&\begin{large}
     \textbf{Requirements} 
     \end{large}\\  \hline
-    User Mobile App &  R1,R3, R4, R5, R6, R7, R8, R9, R10, R28, R29, R30, R33, R34,R35\\ \hline
-    MunicipalityAgent Web App & R19,R20,R21,R22,R23, R24, R26,R28,R29,R30,R33,R34,R35 \\ \hline
-    MunicipalitySupervisor Web App & R28,R29,R30,R34,R35,R36,R37,R38, R40 \\ \hline
-    AccessManager & R1, R2, R3, R25, R26, R39, R40 \\ \hline
-    ReportManager & R11, R12, R13, R14, R15, R16, R17,R18\\ \hline
-    SuggestionManager & R42 \\ \hline
-    StatisticsManager & R30, R36 \\ \hline
+    User Mobile App &  R1, R3, R4, R5, R6, R7, R8, R9, R10, R28, R29, R30, R33, R34, R35\\ \hline
+    MunicipalityAgent Web App & R19, R20, R21, R22, R23, R24, R26, R28, R29, R30, R33, R34 ,R35 \\ \hline
+    MunicipalitySupervisor Web App & R28, R29, R30, R34, R35, R36, R37, R38, R40 \\ \hline
+    AccessManager & R1, R2, R3, R24, R25, R26, R38, R39, R40 \\ \hline
+    ReportManager & R11, R12, R13, R14, R15, R16, R17, R18, R23\\ \hline
+    SuggestionManager & R42, R43 \\ \hline
+    StatisticsManager & R30, R35, R36 \\ \hline
     NotificationManager & R18, R43 \\ \hline
-    DataCollectionManager & R31,R41 \\ \hline
-    DataWarehouse & R27, R30, R31, R32, R36, R41, R42, R43 \\ \hline
+    DataCollectionManager & R31, R41 \\ \hline
+    DataWarehouse & R27, R30, R31, R32, R36, R41, R42 \\ \hline
     
   \end{tabular}
-  \caption{Table for mapping requirements to components} \label{tab:req-trace}
+\caption{Table for mapping requirements to components} \label{tab:req-trace}
 \end{table}
+Notice that, for the sake of simplicity, the DBMS has been ignored in the table because it is always involved when a component of the Application Server needs to save or to retrieve some data.
+\\
 In the following lines is explained how the requirements are provided by the components:
 \begin{enumerate}[start=1,label={[R\arabic*]}]
-\item \label{[R1]} The system must allow people to register to it providing personal data (name, surname, birthdate, identity card number, fiscal code) and selecting a username and a password: this requirement is provided by the \textit{AccessManager} and the \textit{User Mobile App} components. The \textit{User Mobile App} allows the user to fill blank spaces with username and password and the \textit{AccessManager} handles requests of registration from the client.
+\item \label{[R1]} The system must allow people to register to it providing personal data (name, surname, birthdate, identity card number, fiscal code) and selecting a username and a password: this requirement is provided by the \textit{AccessManager} and the \textit{User Mobile App} components. The \textit{User Mobile App} allows the user to fill the registration form and the \textit{AccessManager} handles requests of registration from the client.
 \item \label{[R2]} The system must verify the correctness of the provided personal data of a registered user checking them from the identity card number, blocking the registration if they are not correct: the \textit{AccessManager} checks the received data from the Client calling the \textit{municipality API services} that actually possesses sensible data of the users. 
-\item  \label{[R3]}The system must allow registered users to login through their username and password, if they provide them correctly: this requirement is provided by the \textit{AccessManager} and the \textit{User Mobile App}. The \textit{User Mobile app} allows registered users to insert username and password while the \textit{AccessManager} handles the requests of login from the user and blocks them  if, checking from the DataBase, the inserted data is not correct. 
+\item  \label{[R3]}The system must allow registered users to login through their username and password, if they provide them correctly: this requirement is provided by the \textit{AccessManager} and the \textit{User Mobile App}. The \textit{User Mobile app} allows registered users to insert username and password while the \textit{AccessManager} handles the requests of login from the users and blocks them  if, checking from the DataBase, the inserted data are not correct. 
 \item \label{[R4]} The system must allow the logged user to fill a report violation form: this requirement is fulfilled by the \textit{User Mobile App} component that allows the logged user to choose the "Report a violation" feature.
 \item  \label{[R5]}The system must let the user select the type of violation detected: the requirement is fulfilled by the \textit{User Mobile App} component, showing an empty space to fill with the type of violation detected in the "Report a violation" process.
 \item  \label{[R6]} The system must allow the user to insert the license plate in a violation report:  the requirement is fulfilled by the \textit{User Mobile App} component, showing an empty space to fill with the license plate of the car that committed the violation in the "Report a violation" process.
 \item  \label{[R7]}While reporting the violation, the system must allow users to take one or more pictures of the potential violation: the requirement is fulfilled by the \textit{User Mobile App} component, allowing user to click on the "Take a picture" button.
-\item \label{[R8]}The system must not allow users to choose pictures not taken in the moment of the report: this requirement is guaranteed by the \textit{User Mobile App} by not allowing client to just pick some random picture from his local storage.
+\item \label{[R8]}The system must not allow users to choose pictures not taken in the moment of the report: this requirement is guaranteed by the \textit{User Mobile App} by not allowing users to just pick some random pictures from their local storage.
 \item \label{[R9]}The system must collect the current position of the user, using GPS: the \textit{User Mobile App} component ensures this requirement by taking the current position of the User using GPS location.
 \item \label{[R10]}The system must allow user to confirm or delete the current report: the \textit{User Mobile App} component ensures this requirement by either sending the report for a check through the "confirm" button or deleting the current report clicking on the back button.
 \item\label{[R11]} After confirmation, the system must add the current date and time to the report: the \textit{ReportManager} actually takes the requests from the client and attaches to them the current time and date taken from the application server internal clock.
-\item \label{[R12]}The system must store confirmed report: the \textit{ReportManager} is responsible for this requirement, calling the DataBase to actually store the report.
+\item \label{[R12]}The system must store confirmed report: the \textit{ReportManager} is responsible for this requirement, calling the DBMS to actually store the report.
 \item \label{[R13]}The system must check reports to try to find if the pictures of the violations have been modified: the \textit{ReportManager} manages to check if the pictures are fake or not or have been modified.
 \item \label{[R14]}The system must try to find, according to the GPS position of the user and the pictures sent, if the position is fake or not: the \textit{ReportManager} ensures this requirement by running an algorithm to define if the position is correct or not. 
 \item \label{[R15]}The system must discard the report if it has been recognized as fake according to the previous requirements (R13-R14): the \textit{ReportManager} is in charge of this, deleting the report if recognized as fake.
 \item \label{[R16]}The system must try to automatically recognize the license plate in the photo, possibly with the help of the value inserted by the user: the \textit{ReportManager} is in charge of this, running an algorithm for text recognition in the picture(s).
 \item \label{[R17]}The involved municipality must be calculated considering in which city the reported violation has been found, based on the GPS position of the user that has sent the report: the \textit{ReportManager} provides this requirement calculating the municipality in charge comparing the GPS position with the ones associated to municipality borders in the database.
 \item \label{[R18]}The system must send the reported violations to the involved municipality: the \textit{ReportManager} and the the \textit{NotificationManager} are responsible for this. After having saved it, the \textit{ReportManager} sends the report to the \textit{NotificationManager} that forwards it to the involved municipality.
-\item \label{[R19]}The system must allow an agent to see the reports for its municipality, checking them in order of arrival: the \textit{MunicipalityAgent Web pp} component is responsible for this, showing on screen the reports in order of arrival.
+\item \label{[R19]}The system must allow an agent to see the reports for its municipality, checking them in order of arrival: the \textit{MunicipalityAgent Web App} component is responsible for this, showing on screen the reports in order of arrival.
 \item \label{[R20]}The system must allow an agent to issue a traffic ticket to a certain person (i.e. license plate) through the correspondent municipality service: the \textit{MunicipalityAgent Web App}  allows agents to issue traffic tickets through a specific button in the Web App, calling the MunicipalityAPI to issue the traffic ticket.
 \item \label{[R21]}The system must allow an agent to put on hold a violation report if it needs to be checked in person: the \textit{MunicipalityAgent Web App} ensures this by showing the possibility of putting a report on hold while checking it.
 \item \label{[R22]}The system must allow an agent to discard a violation if it has been verified as fake or it cannot be verified (the vehicle is not there anymore) or it is a duplicated report: the \textit{MunicipalityAgent Web App} ensures this requirement by allowing the agents to discard a report if needed.
-\item \label{[R23]}The system must allow an agent to retrieve the data of the author of a violation report: the \textit{MunicipalityAgent Web App} asks to the Municipality API data about the author of the report. 
-\item \label{[R24]}The system must allow an agent to create an account, providing personal data (name, surname, birthdate, rank, badge number): this requirement is ensured by the \textit{MunicipalityAgent Web App} that allows agents to insert their data to register to the application.
+\item \label{[R23]}The system must allow an agent to retrieve the data of the author of a violation report: the \textit{MunicipalityAgent Web App} can send the request to the \textit{ReportManager}  which retrieve the data from the database.
+\item \label{[R24]}The system must allow an agent to create an account, providing personal data (name, surname, birthdate, rank, badge number): this requirement is ensured by the \textit{MunicipalityAgent Web App} that allows agents to insert their data and by the \textit{AccessManager} which creates the accounts.
 \item \label{[R25]}The system must verify the correctness of the provided personal data of a registering agent checking them through the Municipality Services, blocking the registration if they are not correct: the \textit{AccessManager} is responsible for this, asking the Municipality API to check the identity of the agent.
-\item \label{[R26]}The system must allow an agent to login, inserting its ID and password,blocking the login if the inserted data is not correct: \textit{MunicipalityAgent Web App} and \textit{AccessManager} are responsible for this. The \textit{MunicipalityAgent Web App} allows agents to insert data, while \textit{AccessManager} checks if they are correct.
+\item \label{[R26]}The system must allow an agent to login, inserting its ID and password, blocking the login if the inserted data are not correct: \textit{MunicipalityAgent Web App} and \textit{AccessManager} are responsible for this. The \textit{MunicipalityAgent Web App} allows agents to insert data, while \textit{AccessManager} checks if they are correct.
 \item \label{[R27]}The system must mine information about streets or area from the reported violations: the \textit{DataWarehouse} is responsible for this, performing data mining on reports stored in the DataBase of the application.
 \item \label{[R28]}The system must allow all type of users (even if not authenticated) to select a city they want information about. The user can choose either the city where he is, using the GPS position, or an arbitrary selected location: the \textit{User Mobile App component}, the \textit{MunicipalityAgent Web App} and the \textit{MunicipalitySupervisor Web App} ensure this requirement by allowing users to choose the city they want.
-\item \label{[R29]}The system must allow all type of users (even if not authenticated) to select information about streets or areas in the city selected and to specify if he wants information for a specific street or area or a classification of streets or areas: The \textit{User Mobile App} component, the\textit{ MunicipalityAgent Web App} component, the \textit{MunicipalitySupervisor Web App} component are responsible for this requirement by allowing users to choose the area or street they want.
+\item \label{[R29]}The system must allow all type of users (even if not authenticated) to select information about streets or areas in the city selected and to specify if they want information for a specific street or area or a classification of streets or areas: the \textit{User Mobile App} component, the\textit{ MunicipalityAgent Web App} component, the \textit{MunicipalitySupervisor Web App} component are responsible for this requirement by allowing users to choose the area or street they want.
 \item \label{[R30]}The system must show the data corresponding to the selection of [R29]: the \textit{User Mobile App}, \textit{MunicipalityAgent Web App}, \textit{MunicipalitySupervisor Web App}, \textit{StatisticsManager} and \textit{DataWarehouse} components are responsible for this requirement; the \textit{StatisticsManager} contacts the MapsAPI to provide an image for the city/area/street selected and contacts the \textit{DataWarehouse} to retrieve the required data. This image is then shown by the \textit{User Mobile App/MunicpalityAgent Web App/MunicipalitySupervisor Web App} component to the user.
 \item \label{[R31]}The system must take information about accidents and tickets from the municipality: this requirement is ensured by the \textit{DataCollectionManager} that periodically queries the Municipality API to retrieve new informations and saves them on the DataWarehouse.
 \item \label{[R32]}The system must use information  about accidents and tickets to build statistics, crossing them with reported violations: the \textit{DataWarehouse} component ensure this requirement building statistics exploiting data mining techniques.
-\item \label{[R33]}The system must not allow common users to see confidential data about other people: the \textit{User Mobile App component} and \textit{MunicipalityAgent Web App} is in charge for this requirement by showing only data that does not violate privacy.This requirement is also guaranteed by a subcomponent in the \textit{Router} (i.e. \textit{AuthChecker}) to check if a request made by a specific client is valid or not.
+\item \label{[R33]}The system must not allow common users to see confidential data about other people: the \textit{User Mobile App component} and \textit{MunicipalityAgent Web App} are involved in this because they do not allow to perform requests that violate privacy, but this requirement is mostly guaranteed by a subcomponent of the \textit{Router} (i.e. \textit{AuthChecker}) which checks if a request made by a specific client is authorized or not.
 \item \label{[R34]}The system must allow all type of users (even if not authenticated) to choose a topic: areas or streets with most accidents, areas or streets with the highest number of traffic tickets issued, areas or streets where there have been the best improvements, information for a specific area or street: the \textit{User Mobile App} component, the  \textit{MunicipalityAgent Web App} component, the \textit{MunicipalitySupervisor Web App} component provide this requirement by allowing users to choose the topic they're interested into.
-\item \label{[R35]}The system must show to the user the information about the topic selected according to [R34]: the \textit{User Mobile App component}, the \textit{MunicipalityAgent Web App} component and the \textit{MunicipalitySupervisor Web App} component ensure this requirement by showing as an image the topic requested to the user.
+\item \label{[R35]}The system must show to the user the information about the topic selected according to [R34]: the \textit{User Mobile App component}, the \textit{MunicipalityAgent Web App} component and the \textit{MunicipalitySupervisor Web App} component send the request and the \textit{StatisticsManager} answers with the image corresponding to the topic requested by the user.
 \item \label{[R36]}The system must allow authenticated supervisors to retrieve information about the vehicles with the highest number of violations in a selected area or street: the \textit{MunicipalitySupervisor Web App} allows supervisors to select the statistics they want; the \textit{StatisticsManager} asks the the \textit{DataWarehouse} the type of Data requested by the User.
 %\item {[R37]}	\label{R37}The system must allow supervisors to see what areas or streets has seen the best improvements in the ticket emissions.
 \item \label{[R37]}The system must allow supervisors to access only information about their own municipality: the \textit{MunicipalitySupervisor Web App} is responsible for this, allowing supervisor only to check Statistics and suggestions about his city. This requirement is also guaranteed by a subcomponent in the \textit{Router} (i.e. \textit{AuthChecker}) to check if a request made by a specific client is valid or not.
-\item \label{[R38]}The system must allow a supervisor to create an account, providing personal dat a(name, surname, birthdate, rank, badge number): this requirement is ensured by  the\textit{ MunicipalitySupervisor Web App} that allows supervisors to insert their data to register to the application
-\item \label{[R39]}The system must verify the correctness of the provided personal data of a registering supervisor, checking them through the municipality services, blocking the registration if they are not correct : the \textit{AccessManager} is responsible for this requirement, it receives the request and ask the MunicipalityAPI to check if the inserted identity is correct.
-\item \label{[R40]}The system must allow a supervisor to login, inserting its ID and password, blocking the registration if the inserted data is not correct: the \textit{MunicipalitySupervisor Web App} and the \textit{AccessManager} are responsible for the requirement. The \textit{MunicipalitySupervisor Web App} allows supervisor to enter his ID and password, while the \textit{AccessManager} checks in the databases if the inserted data is correct.
+\item \label{[R38]}The system must allow a supervisor to create an account, providing personal data (name, surname, birthdate, rank, badge number): this requirement is ensured by the \textit{ MunicipalitySupervisor Web App} that allows supervisors to insert their registration data and by the \textit{AccessManager} which creates the accounts.
+\item \label{[R39]}The system must verify the correctness of the provided personal data of a registering supervisor, checking them through the municipality services, blocking the registration if they are not correct : the \textit{AccessManager} is responsible for this requirement, it receives the request and ask the MunicipalityAPI to check if the inserted identity data are correct.
+\item \label{[R40]}The system must allow a supervisor to login, inserting its ID and password, blocking the login if the inserted data are not correct: the \textit{MunicipalitySupervisor Web App} and the \textit{AccessManager} are responsible for the requirement. The \textit{MunicipalitySupervisor Web App} allows supervisor to enter his ID and password, while the \textit{AccessManager} checks in the databases if the inserted data is correct.
 \item \label{[R41]}The system must take information about accidents, tickets and street networks (bike lanes, sidewalks, parking areas, ... ) from the municipality, exploiting the municipality services: the\textit{ DataCollectionManager} is responsible for this requirement periodically asking data to the Municipallity API and saving it in the \textit{DataWarehouse}.
-\item \label{[R42]}The system must elaborate information about accidents, tickets and streets, combined with reports information, and try to find possible solutions for problems: the \textit{DataWarehouse} component is responsible for this requirement trying to aggregate data coming from the different databases concerning reports, issued traffic tickets and accidents.
-\item \label{[R43]}The system must notify the municipality about new possible interventions: the \textit{NotificationManager} the \textit{DataWarehouse} and \textit{SuggestionManager} components are responsible for this requirement; the \textit{DataWareHouse} component forwards the new intervention to the \textit{SuggestionManager} that forwards it to \textit{NotificationManager} that sends it to  the involved municipality.
+\item \label{[R42]}The system must elaborate information about accidents, tickets and streets, combined with reports information, and try to find possible solutions for problems: the \textit{SuggestionManager} component elaborates this suggestions with the support of the \textit{DataWarehouse} which aggregates data coming from the different databases concerning reports, issued traffic tickets and accidents. Information about streets are taken directly from the operational database.
+\item \label{[R43]}The system must notify the municipality about new possible interventions: the \textit{NotificationManager} and the \textit{SuggestionManager} components are responsible for this requirement; the \textit{SuggestionManager} elaborates new suggestions and forwards them to the \textit{NotificationManager} that sends a notification to the involved municipality supervisors.
 
 \end{enumerate}
 
@@ -628,8 +630,8 @@ Once that some modules are completed and tested alone they can be integrated, fo
 \item Once the \textit{UserMobileApp}, the \textit{MunicipalityAgentWebApp}, the \textit{SupervisorWebApp} and the \textit{Router} are ready, they can be integrated (\textit{presentation thread})
 \item Once the \textit{UserMobileApp}, the \textit{MunicipalityWebApp}, the \textit{SupervisorWebApp} and the \textit{NotificationManager} are ready they can be integrated (\textit{notification thread})
 \end{itemize}
-The integration test will be made with black box tests, aim to verify the proper working of all functions in the same way as unit tests, but substituting stubs and drivers with the real corresponding modules.\\
-In figures \ref{fig:thread3}, \ref{fig:thread4}, \ref{fig:thread2} and \ref{fig:thread5} the integration threads are highlighted on the component diagram.
+The integration tests will be black box tests, aimed to verify the proper working of all functions in the same way as unit tests, but substituting stubs and drivers with the real corresponding modules.\\
+In figures \ref{fig:thread2}, \ref{fig:thread3}, \ref{fig:thread4} and \ref{fig:thread5} the integration threads are highlighted on the component diagram.
 \afterpage{
 \newgeometry{bottom=2cm}
 \begin{landscape}
@@ -700,7 +702,7 @@ Nicola Rosetti \\
 5-12-2019 & 1 h* & minor updates and fixes\\ \midrule
 7-12-2019 & 1 h & activity diagrams \\ \midrule
 7-12-2019 & 1 h & RASD update\\ \midrule
-8-12-2019 & 1 h & general revision\\ \midrule
+8-12-2019 & 1 h & general revision\\
 \bottomrule
 \end{tabular}
 \caption[Nicola Rosetti's effort table]{}
@@ -720,12 +722,12 @@ Simone Sartoni \\
 27-11-2019 & 1.5 h & Update deployment diagram, requirements traceability revision and Requirements Traceability Matrix creation \\ \midrule
 28-11-2019 & 3 h & Requirements Traceability Matrix update and Interface Diagram \\ \midrule
 29-11-2019 & 1.5 h & Components Interface Diagram \\ \midrule
-03-11-2019 & 3 h & Components Interface Diagram update \\ \midrule
-04-11-2019 & 1.5 h & Components Interface Diagram description \\ \midrule
-07-11-2019 & 1.5 h & Minor fixes and changes \\ \midrule
-08-11-2019 & 2 h & Chapter 2 final revision and Deployments Diagram update \\ \midrule
-09-11-2019 & 1.5 h & Chapter 3 final revision and Component Interfaces Diagram update \\ \midrule
-09-11-2019 & 2 h & Chapter 4 final revision\\ \midrule
+03-12-2019 & 3 h & Components Interface Diagram update \\ \midrule
+04-12-2019 & 1.5 h & Components Interface Diagram description \\ \midrule
+07-12-2019 & 1.5 h & Minor fixes and changes \\ \midrule
+08-12-2019 & 2 h & Chapter 2 final revision and Deployments Diagram update \\ \midrule
+09-12-2019 & 1.5 h & Chapter 3 final revision and Component Interfaces Diagram update \\ \midrule
+09-12-2019 & 2 h & Chapter 4 final revision\\ 
 
 \bottomrule
 \end{tabular}
@@ -755,7 +757,8 @@ Vittorio Torri \\
 06-12-2019 & 1.5 h & E/R and DFM diagrams \\ \midrule
 07-12-2019 & 2 h & Web Registration mockup, gantt chart \\ \midrule
 07-12-2019 & 1 h & Class diagram update and minor fixes \\ \midrule
-08-12-2019 & 1 h & Minor fixes \\
+08-12-2019 & 1 h & Minor fixes \\ \midrule
+09-12-2019 & 3 h & General revision \\
 \bottomrule
 \end{tabular}
 \caption[Vittorio Torri's effort table]{}
