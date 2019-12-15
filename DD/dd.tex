@@ -61,7 +61,7 @@ Academic Year 2019/2020 \\
 \vspace{10mm}
 Milano, 09/12/2019 \\
 \vspace{2mm}
-Version 1.0 
+Version 1.1
 }}
 
 \end{titlepage}
@@ -105,7 +105,14 @@ The system is supported by APIs provided by the municipalities and by APIs provi
 \item \textit{DBMS}: DataBase Management System
 \item \textit{DW}: DataWarehouse
 \end{itemize}
-%\section{Revision History}
+\section{Revision history}
+\begin{itemize}
+\item 09-12-2019 Version 1.0.
+\item 13-12-2019 Version 1.1:
+	\begin{itemize} 
+	\item Corrected requirements traceability for R20,R21,R22
+	\end{itemize}
+\end{itemize}
 \section{Reference Documents}
 \begin{itemize}
 \item Assignment Document "SafeStreets Mandatory Project Assignment.pdf"
@@ -504,7 +511,7 @@ Table \ref{tab:req-trace} has been added to highlight for each component what re
     MunicipalityAgent Web App & R19, R20, R21, R22, R23, R24, R26, R28, R29, R30, R33, R34 ,R35 \\ \hline
     MunicipalitySupervisor Web App & R28, R29, R30, R34, R35, R36, R37, R38, R40 \\ \hline
     AccessManager & R1, R2, R3, R24, R25, R26, R38, R39, R40 \\ \hline
-    ReportManager & R11, R12, R13, R14, R15, R16, R17, R18, R23\\ \hline
+    ReportManager & R11, R12, R13, R14, R15, R16, R17, R18, R20, R21, R22, R23\\ \hline
     SuggestionManager & R42, R43 \\ \hline
     StatisticsManager & R30, R35, R36 \\ \hline
     NotificationManager & R18, R43 \\ \hline
@@ -537,9 +544,9 @@ In the following lines is explained how the requirements are provided by the com
 \item \label{[R17]}The involved municipality must be calculated considering in which city the reported violation has been found, based on the GPS position of the user that has sent the report: the \textit{ReportManager} provides this requirement calculating the municipality in charge comparing the GPS position with the ones associated to municipality borders in the database.
 \item \label{[R18]}The system must send the reported violations to the involved municipality: the \textit{ReportManager} and the the \textit{NotificationManager} are responsible for this. After having saved it, the \textit{ReportManager} sends the report to the \textit{NotificationManager} that forwards it to the involved municipality.
 \item \label{[R19]}The system must allow an agent to see the reports for its municipality, checking them in order of arrival: the \textit{MunicipalityAgent Web App} component is responsible for this, showing on screen the reports in order of arrival.
-\item \label{[R20]}The system must allow an agent to issue a traffic ticket to a certain person (i.e. license plate) through the correspondent municipality service: the \textit{MunicipalityAgent Web App}  allows agents to issue traffic tickets through a specific button in the Web App, calling the MunicipalityAPI to issue the traffic ticket.
-\item \label{[R21]}The system must allow an agent to put on hold a violation report if it needs to be checked in person: the \textit{MunicipalityAgent Web App} ensures this by showing the possibility of putting a report on hold while checking it.
-\item \label{[R22]}The system must allow an agent to discard a violation if it has been verified as fake or it cannot be verified (the vehicle is not there anymore) or it is a duplicated report: the \textit{MunicipalityAgent Web App} ensures this requirement by allowing the agents to discard a report if needed.
+\item \label{[R20]}The system must allow an agent to issue a traffic ticket to a certain person (i.e. license plate) through the correspondent municipality service: the \textit{MunicipalityAgent Web App}  allows agents to issue traffic tickets through a specific button in the Web App, then the \textit{ReportManager} will call the MunicipalityAPI to issue the traffic ticket.
+\item \label{[R21]}The system must allow an agent to put on hold a violation report if it needs to be checked in person: the \textit{MunicipalityAgent Web App} ensures this by showing the possibility of putting a report on hold while checking it and the \textit{ReportManager} will then record this in the database.
+\item \label{[R22]}The system must allow an agent to discard a violation if it has been verified as fake or it cannot be verified (the vehicle is not there anymore) or it is a duplicated report: the \textit{MunicipalityAgent Web App} ensures this requirement by allowing the agents to discard a report if needed, then the \textit{ReportManager} will record this in the database.
 \item \label{[R23]}The system must allow an agent to retrieve the data of the author of a violation report: the \textit{MunicipalityAgent Web App} can send the request to the \textit{ReportManager}  which retrieve the data from the database.
 \item \label{[R24]}The system must allow an agent to create an account, providing personal data (name, surname, birthdate, rank, badge number): this requirement is ensured by the \textit{MunicipalityAgent Web App} that allows agents to insert their data and by the \textit{AccessManager} which creates the accounts.
 \item \label{[R25]}The system must verify the correctness of the provided personal data of a registering agent checking them through the Municipality Services, blocking the registration if they are not correct: the \textit{AccessManager} is responsible for this, asking the Municipality API to check the identity of the agent.
